@@ -1,6 +1,6 @@
 # Healthy Watermelon Soda: concept
 
-Stage 3, 2026-11-10. Own track: this is the studio's proposal, waiting for Goutham's yes. Reads: docs/brief.md, docs/research.md (opportunity 1: the fruit is the hero, the visitor makes it happen).
+Stage 3, 2026-11-10. Own track: the studio's proposal, approved by Goutham on 2026-11-10. Reads: docs/brief.md, docs/research.md (opportunity 1: the fruit is the hero, the visitor makes it happen).
 
 **It's the site where** I cut a watermelon by scrolling and it turned into soda.
 
