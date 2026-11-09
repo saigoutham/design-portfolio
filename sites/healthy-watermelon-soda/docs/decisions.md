@@ -34,3 +34,9 @@ Repo: design-portfolio/sites/healthy-watermelon-soda
 - 2026-11-10 · library motionsites + scroll-craft approved-collection · stage 2 · read; values in docs/research.md §3
 - 2026-11-10 · research · stage 2 · docs/research.md; opportunity 1 (fruit as hero, visitor as cause) picked for the concept
 - 2026-11-10 · metrics · stage 2 · 15 min, ~70k tokens, 1 skill, 0 agents, 0 retries, 1 file, 0 review cycles, floor n/a
+- 2026-11-10 · Goutham chose concept first; the slice speed test moves to stage 4
+- 2026-11-10 · library scroll-craft feel.md + uniqueness.md · stage 3 · read; grammar picked from its 8
+- 2026-11-10 · skill brainstorming · stage 3 · 3 concepts (The Cut / One Slice / Chop) in docs/concept.md; The Cut proposed
+- 2026-11-10 · skill copywriting · stage 3 · skipped: not installed in this repo; messaging angle ("Real fruit. Real fizz.") written in the concept, final copy at stage 5
+- 2026-11-10 · skill council · stage 3 · skipped: concepts not close (runner-up fails the template-trap test)
+- 2026-11-10 · fingerprint gate · stage 3 · passes 6/6 against robot-mammoth
