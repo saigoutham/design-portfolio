@@ -11,6 +11,7 @@ One row per site, so the next site can prove it's a different page and not a res
 | Site | Grammar | Navigation | Hero | Act shape | Close | Signature move | World | URL |
 |---|---|---|---|---|---|---|---|---|
 | robot-mammoth | planned | planned | planned | planned | planned | planned | planned | planned |
+| healthy-watermelon-soda | planned | planned | planned | planned | planned | planned | planned | planned |
 
 ## What is taken
 
