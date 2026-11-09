@@ -37,7 +37,7 @@ All work happens in the **design-portfolio** repo (github.com/saigoutham/design-
 | `system/` | FINGERPRINTS.md, calibration.md, lessons.md, shared by every site |
 | `library/` | Reference repos read at named stages: scroll-craft, elaya, bencho (committed), MotionSites (fetched by setup) |
 | `.claude/skills/`, `.claude/agents/` | Every skill and agent this pipeline uses, scoped to this repo, pinned in `skills.lock.json` |
-| `.claude/skills/award-site/references/` | One file per stage, plus `templates.md` and `skills.md` |
+| `.claude/skills/award-site/references/` | One file per stage, plus `floor.md`, `templates.md` and `skills.md` |
 | `.claude/skills/award-site/scripts/` | `new-site.mjs`, `status.mjs`, `setup.mjs` (also `npm run new-site`, `status`, `setup`) |
 
 If `references/` isn't next to this file, you're running a profile copy outside the repo. Clone or attach saigoutham/design-portfolio first, then work from its root.
