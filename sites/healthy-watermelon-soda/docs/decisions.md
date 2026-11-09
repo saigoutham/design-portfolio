@@ -43,3 +43,11 @@ Repo: design-portfolio/sites/healthy-watermelon-soda
 - 2026-11-10 · fingerprint gate · stage 3 · passes 6/6 against robot-mammoth
 - 2026-11-10 · Goutham approved concept: The Cut (split stage; the divider is the knife)
 - 2026-11-10 · metrics · stage 3 · 20 min, ~60k tokens, 1 skill, 0 agents, 0 retries, 1 file, 1 review cycle, floor n/a
+- 2026-11-10 · skill setup · stage 4 · 3d, video, taste packs on; bpy 5.2.3 installed (CPU only, 2 cores)
+- 2026-11-10 · skill ui-ux-pro-max · stage 4 · design-system/healthy-watermelon-soda/MASTER.md (style Vibrant & Block-based); first two runs returned a luxury black-and-gold system and were discarded; palette and type re-tuned to the fruit, contrast checked (all text pairs ≥5.3:1)
+- 2026-11-10 · skill design-system · stage 4 · design-system/tokens.json → tokens.css (primitive, semantic, component)
+- 2026-11-10 · skill design-taste-frontend · stage 4 · checked from its SKILL.md checklist (installed mid-session, not loadable as a skill yet); pass, one waiver: the scroll-scrubbed scene
+- 2026-11-10 · library scroll-craft taste.md + elaya Part B · stage 4 · checked; pass
+- 2026-11-10 · DESIGN.md · stage 4 · direction, token roles, hero layer plan, signature look
+- 2026-11-10 · Decision: fruit delivered as scroll-scrubbed rendered video, not live WebGL (speed on phones); r3f is optional desktop garnish only
+- 2026-11-10 · subagent watermelon model · stage 4 · started: assets-src/watermelon.py, stills to docs/watermelon/
