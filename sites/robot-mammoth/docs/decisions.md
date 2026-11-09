@@ -6,6 +6,7 @@ Repo: design-portfolio/sites/robot-mammoth
 ## Stage log
 - 2026-11-09 · stage 0 setup · done
 - 2026-11-09 · stage 1 intake · done
+- 2026-11-09 · stage 2 research · done
 
 ## Decisions
 - 2026-11-09 · Created with 3D dependencies.
@@ -15,3 +16,4 @@ Repo: design-portfolio/sites/robot-mammoth
 - 2026-11-09 · Renamed robot-elephant to robot-mammoth after the world change.
 - 2026-11-09 · Time: "1hr per day" of Goutham's review time; scope is one long scroll page plus a short field-notes page.
 - 2026-11-09 · find-skills: no gaps (searched procedural 3D creature, camouflage shader, snow particles); the 3d pack covers them.
+- 2026-11-09 · Research: snowy-mountain scroll sites already exist (Whiteout · An Ascent; Everest · The Ascent, HM 2026-07-28), and cursor camouflage exists (The Mimic). Working idea for stage 3 is A: the ridge is the mammoth, revealed by light and fog as you scroll; the camera doesn't climb. last30days couldn't reach Reddit or HN from the cloud session; web search used instead.
