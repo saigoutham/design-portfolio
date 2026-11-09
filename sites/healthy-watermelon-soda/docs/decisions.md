@@ -51,3 +51,6 @@ Repo: design-portfolio/sites/healthy-watermelon-soda
 - 2026-11-10 · DESIGN.md · stage 4 · direction, token roles, hero layer plan, signature look
 - 2026-11-10 · Decision: fruit delivered as scroll-scrubbed rendered video, not live WebGL (speed on phones); r3f is optional desktop garnish only
 - 2026-11-10 · subagent watermelon model · stage 4 · started: assets-src/watermelon.py, stills to docs/watermelon/
+- 2026-11-10 · subagent watermelon model · stage 4 · assets-src/watermelon.py; docs/watermelon/{whole,cut}-v1..v3.png; ~3–5 min per still on CPU; subagent verdict borderline
+- 2026-11-10 · floor (asset still) · stage 4 · fail · director verdict on v3: reads as CG. Whole: stripes like torn paper, milky soft sheen, smudged ground spot. Cut: flat matte card-like flesh, no wet glints, seeds in a neat printed ring, halves read as thin plates. Two fix passes done; the day-2 rule says switch, not polish
+- 2026-11-10 · Proposed: real photography and footage of a real watermelon as the hero art (concept fallback); Blender kept for the can/glass if needed. Waiting on Goutham
