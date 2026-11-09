@@ -1,0 +1,278 @@
+/* Experience styles. Global, prefixed x-: the Tailwind turbopack loader turns *.module.css into plain CSS. */
+.x-story {
+  position: relative;
+}
+
+.x-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: radial-gradient(120% 80% at 50% 110%, #1a120d 0%, var(--night) 60%);
+}
+
+.x-stars {
+  position: absolute;
+  inset: 0 0 40% 0;
+  pointer-events: none;
+}
+
+/* The painting: revealed by the lamp's light, then panned sideways by scroll */
+.x-painting {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% - var(--band-h));
+  overflow: hidden;
+  --r: 0px;
+  --cx: 50%;
+  --cy: 60%;
+  -webkit-mask-image: radial-gradient(circle at var(--cx) var(--cy), #000 var(--r), transparent calc(var(--r) + 220px));
+  mask-image: radial-gradient(circle at var(--cx) var(--cy), #000 var(--r), transparent calc(var(--r) + 220px));
+  visibility: hidden;
+}
+.x-painting[data-open="true"] {
+  visibility: visible;
+}
+.x-track {
+  height: 100%;
+  width: max-content;
+  will-change: transform;
+}
+.x-track svg {
+  height: 100%;
+  width: auto;
+  display: block;
+}
+.x-track[data-fit="width"] {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.x-track[data-fit="width"] svg {
+  width: 100%;
+  height: auto;
+}
+
+.x-glow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 1100px;
+  height: 1100px;
+  margin: -550px 0 0 -550px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 181, 71, 0.3) 0%, rgba(232, 100, 30, 0.12) 28%, rgba(232, 100, 30, 0.04) 48%, transparent 68%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  z-index: 30;
+  will-change: transform, opacity;
+}
+.x-glowFlicker {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: inherit;
+  animation: glowbreath 2.6s ease-in-out infinite;
+}
+@keyframes glowbreath {
+  0%, 100% { opacity: 0; }
+  40% { opacity: 0.35; }
+  70% { opacity: 0.12; }
+}
+
+.x-ledge {
+  position: absolute;
+  left: 50%;
+  width: min(1200px, 120vw);
+  height: 70px;
+  transform: translateX(-50%);
+  top: var(--ledge-y);
+  background: linear-gradient(180deg, #221812 0%, var(--night-raised) 22%, #0f0b08 100%);
+  border-top: 1px solid rgba(255, 181, 71, calc(0.06 + var(--warm, 0) * 0.35));
+  box-shadow: 0 12px 24px rgba(12, 9, 7, 0.8);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.x-heroCopy {
+  position: absolute;
+  left: 50%;
+  top: 14vh;
+  transform: translateX(-50%);
+  width: min(880px, calc(100vw - 48px));
+  text-align: center;
+  z-index: 20;
+}
+.x-heroCopy h1 {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.x-heroLabel {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(var(--ledge-y) + 96px);
+  text-align: center;
+  z-index: 20;
+  width: min(560px, calc(100vw - 48px));
+}
+
+.x-labelMeta {
+  color: var(--ink-soft);
+}
+.x-labelTitle {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--ink);
+  margin: 6px 0;
+}
+.x-hint {
+  margin-top: 14px;
+  color: var(--flame);
+}
+
+/* Label band under the painting */
+.x-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--band-h);
+  padding: 20px 32px 0;
+  background: var(--night);
+  border-top: 1px solid rgba(241, 230, 211, 0.08);
+  display: grid;
+  grid-template-columns: minmax(0, 62ch) 1fr;
+  gap: 32px;
+  z-index: 25;
+}
+.x-band p.x-text {
+  font-size: 18px;
+  line-height: 29px;
+  color: var(--ink);
+  margin-top: 6px;
+  max-width: 62ch;
+}
+
+/* The row of six lamps: hero composition, then navigation */
+.x-row {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  display: flex;
+  gap: 12px;
+  transform-origin: 50% 100%;
+  transform: translate(calc(-50% + var(--tx, 0px)), var(--ty, 0px)) scale(var(--s, 1));
+  z-index: 40;
+}
+.x-lampBtn {
+  position: relative;
+  width: var(--row-lamp);
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+.x-lampBtn[aria-disabled="true"] {
+  cursor: default;
+}
+.x-lampBtn .x-diya {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+.x-rowFlame {
+  position: absolute;
+  width: 11px;
+  animation: flameIn 300ms var(--ease-out) both;
+  pointer-events: none;
+}
+@keyframes flameIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.x-ember::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 181, 71, 0.22), rgba(232, 100, 30, 0.06) 45%, transparent 70%);
+  pointer-events: none;
+}
+.x-ember {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  margin: -2px 0 0 -2px;
+  border-radius: 50%;
+  background: var(--flame);
+  box-shadow: 0 0 6px 2px rgba(255, 181, 71, 0.55);
+  animation: x-ember-pulse 2.4s ease-in-out infinite;
+}
+@keyframes x-ember-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+.x-carried {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 45;
+  transform-origin: 50% 88%;
+  will-change: transform;
+}
+
+.x-after {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 0 24px 160px;
+}
+.x-after .x-proofNote {
+  margin-top: 18px;
+  color: var(--ink-soft);
+  max-width: 46ch;
+}
+
+@media (max-width: 700px) {
+  .x-heroCopy {
+    top: 12vh;
+  }
+  .x-heroCopy h1 {
+    font-size: 32px;
+    line-height: 38px;
+  }
+  .x-band {
+    grid-template-columns: 1fr;
+    padding: 16px 20px 0;
+    gap: 0;
+  }
+  .x-band p.x-text {
+    font-size: 17px;
+    line-height: 27px;
+  }
+}
