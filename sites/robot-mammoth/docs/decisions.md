@@ -8,7 +8,7 @@ Repo: design-portfolio/sites/robot-mammoth
 - 2026-11-09 · stage 1 intake · done
 - 2026-11-09 · stage 2 research · done
 - 2026-11-09 · stage 3 concept · done
-- 2026-11-09 · stage 4 direction · done
+- 2026-11-09 · stage 4 direction · reopened: Goutham rejected the hero proof; remodelling the robot
 
 ## Decisions
 - 2026-11-09 · Created with 3D dependencies.
@@ -23,3 +23,7 @@ Repo: design-portfolio/sites/robot-mammoth
 - 2026-11-09 · Concept approved by Goutham: "The direct is good, the mammoth is the USP of the website."
 - 2026-11-09 · Hero (Claude's call, answering "how would you make it the hero?"): the first frame shows the mammoth's eye, a lens in the snow that refocuses when the visitor holds still; the sunset shadow then shows the lens belongs to the whole ridge. The watcher's camera is high on the opposite slope so the low sun throws the shadow above the body on screen.
 - 2026-11-09 · Hero proof built (src/stakeout). The low sun's shadow reads as a mammoth on desktop and phone (docs/hero-approved). Preview published as a private artifact, https://claude.ai/artifact/2254tmNbRyWppYpbZZis7b, because there's no Vercel login in this session. Known gaps: snow sheet slide, posters, field notes, night, reduced-motion stills.
+- 2026-11-09 · Goutham on the hero proof: "It looks absolutely bad, I said a robot mammoth, what anything is a robot mammoth in this?" Cause: the concept hid the machine entirely and the model was rough code shapes.
+- 2026-11-09 · Story order changed (Goutham): show the robot in full first, then scrolling shows how it hides until only its sunset shadow gives it away. Supersedes "hidden from the first frame" in concept.md.
+- 2026-11-09 · Robot look (Goutham): polar survey machine. White ceramic armour, dark graphite joints, segmented trunk, titanium tusks, one amber light. Modelled in Blender (bpy) as a hard-surface machine; a still goes to Goutham before it enters the page.
+- 2026-11-09 · Robot still v1 rendered from assets-src/robot_mammoth.py (Blender 5.2 via bpy, Cycles): docs/robot/robot-still-v1.png. Waiting for Goutham's verdict before it goes into the page.
