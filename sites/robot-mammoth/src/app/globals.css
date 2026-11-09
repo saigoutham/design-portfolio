@@ -1,26 +1,179 @@
 @import "tailwindcss";
 
+/* Values from design-system/robot-mammoth/MASTER.md */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-background: #f8fafc;
+  --color-muted: #e9eef5;
+  --color-foreground: #0f172a;
+  --color-primary: #1e3a5f;
+  --color-accent: #b45309;
+  --color-muted-foreground: #475569;
+  --color-border: #cbd5e1;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --font-heading: "Crimson Pro", Georgia, serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* The page loads on fog, never on black. */
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--color-muted);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.copy {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  top: clamp(var(--space-lg), 8vh, 80px);
+  left: clamp(20px, 5vw, var(--space-3xl));
+  max-width: 15ch;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.cue {
+  position: absolute;
+  left: clamp(20px, 5vw, var(--space-3xl));
+  bottom: clamp(20px, 5vh, var(--space-2xl));
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  color: var(--color-muted-foreground);
+}
+
+.hold {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+  visibility: hidden;
+}
+
+.rail {
+  position: fixed;
+  z-index: 2;
+  right: clamp(var(--space-md), 3vw, 40px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.rail ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.rail button {
+  all: unset;
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  padding: var(--space-xs) 0 var(--space-xs) var(--space-md);
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+}
+
+.rail button::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  width: var(--space-sm);
+  height: 1px;
+  background: var(--color-border);
+}
+
+.rail li[data-current] button {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.rail li[data-current] button::before {
+  width: 14px;
+  height: 2px;
+  background: var(--color-primary);
+}
+
+.rail button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.spacer {
+  height: 600vh;
+}
+
+/* Phone: the rail becomes a hairline across the top, the line sits under it. */
+@media (max-width: 640px) {
+  .rail {
+    top: var(--space-sm);
+    left: 20px;
+    right: 20px;
+    transform: none;
+  }
+
+  .rail ol {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .rail button {
+    padding: var(--space-sm) 0 0;
+  }
+
+  .rail button::before {
+    left: 0;
+    top: -1px;
+    width: 1px;
+    height: var(--space-sm);
+  }
+
+  .rail li[data-current] button::before {
+    width: 2px;
+    height: 10px;
+  }
+
+  .line {
+    top: 64px;
+  }
 }

@@ -8,6 +8,7 @@ Repo: design-portfolio/sites/robot-mammoth
 - 2026-11-09 · stage 1 intake · done
 - 2026-11-09 · stage 2 research · done
 - 2026-11-09 · stage 3 concept · done
+- 2026-11-09 · stage 4 direction · done
 
 ## Decisions
 - 2026-11-09 · Created with 3D dependencies.
@@ -19,3 +20,6 @@ Repo: design-portfolio/sites/robot-mammoth
 - 2026-11-09 · find-skills: no gaps (searched procedural 3D creature, camouflage shader, snow particles); the 3d pack covers them.
 - 2026-11-09 · Research: snowy-mountain scroll sites already exist (Whiteout · An Ascent; Everest · The Ascent, HM 2026-07-28), and cursor camouflage exists (The Mimic). Working idea for stage 3 is A: the ridge is the mammoth, revealed by light and fog as you scroll; the camera doesn't climb. last30days couldn't reach Reddit or HN from the cloud session; web search used instead.
 - 2026-11-09 · Concept (Claude's proposal): Stakeout. One held mountainside, scrolling moves through one day, the ridge's shadow at low sun reveals the mammoth, and it only moves when the visitor stops scrolling. Grammar: continuous world through time. Runner-up: split stage (your eyes vs its sensors). Waiting for Goutham's yes before stage 4 builds anything.
+- 2026-11-09 · Concept approved by Goutham: "The direct is good, the mammoth is the USP of the website."
+- 2026-11-09 · Hero (Claude's call, answering "how would you make it the hero?"): the first frame shows the mammoth's eye, a lens in the snow that refocuses when the visitor holds still; the sunset shadow then shows the lens belongs to the whole ridge. The watcher's camera is high on the opposite slope so the low sun throws the shadow above the body on screen.
+- 2026-11-09 · Hero proof built (src/stakeout). The low sun's shadow reads as a mammoth on desktop and phone (docs/hero-approved). Preview published as a private artifact, https://claude.ai/artifact/2254tmNbRyWppYpbZZis7b, because there's no Vercel login in this session. Known gaps: snow sheet slide, posters, field notes, night, reduced-motion stills.
