@@ -18,14 +18,16 @@
    - On the client track, where the site has a story worth pitching, **public-relations** for a pitch and a media list.
 
    Run `npm run setup -- --remove marketing` afterwards.
-4. **Submissions:** Awwwards, FWA and CSS Design Awards. Use contact-sheet screenshots, a short description built on the tell-someone sentence, the stack and the credits, including every artist and licensor from docs/assets.md. Log each submission with its date.
-5. **Fingerprint:** update the site's row in `system/FINGERPRINTS.md` from `planned` to its final six dimensions, and add whatever this site claimed to "What is taken".
+4. **Measurement plan** (`docs/measurement.md`): the primary conversion (or, for a quiet site, the engagement that means it worked), secondary actions, and the performance baseline from Lighthouse. When the site has a measurable business objective, set it up with **analytics**.
+5. **Submissions:** Awwwards, FWA and CSS Design Awards. Use contact-sheet screenshots, a short description built on the tell-someone sentence, the stack and the credits, including every artist and licensor from docs/assets.md. Log each submission with its date.
+6. **Fingerprint:** update the site's row in `system/FINGERPRINTS.md` from `planned` to its final six dimensions, and add whatever this site claimed to "What is taken".
 
 ## Learn (`/award-site learn <site>`)
 Run gstack's **retro** on the site's history first: what shipped, what slipped, what the floor and the jury caught. Its findings go into system/lessons.md below.
 
 When real scores arrive, ask the user for them, or read them from the site's award page.
 - Add a row to `system/calibration.md`: site, date, critic overall, jury estimate, real overall, the four real criteria, and the gap.
+- Compare this site's metrics lines with earlier sites: where time, tokens and review cycles went.
 - Add one line per lesson to `system/lessons.md`: what a real jury (or the client) rewarded or punished, specific enough to change a future decision. Stages 2 and 3 read this file on every site, which is how the system improves with each submission.
 - If calibration drifts (the estimate misses by more than 0.5 twice in a row), tell the user and recommend adjusting the 7.2 pass bar.
 

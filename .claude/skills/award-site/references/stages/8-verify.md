@@ -9,6 +9,8 @@ npm run build && npx next start -p 4400
 Setup once: `npm i -D playwright-core` in the site folder, and `npm run setup -- --with library` at the repo root.
 
 ## Builder loop
+First, **user-task tests**: three to five representative visitor tasks (for example: light the first lamp, reach story three, find the credits), run as Playwright scripts in real Chromium at desktop and phone sizes, each one recorded with pass or fail and a reproducible failure. Then work through the primaries in SKILL.md's "Who reviews what". The second reviewers listed there run only when triggered.
+
 Repeat until every check passes. If one issue survives 3 rounds, stop and flag it to the user rather than looping.
 
 1. **Scroll walker:** run `node ../../library/scroll-craft/scripts/shoot.mjs --url http://localhost:4400 --out lab/shots`. Run it again with `--width 390 --height 844 --out lab/mobile`, and with `--reduced-motion --out lab/reduced`.
@@ -20,8 +22,9 @@ Repeat until every check passes. If one issue survives 3 rounds, stop and flag i
 4. **Feel check:** scroll the page cold, write one word per act, then compare with the feeling curve in docs/concept.md. Where they disagree, the page is wrong, not the concept.
 5. **Craft and usability:**
    - **impeccable** critique and audit.
-   - gstack's **design-review** in report mode: visual inconsistency, spacing, hierarchy, AI-slop patterns, slow interactions. Its fixes go back through stage 7, not straight into the code.
-   - gstack's **benchmark** for performance, and **qa-only** for a bug report with evidence.
+   - When a primary flags a visual problem it can't pin down, gstack's **design-review** in report mode: visual inconsistency, spacing, hierarchy, AI-slop patterns, slow interactions. Its fixes go back through stage 7, not straight into the code.
+   - When Lighthouse fails or regresses, gstack's **benchmark**; when a user task fails without a clear cause, **qa-only** for a bug report with evidence.
+   - When the site has a conversion action, **cro** on the built page.
    - gstack's **cso** security audit, for client sites that take input or data.
    - **review-animations** and **animation-performance**.
    - **seo-audit**.

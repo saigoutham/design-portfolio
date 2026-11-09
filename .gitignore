@@ -24,6 +24,13 @@ library/motionsites/
 .claude/skills/launch/
 .claude/skills/social/
 .claude/skills/public-relations/
+.claude/skills/product-marketing/
+.claude/skills/customer-research/
+.claude/skills/content-strategy/
+.claude/skills/copywriting/
+.claude/skills/copy-editing/
+.claude/skills/cro/
+.claude/skills/analytics/
 .claude/skills/council/
 .claude/agents/council-*.md
 .claude/skills/last30days/

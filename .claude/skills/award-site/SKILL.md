@@ -9,11 +9,12 @@ You are the creative director and producer of a small studio whose sites win awa
 
 ## What wins, and what has already lost
 
-Awwwards juries (18+ jurors, 3 outliers dropped) weight Design 40%, Usability 30%, Creativity 20%, Content 10%. Recent Sites of the Day land around 7.2 to 7.6. That gives three priorities:
+Awwwards juries (18+ jurors, the 3 scores furthest from the average dropped) weight Design 40%, Usability 30%, Creativity 20%, Content 10% (awwwards.com/about-evaluation, checked 9 Nov 2026). Recent Sites of the Day pages show overall scores of 7.41 to 7.58. The 7.2 pass bar and the quality floor below are this studio's own targets, not Awwwards rules. That gives three priorities:
 
 1. **Fundamentals can't fail.** Design and Usability are 70% of the score, and most sites lose on usability: slow phones, unreadable text, dead scroll.
 2. **One real idea per site.** A juror remembers one signature interaction, not five effects.
 3. **Content is produced, not hoped for.** Real art, footage and copy are where client sites stall.
+4. **Strategy before spectacle.** A site that looks impressive but says the wrong thing to the wrong people loses on Content and Usability. Positioning, audience and the primary action are settled in stages 1 to 3, and the hero has to say them.
 
 This pipeline has already failed once in a specific way. On the Diwali site, every stage passed and the hero was still prototype-grade:
 - art hand-drawn in SVG
@@ -78,15 +79,15 @@ Every skill the user brought has a job here, or a stated reason it's held back. 
 | # | Runs, in order | Only when |
 |---|---|---|
 | 0 | `npm run new-site`, `npm run setup` | caveman-compress, if the site CLAUDE.md grows past about 1k tokens |
-| 1 | brainstorming (the interviewer), in grilling's style (grill-me calls the same skill); the elaya and scroll-craft intake questions (library); find-skills for gaps | client track: the Gate 1 doc |
-| 2 | MotionSites examples and the scroll-craft approved collection (library); system/lessons.md | last30days, if API keys and network exist (otherwise web search); scrapling-official on competitors (client track); REA on one reference effect |
-| 3 | brainstorming (2 or 3 concepts); scroll-craft feel, uniqueness and devices, plus MotionSites techniques (library) | council, if two concepts stay close and the choice is costly |
+| 1 | brainstorming (the interviewer), in grilling's style (grill-me calls the same skill); product-marketing for positioning, audience, objective, primary action and brand personality; the elaya and scroll-craft intake questions (library); find-skills, only for a gap the registry doesn't cover | customer-research, when the client has customers or reviews to study; client track: the Gate 1 doc |
+| 2 | content-strategy (audience expectations, content patterns); MotionSites examples and the scroll-craft approved collection (library); system/lessons.md | last30days, if API keys and network exist (otherwise web search); scrapling-official on competitors (client track); REA on one reference effect |
+| 3 | brainstorming (2 or 3 concepts); copywriting for the messaging angle; scroll-craft feel, uniqueness and devices, plus MotionSites techniques (library); the design intelligence check | council, if two concepts stay close and the choice is costly |
 | 4 | ui-ux-pro-max (MASTER.md), design-system (MASTER.md as primitive, semantic and component tokens), design-taste-frontend (a check only, with elaya Part B and scroll-craft taste), writing-plans, subagent-driven-development with using-git-worktrees. The tracks it runs: gsap-core, gsap-timeline, gsap-scrolltrigger and gsap-react to build; choreograph, emil-design-eng and review-animations for motion; Bencho sounds (library). Then the floor check: hyperframes film, visual-verdict, MotionSites rubric, impeccable critique, a blind critic on jury's brief. cavecrew-reviewer on every track's diff. | r3f-* (one or two per task) and Blender models for a 3D world; stageshow for product UI; council, if the floor fails 3 rounds; elaya figma-designer, if the client wants Figma |
-| 5 | hyperframes for clips; scroll-craft assets and encode.sh, elaya Part A copy rules, MotionSites media shelf (library) | Blender (bpy) models and Cycles renders; remotion-best-practices with remotion-license, when hyperframes can't do it; stageshow; r3f-* |
-| 6 | MotionSites spec template and the scroll-craft scroll score (library); gstack plan-design-review on the spec; writing-plans; gstack plan-eng-review on the plan | gstack diagram, for a flow the spec can't say in a table |
-| 7 | subagent-driven-development, gstack freeze (edits stay inside the site folder), the four core gsap skills, choreograph, emil-design-eng, Bencho blocks (library), ponytail (plumbing only), schema, ai-seo, impeccable polish, the floor check per section, cavecrew agents | r3f-*; stageshow; gsap-plugins, gsap-utils, gsap-performance; gsap-frameworks, only for a site that isn't React; test-driven-development for logic; systematic-debugging when a bug survives one fix; finishing-a-development-branch; Context7 for current API docs |
-| 8 | scroll-craft shoot.mjs (library), visual-verdict, the MotionSites rubric, impeccable critique and audit, gstack design-review in report mode, review-animations, animation-performance, gstack benchmark, seo-audit, gstack qa-only, jury (blind), verification-before-completion, cavecrew-reviewer | gstack cso, for client sites that take input or data |
-| 9 | hyperframes (case-study film), launch, social, submissions, gstack canary after deploy, gstack retro feeding system/lessons.md | remotion; stageshow frames; manim explainer; public-relations (client track) |
+| 5 | copywriting (final copy), then copy-editing; hyperframes for clips; scroll-craft assets and encode.sh, elaya Part A copy rules, MotionSites media shelf (library); the asset manifest | Blender (bpy) models and Cycles renders; remotion-best-practices with remotion-license, when hyperframes can't do it; stageshow; r3f-* |
+| 6 | MotionSites spec template and the scroll-craft scroll score (library); gstack plan-design-review on the spec; writing-plans; gstack plan-eng-review on the plan | gstack diagram, for a flow the spec can't say in a table; cro, when the site has a conversion action |
+| 7 | subagent-driven-development, gstack freeze (edits stay inside the site folder), the four core gsap skills, choreograph, emil-design-eng, Bencho blocks (library), ponytail (plumbing only), schema, ai-seo, impeccable polish, the floor check per section, automated checks (Playwright, axe-core, Lighthouse CI), cavecrew agents | r3f-*; stageshow; gsap-plugins, gsap-utils, gsap-performance; gsap-frameworks, only for a site that isn't React; test-driven-development for logic; systematic-debugging when a bug survives one fix; finishing-a-development-branch; Context7 for current API docs |
+| 8 | user-task tests in a real browser (Playwright, desktop and phone), scroll-craft shoot.mjs (library), then each primary evaluator in the QA hierarchy, jury (blind), verification-before-completion | gstack design-review, benchmark and qa-only, as second reviewers when a primary fails or a risk calls for it; cro, when the site has a conversion action; gstack cso, for client sites that take input or data |
+| 9 | hyperframes (case-study film), launch, social, submissions, the measurement plan, gstack canary after deploy, gstack retro feeding system/lessons.md | remotion; stageshow frames; manim explainer; public-relations (client track); analytics, when the site has a measurable business objective |
 | every turn | minimal-prose-discipline for the handoff; cavecrew-investigator, cavecrew-builder and cavecrew-reviewer for small jobs | |
 
 **Held back, and why:**
@@ -106,7 +107,7 @@ Load nothing up front. For each stage:
 
 1. Read that stage's file, and only that one.
 2. Name the task in one line.
-3. Take the skills the stage file and the skill plan name for that task, and nothing else. When a skill is conditional (3D, product UI, client track, API keys), `references/skills.md` says when it applies.
+3. Take the skills the stage file and the skill plan name for that task, and nothing else. A skill named in a stage runs only when its task exists for this site: a site with nothing moving together has no choreograph task. Every invocation has a task, an expected output and a reason. A named skill that doesn't apply gets a line saying so (`skill <name> · stage <n> · skipped: <reason>`), so a skip is a decision, not an omission.
 4. Install its pack if it's missing: `npm run setup -- --with <pack>`.
 5. Load each skill with the Skill tool and follow its own instructions, opening only the reference files it names for this task.
 6. Check the output exists and does what the step asked: a file, a score, a screenshot, a film.
@@ -114,7 +115,7 @@ Load nothing up front. For each stage:
 
 **Why the log line matters:** skills that were installed, listed in tables and never run are how the Diwali hero ended up basic. A skill with no log line didn't run, whatever any document says. `npm run status` flags any finished stage whose lead skill has no line. `npm run skills` counts the lines and checks the registry against the lock file, the disk and the stage files. When you plan or propose work instead of doing it (a council run, a stage plan), say which lines it will log, so the plan carries the rule forward.
 
-**Subagents:** give a subagent the skill's name to load and the input paths; never paste a skill's text into its prompt. Use the cavecrew agents for code search, edits of 2 files or fewer, and diff review. Their compressed reports keep your context small; caveman voice stays between agents.
+**Subagents:** give a subagent the skill's name to load and the input paths; never paste a skill's text into its prompt. Ask for a compressed hand-back: decisions, changed files, evidence and blockers, not a narrative. Parallelise only tasks with no unresolved dependency between them. Use the cavecrew agents for code search, edits of 2 files or fewer, and diff review. Their compressed reports keep your context small; caveman voice stays between agents.
 
 ## The quality floor
 
@@ -138,6 +139,24 @@ These five rules outrank speed:
 3. **Motion is shown as motion.** A hero proof goes out as the live link plus a 10 to 20 second film (hyperframes), never screenshots alone. Motion is half of what's being judged.
 4. **Orchestrate from stage 4.** From Direction on, split the work into parallel tracks with subagent-driven-development (assets, build, motion, critique) and review each before it merges. You direct and judge. Building inline is for fixes of 2 files or fewer.
 5. **Source before you build.** When the art is the content, find and license it before the hero is coded. If the workspace can't reach a source, ask the user for the files in the same turn.
+
+## Who reviews what
+
+One primary evaluator per quality dimension. A second review runs only when the primary fails, a specific risk calls for it, or the decision is high-impact. A passing evaluation isn't rerun without a meaningful change.
+
+| Dimension | Primary | Second, only when triggered |
+|---|---|---|
+| Visual design | visual-verdict (against references and the approved hero) | the blind jury critic; gstack design-review |
+| UX and usability | impeccable (critique kept apart from functional defects) | Playwright user-task tests |
+| Animation | review-animations | browser recording; animation-performance |
+| Performance | Lighthouse CI on a throttled phone | gstack benchmark; animation-performance profiling |
+| Accessibility | axe-core | manual keyboard and screen-reader pass |
+| SEO | seo-audit | schema and metadata validation |
+| Copy | copy-editing | elaya Part A |
+| Conversion (if any) | cro | |
+| Engineering | the task reviewer in subagent-driven-development | cavecrew-reviewer; automated tests |
+
+The floor check and the blind jury combine these into a verdict; they don't replace them.
 
 ## Tracks and gates
 
@@ -168,7 +187,7 @@ In practice that's one of three moments:
 
 **How:**
 1. Install the pack: `npm run setup -- --with council`.
-2. Convene a panel of three. Pick the panel that fits the question: `--triad design` (Rams, Torvalds, Watts) for direction calls, `--triad decision` for client trade-offs, `--duo` for a two-option call. Never use `--full`.
+2. Use the lightest mode that settles the question: `--duo` for a two-option call, `--quick` for a narrow one, and a triad only when the decision has several sides: `--triad design` (Rams, Torvalds, Watts) for direction calls, `--triad decision` for client trade-offs. Never use `--full`.
    ```
    /council --triad design <the decision, the options, constraints, evidence, how reversible it is, the deadline>
    ```
@@ -221,6 +240,17 @@ If something blocks progress, open with it instead of the done line. If a gate o
 
 ## Working efficiently
 
+**What costs context, and when:**
+- An installed skill's or agent's description sits in every session's lists. That's about 4.2k tokens for the 50 skills installed on 9 Nov 2026; `npm run skills -- --all` measures it per skill.
+- A skill's SKILL.md loads only when it's invoked.
+- Its reference files load only when its steps open them.
+- A subagent's work costs nothing here; its hand-back does. That's why hand-backs are compressed.
+
+Measure before cutting: don't remove a useful skill on an assumption about its cost.
+
+**Operating rules:**
 - Use the scripts for anything deterministic: scaffolding, status, setup, the skills audit.
-- Install packs when a stage needs them, and remove them when no site in progress does (`npm run setup -- --remove <pack>`). Every installed skill and agent costs context in every session. Stage 4 always needs `library` and `video`.
-- Write long tool output to a file, and keep one line about it in decisions.md, not in the conversation.
+- Install packs when a stage needs them, and remove them when no site in progress does (`npm run setup -- --remove <pack>`). Stage 4 always needs `library` and `video`.
+- Every document needs a reader: a later stage, the client, or a future site's lessons. Otherwise don't write it. Long tool output goes to a file, with one line about it in decisions.md.
+- Reuse proven components and patterns when they fit the new concept, without carrying over another site's fingerprint.
+- At each stage's end, log one metrics line: `- <date> · metrics · stage <n> · <minutes> min, <tokens>k tokens, <skills> skills, <agents> agents, <retries> retries, <files> files, <reviews> review cycles, floor <score or n/a>`. Stage 9 compares them across sites, so the system learns where its time and tokens go.

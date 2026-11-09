@@ -44,6 +44,15 @@ Why not the others: <one line each>
 |---|---|---|
 Peak: <beat>, said the way a visitor would tell a friend.
 
+## Design intelligence
+- Recognisable without the logo because:
+- Signature interaction:
+- Intended emotional response:
+- Visual hierarchy:
+- How the design carries the positioning:
+- Different from the fingerprint library because:
+- Fits the technical and performance budget because:
+
 ## Fingerprint check
 | Against | Grammar | Nav | Hero | Act shape | Close | Signature | Differs on |
 |---|---|---|---|---|---|---|---|
@@ -61,7 +70,9 @@ Peak: <beat>, said the way a visitor would tell a friend.
 | Hero fidelity (visual-verdict) | /100 | |
 | Rubric average (lowest) | | |
 | Feel check | matches / differs at <beat> | |
-| Core Web Vitals, throttled phone | LCP / INP / CLS | |
+| Core Web Vitals, throttled phone (Lighthouse CI) | LCP / INP / CLS | |
+| axe-core | violations | |
+| User-task tests (Playwright) | n of n pass | failures with repro steps |
 
 ## Blind jury
 Estimate: <n> (critic <n> + offset) · Band: <...> · Critic's reading: "<sentence>" · Matches concept: yes/no

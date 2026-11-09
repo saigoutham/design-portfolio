@@ -13,18 +13,20 @@ Read `library/scroll-craft/references/feel.md` and `library/scroll-craft/referen
    - There's one peak: it gets the most scroll room, with a quieter beat before it.
    - The ending resolves instead of fading into a footer.
 5. **Tell-someone sentence:** "It's the site where ___", filled with an experience, not a technique. The jury's reading gets checked against it.
-6. **Media the concept needs:** list the art, footage or models it depends on, and where each could come from. A concept whose look depends on art nobody can supply isn't ready (SKILL.md, quality floor rules 2 and 5).
-7. **Fingerprint gate:** compare the plan with every row in `system/FINGERPRINTS.md` (not scroll-craft's own registry) on six dimensions: grammar, navigation, hero, act shape, close, signature move. It must differ from each row on at least 4. If it fails, change the plan, never the log; a log edited to fit stops protecting anything.
+6. **Messaging angle:** with **copywriting**, the one thing the site says and the voice it says it in, written as the hero line and two supporting lines. The visual idea and the verbal idea must be the same idea.
+7. **Design intelligence check** (a short section in concept.md): what makes the site recognisable without its logo; the signature interaction; the intended emotional response; the visual hierarchy; how the design carries the positioning; how it differs from the fingerprint library; whether it fits the technical and performance budget.
+8. **Media the concept needs:** list the art, footage or models it depends on, and where each could come from. A concept whose look depends on art nobody can supply isn't ready (SKILL.md, quality floor rules 2 and 5).
+9. **Fingerprint gate:** compare the plan with every row in `system/FINGERPRINTS.md` (not scroll-craft's own registry) on six dimensions: grammar, navigation, hero, act shape, close, signature move. It must differ from each row on at least 4. If it fails, change the plan, never the log; a log edited to fit stops protecting anything.
 
 If two concepts are still close after brainstorming, and picking wrong would be costly, convene the **council** with `--triad design` (SKILL.md, "The council"). Otherwise choose, and say why.
 
 On the client track, the concept goes into the Gate 2 proposal, not to the client on its own; they judge it alongside the working hero in stage 4.
 
 ## Verify
-concept.md has all seven parts, and the fingerprint table shows 4 or more differences against every row.
+concept.md has all nine parts, and the fingerprint table shows 4 or more differences against every row.
 
 ## Log
-`stage 3 concept · done`, plus a skill line for brainstorming (and the council, if it was convened).
+`stage 3 concept · done`, plus skill lines for brainstorming and copywriting (and the council, if it was convened).
 
 ## Handoff
 - Next: stage 4, Direction and hero proof. Add `--with 3d` first if the world is real 3D.

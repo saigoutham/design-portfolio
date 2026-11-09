@@ -23,8 +23,9 @@
 6. **Components:** Bencho blocks from `library/bencho/blocks/` (free, MIT; photos not included), restyled to the tokens, and Bencho's sounds where the concept has sound. A block keeps the animation code it ships with; nothing else gets added on top.
 7. **Plumbing:** **ponytail** handles forms, data fetching, config, SEO markup and third-party embeds. It never touches motion, WebGL or the signature move. Use **test-driven-development** for logic-heavy plumbing and **systematic-debugging** when a bug survives one fix.
 8. **Markup:** semantic HTML, real headings and alt text, **schema** for structured data, and **ai-seo** for answer engines. Put `data-sc-act="<beat>"` on each act and `data-sc-scrub` on scrubbed videos, so scroll-craft's walker can check the page.
-9. **Floor per section:** each task that changes what a visitor sees ends with floor check steps 1, 3 and 4 before the next task starts. When the page is complete, run **impeccable** polish across it.
-10. Commit per finished task, inside the site folder.
+9. **Automated checks** in the site's `npm run check`, run after every task: Playwright tests for each core interaction and each breakpoint in the spec, `@axe-core/playwright` on every page state, and Lighthouse CI (`@lhci/cli`) against the spec's budgets on a throttled phone. A task isn't done while they fail.
+10. **Floor per section:** each task that changes what a visitor sees ends with floor check steps 1, 3 and 4 before the next task starts. When the page is complete, run **impeccable** polish across it.
+11. Commit per finished task, inside the site folder.
 
 ## Verify
 Every task in the plan is done and reviewed, each visible section has a floor row in docs/floor.md, and the production build passes.

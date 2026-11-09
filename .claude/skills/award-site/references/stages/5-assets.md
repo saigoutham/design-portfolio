@@ -27,10 +27,10 @@ No paid generation: kie.ai is ruled out.
 - `library/scroll-craft/references/assets.md` still governs layering: clean plates, real cut-outs with transparency, and a shared contact point so planes sit together.
 - Look at every asset before using it, and ask for a reshoot rather than ship a weak frame.
 - Encode scroll-scrubbed video with `library/scroll-craft/scripts/encode.sh` (desktop and `mobile` variants). A normal web encode plays fine but scrubs badly. It needs a full ffmpeg build.
-- Record every file's source, licence and credit line in `docs/assets.md`.
+- `docs/assets.md` is the asset manifest, one row per file: source, licence, credit line, format, dimensions, weight, and its optimisation target (AVIF or WebP widths for images, Draco or meshopt for GLB, bitrate and both encodes for video).
 
 ## Copy
-Write the final copy now. Follow elaya's copywriting and conversion rules (`library/elaya/landing-page-design/SKILL.md`, Part A) and MotionSites' copy bar: specific, short, a headline with a point of view, a verb in every call to action. Real facts only: no invented statistics, testimonials or numbers.
+Write the final copy now with **copywriting**, from the messaging angle in concept.md, then sweep it with **copy-editing**. Check it against elaya's copywriting and conversion rules (`library/elaya/landing-page-design/SKILL.md`, Part A) and MotionSites' copy bar: specific, short, a headline with a point of view, a verb in every call to action. Real facts only: no invented statistics, testimonials or numbers.
 
 ## Verify
 Every asset the spec will name is in `assets/` with a row in docs/assets.md; nothing is marked "TBD" without a fallback.

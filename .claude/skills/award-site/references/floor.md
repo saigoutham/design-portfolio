@@ -18,14 +18,14 @@ Run the steps as parallel subagents where they don't depend on each other: steps
    - one current Site of the Day in the same world: photographic, 3D, illustrated or typographic
 
    Shoot each reference at the same sizes and pair each one with yours in a single image. Run **visual-verdict** on each pair. It is measuring craft distance (light, depth, type, art, motion, detail), not likeness. Then write one line per reference saying where yours is weaker, in specifics.
-3. **Rubric.** Score each criterion in `library/motionsites/references/review.md`. The bar is an average of 8, with nothing under 7.
-4. **impeccable critique** on the running build. It reads PRODUCT.md and DESIGN.md.
+3. **Rubric.** Score each criterion in `library/motionsites/references/review.md`, with one line of rationale per score. The bar is an average of 8, with nothing under 7.
+4. **impeccable critique** on the running build. It reads PRODUCT.md and DESIGN.md. Record subjective critique separately from functional defects; defects are fixed before any further critique round.
 5. **Blind critic.** Give a fresh subagent only three things: the shots, the film and the critic brief from `.claude/skills/jury/references/quality-bar.md`. It never sees code, the brief, DESIGN.md or this conversation. It returns:
    - a 1 to 10 score each for Design and Creativity
    - a one-sentence reading of the idea
    - the three things that most make the work look unfinished
 
-   It passes when the average is 7.2 or more and the one-sentence reading matches the tell-someone sentence in docs/concept.md.
+   The brief is fixed and gives no hints about design direction. It passes when the average is 7.2 or more and the one-sentence reading matches both the tell-someone sentence in docs/concept.md and the positioning in PRODUCT.md.
 6. **Fix the three weakest, with values.** Write a value, not a direction. "Improve the lighting" is a direction. "Bloom intensity 1.15 to 1.4, a contact shadow under the lamp at 40% opacity" is a value. Then go back to step 1.
 
 Record each round in the site's `docs/floor.md`: the references, the rubric scores, the critic's score and reading, and the fixes. When it passes, add `- <date> · floor pass · <what was checked> · critic <score>` to docs/decisions.md.

@@ -76,7 +76,7 @@ function read(site) {
       info.skills.get(n).add(m[2]);
     } else if ((m = line.match(/^- (\d{4}-\d{2}-\d{2}) · jury · (pass|fail) · ([\d.]+)/))) {
       info.jury = { date: m[1], pass: m[2] === "pass", estimate: Number(m[3]) };
-    } else if (/^- \d{4}-\d{2}-\d{2} · /.test(line) && !/· (stage|gate|jury|skill) /.test(line)) {
+    } else if (/^- \d{4}-\d{2}-\d{2} · /.test(line) && !/· (stage|gate|jury|skill|metrics) /.test(line)) {
       info.decisions.push(line.slice(2));
     }
   }

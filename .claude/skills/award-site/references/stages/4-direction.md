@@ -23,9 +23,10 @@ Setup: `npm run setup -- --with library,video`, plus `3d` when the world is 3D.
 
    **cavecrew-reviewer** reads each track's diff before it merges.
 7. **Hero proof.** Put the first screen and the signature move on a preview, for real. A labelled stand-in photo or piece of footage is allowed while a shoot is pending; code-drawn art is not.
-8. **Floor check** (`references/floor.md`): **impeccable**, **visual-verdict** against three references, the MotionSites rubric, a blind critic built on **jury**'s critic brief, and a **hyperframes** film. Repeat until it passes, up to 3 rounds. If it still fails, the question is usually whether the world itself is wrong. Bring that to the user, or to the **council** if it's contested (SKILL.md, "The council").
-9. **Save the approved hero:** desktop and phone screenshots plus `film.mp4` in `docs/hero-approved/`. Stage 8 compares the final build against them.
-10. **Proposal** (client track): a doc with the concept, the tell-someone sentence, the direction, references, sitemap, timeline and what the client must supply, plus the film and the preview link. If the client wants Figma files, use elaya's figma-designer (needs a Figma connection). Send it for **Gate 2** and log the approval.
+8. **Visual-verbal alignment:** the hero must say the positioning, not just look good. The blind critic's one-sentence reading is checked against both the tell-someone sentence and PRODUCT.md's positioning.
+9. **Floor check** (`references/floor.md`): **impeccable**, **visual-verdict** against three references, the MotionSites rubric, a blind critic built on **jury**'s critic brief, and a **hyperframes** film. The hero is checked live at real desktop and phone viewports, not only in screenshots. Repeat until it passes, up to 3 rounds. If it still fails, the question is usually whether the world itself is wrong. Bring that to the user, or to the **council** if it's contested (SKILL.md, "The council").
+10. **Save the approved hero:** desktop and phone screenshots plus `film.mp4` in `docs/hero-approved/`. Stage 8 compares the final build against them.
+11. **Proposal** (client track): a doc with the concept, the tell-someone sentence, the direction, references, sitemap, timeline and what the client must supply, plus the film and the preview link. If the client wants Figma files, use elaya's figma-designer (needs a Figma connection). Send it for **Gate 2** and log the approval.
 
 ## Verify
 MASTER.md, DESIGN.md, `docs/floor.md` with a passing round, and `docs/hero-approved/` with film.mp4.

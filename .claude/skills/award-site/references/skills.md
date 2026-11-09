@@ -24,20 +24,20 @@ Core: the pipeline breaks without it. Conditional: loaded only for some sites (3
 | Stage | Task | Load with the Skill tool | Only when | Read (library, evidence only) | Verify before moving on |
 |---|---|---|---|---|---|
 | 0 | scaffold the site | none (scripts) | caveman-compress (site CLAUDE.md past about 1k tokens) | | `npm run status` shows the site |
-| 1 | interview, write the brief | brainstorming (in grilling's style), grilling, find-skills | | elaya intake | PRODUCT.md, docs/brief.md; client track: gate 1 |
-| 2 | research | | last30days (API keys and network), scrapling-official (client track), REA | motionsites examples, scroll-craft approved collection, system/lessons.md | docs/research.md with 3 opportunities |
-| 3 | concept | brainstorming | council (two concepts still close, costly to pick wrong) | scroll-craft feel and uniqueness, motionsites techniques | docs/concept.md, fingerprint differs on 4 of 6 |
+| 1 | interview, positioning, write the brief | brainstorming (in grilling's style), grilling, product-marketing | customer-research (client has customers to study); find-skills (a gap the registry doesn't cover) | elaya intake | PRODUCT.md with positioning, docs/brief.md; client track: gate 1 |
+| 2 | research | content-strategy | last30days (API keys and network), scrapling-official (client track), REA | motionsites examples, scroll-craft approved collection, system/lessons.md | docs/research.md: observed, interpreted, recommended, with URLs and dates; 3 opportunities |
+| 3 | concept | brainstorming, copywriting (messaging angle) | council (two concepts still close, costly to pick wrong) | scroll-craft feel and uniqueness, motionsites techniques | docs/concept.md with design intelligence, fingerprint differs on 4 of 6 |
 | 4 | direction, hero proof, floor check | ui-ux-pro-max, design-system (tokens), design-taste-frontend (one check), writing-plans, subagent-driven-development, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, review-animations, impeccable, visual-verdict, jury (critic brief), hyperframes | r3f-* (3D), blender (models), stageshow (product UI), council (floor failed 3 rounds and the direction is contested) | scroll-craft worlds, hero-depth, taste; elaya Part B; bencho sounds | MASTER.md, DESIGN.md, `floor pass` line, hero film |
-| 5 | assets, copy | | hyperframes, remotion-best-practices and remotion-license, stageshow, blender, r3f-* | scroll-craft assets, elaya Part A, motionsites media | assets/, docs/assets.md with every licence |
-| 6 | spec, plan | plan-design-review (gstack), writing-plans, plan-eng-review (gstack) | diagram (gstack) | motionsites spec template, elaya structure | docs/spec.md, the reviewed plan |
-| 7 | build | freeze (gstack), subagent-driven-development, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, ponytail, schema, ai-seo, impeccable | r3f-*, stageshow, gsap-plugins, gsap-utils, gsap-performance, gsap-frameworks (non-React site only), systematic-debugging, test-driven-development, using-git-worktrees, finishing-a-development-branch, Context7 | scroll-craft devices, bencho blocks | each section's floor rows; the plan's tasks done |
-| 8 | verify, blind jury | impeccable, design-review (gstack, report mode), review-animations, animation-performance, benchmark (gstack), visual-verdict, seo-audit, qa-only (gstack), jury, verification-before-completion | cso (gstack; client sites that take input or data) | scroll-craft shoot.mjs, motionsites review.md | docs/qa.md, `jury · pass` |
-| 9 | launch and learn | hyperframes, launch, social, canary (gstack), retro (gstack) | remotion-best-practices and remotion-license, stageshow (case-study frames), public-relations (client track), manim | | deploy, film, submissions logged, fingerprint row, lessons |
+| 5 | assets, copy | copywriting, copy-editing | hyperframes, remotion-best-practices and remotion-license, stageshow, blender, r3f-* | scroll-craft assets, elaya Part A, motionsites media | assets/, docs/assets.md manifest (source, licence, format, dimensions, weight, optimisation) |
+| 6 | spec, plan | plan-design-review (gstack), writing-plans, plan-eng-review (gstack) | diagram (gstack); cro (conversion action) | motionsites spec template, elaya structure | docs/spec.md with testable acceptance criteria, the reviewed plan |
+| 7 | build | freeze (gstack), subagent-driven-development, Playwright, axe-core and Lighthouse CI checks, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, ponytail, schema, ai-seo, impeccable | r3f-*, stageshow, gsap-plugins, gsap-utils, gsap-performance, gsap-frameworks (non-React site only), systematic-debugging, test-driven-development, using-git-worktrees, finishing-a-development-branch, Context7 | scroll-craft devices, bencho blocks | each section's floor rows; the plan's tasks done |
+| 8 | verify, blind jury | user-task tests (Playwright), then the primaries: visual-verdict, impeccable, review-animations, Lighthouse CI, axe-core, seo-audit, copy-editing; jury; verification-before-completion | design-review, benchmark, qa-only (gstack), animation-performance: second reviewers when triggered; cro (conversion action); cso (gstack; client sites that take input or data) | scroll-craft shoot.mjs, motionsites review.md | docs/qa.md with test results and reproducible failures, `jury · pass` |
+| 9 | launch and learn | hyperframes, launch, social, canary (gstack), retro (gstack) | remotion-best-practices and remotion-license, stageshow (case-study frames), public-relations (client track), manim, analytics (measurable business objective) | | deploy, film, submissions logged, measurement plan, fingerprint row, lessons |
 | every | handoffs, small jobs | minimal-prose-discipline; cavecrew-investigator (search), cavecrew-builder (edits of 2 files or fewer), cavecrew-reviewer (diff review); verification-before-completion | | | the handoff block |
 
 ## Registry
 
-Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference text it can pull in on demand. **List** is what its description costs in every session while installed. Ran: evidence up to 9 Nov 2026, before `skill` lines existed.
+Cost has three tiers, measured, not assumed. **List** is what a skill's description costs in every session while it's installed. **Load** is its SKILL.md, paid only when it runs. **Refs** is reference text its steps open on demand. A subagent's own work costs the main session nothing; only its hand-back does. Ran: evidence up to 9 Nov 2026, before `skill` lines existed.
 
 ### Methodology (Superpowers outranks every other skill)
 
@@ -62,7 +62,7 @@ Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference 
 |---|---|---|---|---|---|---|---|---|---|---|
 | `ui-ux-pro-max` | nextlevelbuilder/ui-ux-pro-max-skill | Core | the single source of design values | 4 | concept → MASTER.md | python3 | 4.2k / 8.9k / 128 | design-system, design-taste-frontend | yes: both sites' MASTER.md | retain |
 | `design-system` | nextlevelbuilder/ui-ux-pro-max-skill | Specialist | turns MASTER.md into primitive, semantic and component tokens (src/styles/tokens.css, mapped into Tailwind) without adding values | 4 | MASTER.md → tokens.css | ui-ux-pro-max | 1.9k / 9.1k / 82 | ui-ux-pro-max (same repo; it supplies the values, this structures them) | no | retain; first run at Diwali stage 4 |
-| `design-taste-frontend` | Leonxlnx/taste-skill | Specialist | a check on the direction, never a source of values | 4 | DESIGN.md → findings | ui-ux-pro-max wins any conflict | 7.7k / 115k / 235 | impeccable, ui-ux-pro-max | rules read on both sites | retain as pack; `--remove taste` after stage 4 |
+| `design-taste-frontend` | Leonxlnx/taste-skill | Conditional | a check on the direction, never a source of values | 4 | DESIGN.md → findings | ui-ux-pro-max wins any conflict | 7.7k / 115k / 235 | impeccable, ui-ux-pro-max | rules read on both sites | retain as pack; `--remove taste` after stage 4 |
 | `impeccable` | pbakaus/impeccable | Core | critique, audit and polish against PRODUCT.md and DESIGN.md | 4 floor, 7, 8 | build → critique, fixes | PRODUCT.md, DESIGN.md | 2.9k / 113k / 51 | jury, gstack plan-design-review | no | retain; load only the command in use (critique, audit, polish) |
 | `visual-verdict` | Yeachan-Heo/oh-my-claudecode | Core | scored comparison against a reference | 4 floor, 8 | two screenshots → score, deltas | none | 0.6k / 0 / 20 | jury | no | retain |
 | `jury` | juliobsz/skills | Core | blind Awwwards-style score; its critic brief feeds the floor check | 4 floor, 8 | URL → score, ranked fixes | playwright-core | 2.0k / 3.6k / 170 | impeccable | no | retain |
@@ -75,8 +75,8 @@ Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference 
 | `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-react` | greensock/gsap-skills | Core | the engine's own guidance | 4, 7 | motion spec → GSAP code | gsap | 11k / 0 / 372 | none | GSAP used on Diwali; skills never loaded | retain |
 | `gsap-plugins`, `gsap-utils`, `gsap-performance` | greensock/gsap-skills | Conditional | only when a task uses a plugin, a util or hits jank | 7 | | gsap | 9.4k / 0 / 211 | animation-performance | no | retain |
 | `gsap-frameworks` | greensock/gsap-skills | Conditional | GSAP in Vue, Svelte or another non-React framework | 7 | | gsap | 2.7k / 0 / 92 | gsap-react | no | retain; only for a site that isn't React |
-| `choreograph` | emilkowalski/skill | Core | several things moving as one | 4, 7 | moving parts → order, overlap | gsap | 4.0k / 2.5k / 243 | emil-design-eng | no | retain |
-| `emil-design-eng` | emilkowalski/skill | Core | feel and polish of interactions | 4, 7 | interaction → refined feel | none | 6.9k / 0 / 42 | review-animations | no | retain |
+| `choreograph` | emilkowalski/skill | Conditional | several things moving as one; runs only when a task has them (it decides what moves and in what order, GSAP's timeline implements it) | 4, 7 | moving parts → order, overlap | gsap | 4.0k / 2.5k / 243 | emil-design-eng | no | retain |
+| `emil-design-eng` | emilkowalski/skill | Conditional | feel and polish of interactions; runs when a task builds or tunes one | 4, 7 | interaction → refined feel | none | 6.9k / 0 / 42 | review-animations | no | retain |
 | `review-animations` | emilkowalski/skill | Specialist | the motion review gate | 4, 8 | motion code → findings | none | 2.1k / 2.5k / 51 | emil-design-eng | no | retain |
 | `animation-performance` | emilkowalski/skill | Specialist | frame budget on a throttled phone | 8 | trace → fixes | none | 3.6k / 0 / 204 | gsap-performance | no | retain |
 
@@ -108,6 +108,13 @@ Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference 
 
 | Name | Source | Class | Why it's here | Stage | In → out | Depends on | Load / refs / list | Overlaps | Ran | Action |
 |---|---|---|---|---|---|---|---|---|---|---|
+| `product-marketing` | coreyhaines31/marketingskills | Core | positioning, audience, objective, primary action, brand personality into PRODUCT.md | 1 | answers → PRODUCT.md Positioning | the `marketing` pack | measure on install | elaya intake | no | added 9 Nov |
+| `customer-research` | coreyhaines31/marketingskills | Conditional | the ideal visitor and their own words, when the client has customers to study | 1, 2 | reviews, interviews → ICP | the `marketing` pack | measure on install | last30days | no | added 9 Nov |
+| `content-strategy` | coreyhaines31/marketingskills | Specialist | what this audience expects to find, in what order; shared content patterns | 2 | brief, competitors → content plan | the `marketing` pack | measure on install | scrapling sameness map | no | added 9 Nov |
+| `copywriting` | coreyhaines31/marketingskills | Core | messaging angle (3) and final copy (5) | 3, 5 | positioning → hero line, page copy | the `marketing` pack | measure on install | elaya Part A (now a check) | no | added 9 Nov |
+| `copy-editing` | coreyhaines31/marketingskills | Specialist | the copy sweep; primary evaluator for copy | 5, 8 | copy → edited copy | the `marketing` pack | measure on install | impeccable's copy pass | no | added 9 Nov |
+| `cro` | coreyhaines31/marketingskills | Conditional | page-level conversion, only when the site has a conversion action | 6, 8 | spec or page → fixes | the `marketing` pack | measure on install | elaya conversion rules | no | added 9 Nov |
+| `analytics` | coreyhaines31/marketingskills | Conditional | measurement setup, only when the site has a measurable business objective | 9 | measurement plan → tracking | the `marketing` pack | measure on install | none | no | added 9 Nov |
 | `launch` | coreyhaines31/marketingskills (already pinned) | Specialist | a launch plan beyond the award submissions | 9 | live site, film → dated plan | the `marketing` pack | 3.9k / refs / 0 until installed | none installed | no | added |
 | `social` | coreyhaines31/marketingskills | Specialist | launch posts built on the case-study film | 9 | film, tell-someone sentence → posts | the `marketing` pack | 4.6k / refs / 0 | none installed | no | added; drafts only, the user posts |
 | `public-relations` | coreyhaines31/marketingskills | Conditional | press, client track, when there's a story to pitch | 9 | story → pitch, media list | the `marketing` pack | 2.5k / refs / 0 | none installed | no | added |
@@ -135,6 +142,9 @@ These come with the session, not the lock, so `npm run skills` doesn't track the
 | video-making (account skill) | Redundant | overlaps hyperframes | no | never load in this repo |
 | award-site (account copy) | Core | profile copy of SKILL.md only; needs this repo for references | yes | keep in sync with this file's SKILL.md |
 | repo MCP servers | none | no `.mcp.json` in the repo | | add one only for a verified gap |
+| Playwright (playwright-core and Python playwright, local Chrome) | Core | user-task and interaction tests, live viewport checks | yes: hero proof shots | per-site devDependency |
+| axe-core (`@axe-core/playwright`) | Core | primary accessibility evaluator | no | per-site devDependency, added at stage 7 |
+| Lighthouse CI (`@lhci/cli`) | Core | primary performance evaluator, budgets from the spec | no | per-site devDependency, added at stage 7 |
 
 ## Looked at and left out
 
@@ -142,7 +152,8 @@ These come with the session, not the lock, so `npm run skills` doesn't track the
 - **marcosmodly/marketing-skill:** MIT, but `full-pipeline` is a competing orchestrator and `publish-pipeline` posts through webhooks and platform APIs; its social and video skills overlap `social` and hyperframes.
 - **alirezarezvani/claude-skills marketing-skill:** MIT, but mostly re-implementations of Corey Haines' skills already pinned here (copywriting, launch-strategy, page-cro, schema-markup, seo-audit); brand-guidelines would compete with MASTER.md (conflict rule 5).
 - **marketing-council** (Corey Haines): added on 9 Nov, dropped the same day; the council does the same job with more rigour, and two councils would compete.
-- **From the already-pinned Corey Haines repo:** `directory-submissions` targets SaaS and AI directories, not award galleries; `copy-editing` and `copywriting` overlap elaya Part A and impeccable's copy pass; `cro`, `analytics` and `ads` don't fit award sites with quiet endings.
+- **From the already-pinned Corey Haines repo:** `directory-submissions` targets SaaS and AI directories, not award galleries; `ads`, `pricing` and the sales skills don't fit award sites. (`copywriting`, `copy-editing`, `cro` and `analytics` were first left out, then added on 9 Nov with narrow jobs once positioning moved into stages 1 to 3.)
+- **A second SEO suite or a keyword-research skill:** seo-audit, ai-seo and schema already cover it.
 - **oh-my-claudecode's orchestration** (autopilot, ralph, team, its hooks): a second orchestrator would compete with Superpowers. Only two standalone skills are used.
 - **stageshow's own player on a live page:** a second animation clock; its demos are rebuilt in GSAP or filmed.
 - **caveman voice for the user:** your updates stay in plain sentences; caveman is for agent-to-agent reports.

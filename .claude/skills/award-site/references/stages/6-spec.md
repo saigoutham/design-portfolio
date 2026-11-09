@@ -12,10 +12,11 @@
    - the grammar's bans hold
 3. Add a motion table, and responsive rules: phones are art-directed separately, not just stacked. Add a reduced-motion version that keeps depth in a still composition.
 4. Add a performance budget: LCP, INP and CLS green on a throttled phone; a still image first, and 3D loaded after first paint.
-5. Apply elaya's page structure and conversion rules to every call to action. A site with a quiet ending and no call to action says so.
-6. Run gstack's **plan-design-review** on the spec (`npm run setup -- --with gstack`; Bun installs with `npm i -g bun`). It rates each design dimension and says what a 10 would look like. Fix what it finds, with MASTER.md still the only source of values. Where a flow is clearer drawn than tabled, use gstack's **diagram**.
-7. Run **writing-plans**. Put the signature move first in the plan, since it's the riskiest task, and record the plan's path in decisions.md.
-8. Run gstack's **plan-eng-review** on the plan: architecture, edge cases, failure modes, tests. writing-plans owns the plan (Superpowers leads); the review feeds it fixes.
+5. Apply elaya's page structure and conversion rules to every call to action. When the site has a conversion action, run **cro** on the page structure. A site with a quiet ending and no call to action says so.
+6. Write **acceptance criteria** that a test can check, for responsive behaviour (named breakpoints), accessibility (axe-core clean, keyboard path, reduced motion), performance (Lighthouse budgets: LCP, INP, CLS on a throttled phone), SEO (title, description, schema) and each interaction (what triggers it, what the visitor sees).
+7. Run gstack's **plan-design-review** on the spec (`npm run setup -- --with gstack`; Bun installs with `npm i -g bun`). It rates each design dimension and says what a 10 would look like. Fix what it finds, with MASTER.md still the only source of values. Where a flow is clearer drawn than tabled, use gstack's **diagram**.
+8. Run **writing-plans**. Put the signature move first in the plan, since it's the riskiest task, and record the plan's path in decisions.md.
+9. Run gstack's **plan-eng-review** on the plan: architecture, edge cases, failure modes, tests. writing-plans owns the plan (Superpowers leads); the review feeds it fixes.
 
 ## Verify
 Every element in the spec has values, not adjectives, the scroll score meets its five checks, and both gstack reviews' findings are fixed or answered.

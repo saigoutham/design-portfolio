@@ -7,8 +7,9 @@
 2. Ask from the question bank below, skipping anything already answered. Client track: about 12 questions. Own track: 3 (the one moment, which award first, how much time). If the user delegates ("use your judgment"), write the rest yourself.
 3. Write `docs/brief.md` with the answers verbatim, not paraphrased into marketing copy. A delegated brief starts with `Self-authored under creative delegation`.
 4. Write `PRODUCT.md` (site root) in impeccable's sections: Platform, Stack, Users, Product Purpose, Positioning, Operating Context, Capabilities and Constraints, Brand Commitments. impeccable reads it later instead of running its own interview.
-5. Run **find-skills** against PRODUCT.md for anything no installed skill covers (an e-commerce platform, a booking system). Install nothing without the user's yes.
-6. Client track: send the brief as a doc (or `docs/brief.md` if no docs tool) for **Gate 1**, and log the approval when it comes.
+5. Run **product-marketing** (`--with marketing`) on the answers to fill PRODUCT.md's Positioning: audience, positioning, business objective, primary action (or "none: a quiet ending"), brand personality. On the client track, when the client has customers, reviews or sales data to study, add **customer-research** for the ideal visitor and their words.
+6. Check `references/skills.md` and what's installed first. Only for a capability neither covers, run **find-skills** against PRODUCT.md for anything no installed skill covers (an e-commerce platform, a booking system). Install nothing without the user's yes.
+7. Client track: send the brief as a doc (or `docs/brief.md` if no docs tool) for **Gate 1**, and log the approval when it comes.
 
 ## Question bank
 
@@ -33,7 +34,7 @@ Operations:
 - The number that says it worked after 90 days.
 
 ## Verify
-docs/brief.md and PRODUCT.md exist. On the client track, Gate 1 is approved or the brief is sent.
+docs/brief.md and PRODUCT.md exist, and PRODUCT.md names the audience, positioning, objective, primary action and brand personality. On the client track, Gate 1 is approved or the brief is sent.
 
 ## Log
 `stage 1 intake · done`, then a skill line for brainstorming and one for find-skills.
