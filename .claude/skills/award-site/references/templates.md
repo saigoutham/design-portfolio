@@ -14,13 +14,14 @@ Repo: design-portfolio/sites/<site> | <git url>
 - 2026-11-09 · stage 0 setup · done
 - 2026-11-10 · stage 1 intake · done
 - 2026-11-11 · gate 1 · approved · <who, how>
+- 2026-11-12 · skill impeccable · stage 4 · docs/floor.md round 1, 3 fixes
 - 2026-11-14 · jury · pass · 7.4
 
 ## Decisions
 - 2026-11-12 · Grammar: chaptered editorial. Continuous world fits the geography but is the most fragile; the brief doesn't need one unbroken flight.
 ```
 
-Stage lines: `- <YYYY-MM-DD> · stage <0-9> <name> · <started | done | blocked: reason>`. Gate lines: `- <date> · gate <1|2|3> · <approved | changes requested> · <note>`. Jury lines: `- <date> · jury · <pass | fail> · <estimate>`. Gates: 1 brief, 2 concept and hero, 3 production URL (client track only).
+Stage lines: `- <YYYY-MM-DD> · stage <0-9> <name> · <started | done | blocked: reason>`. Gate lines: `- <date> · gate <1|2|3> · <approved | changes requested> · <note>`. Jury lines: `- <date> · jury · <pass | fail> · <estimate>`. Gates: 1 brief, 2 concept and hero, 3 production URL (client track only). Skill lines: `- <date> · skill <name> · stage <n> · <output path or result>`, one per skill that ran, written when it ran; `npm run skills` counts them, and a skill with no line didn't run. A line added later from evidence in the site's docs ends with `(backfilled)`, and the audit counts it separately.
 
 ## docs/concept.md
 

@@ -3,9 +3,10 @@
 //
 //   node .claude/skills/award-site/scripts/setup.mjs                 check prerequisites and what's installed
 //   node .claude/skills/award-site/scripts/setup.mjs --with 3d,video install on-demand packs
+//   node .claude/skills/award-site/scripts/setup.mjs --remove 3d     uninstall packs (each installed skill costs context; --with puts them back from the pin)
 //   node .claude/skills/award-site/scripts/setup.mjs --vendor        re-copy committed skills from their pinned commits (maintainers)
 //
-// Packs: research, taste, 3d, video, library, ui, compress, manim, gstack, rea.
+// Packs: research, taste, 3d, video, library, ui, marketing, compress, manim, blender, gstack, rea.
 // Everything is fetched at the exact commit pinned in skills.lock.json, never "latest".
 
 import { execSync } from "node:child_process";
@@ -35,10 +36,12 @@ const cacheRoot = path.join(process.env.AWARD_SITE_CACHE || path.join(os.homedir
 
 const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
-const withArg = (() => {
-  const i = args.indexOf("--with");
-  return i >= 0 && args[i + 1] ? args[i + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
-})();
+const listArg = (name) => {
+  const i = args.indexOf(name);
+  return i >= 0 && args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
+};
+const withArg = listArg("--with");
+const removeArg = listArg("--remove");
 
 const sh = (cmd, opts = {}) => execSync(cmd, { stdio: ["ignore", "pipe", "pipe"], encoding: "utf8", ...opts }).trim();
 const has = (cmd) => {
@@ -115,6 +118,18 @@ function installPacks(packs) {
   }
 }
 
+function removePacks(packs) {
+  for (const pack of packs) {
+    if (pack === "library") {
+      for (const l of lock.library.filter((l) => l.mode === "fetch")) { fs.rmSync(libDir(l.name), { recursive: true, force: true }); console.log(`removed library  ${l.name}`); }
+      continue;
+    }
+    const items = lock.skills.filter((s) => s.pack === pack);
+    if (!items.length) { console.log(`Unknown or external pack: ${pack} (remove it by hand)`); continue; }
+    for (const s of items) { fs.rmSync(skillDir(s.name), { recursive: true, force: true }); console.log(`removed ${pack.padEnd(8)} ${s.name}`); }
+  }
+}
+
 function version(cmd) {
   try { return sh(cmd).split("\n")[0]; } catch { return null; }
 }
@@ -153,11 +168,13 @@ function check() {
 }
 
 if (flag("--help") || flag("-h")) {
-  console.log(fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").slice(1, 9).join("\n").replace(/^\/\/ ?/gm, ""));
+  const lines = fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").slice(1);
+  console.log(lines.slice(0, lines.findIndex((l) => !l.startsWith("//"))).join("\n").replace(/^\/\/ ?/gm, ""));
 } else if (flag("--vendor")) {
   vendorAll();
-} else if (withArg.length) {
-  installPacks(withArg);
+} else if (withArg.length || removeArg.length) {
+  if (removeArg.length) removePacks(removeArg);
+  if (withArg.length) installPacks(withArg);
 } else {
   check();
 }

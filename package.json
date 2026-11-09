@@ -5,7 +5,8 @@
   "scripts": {
     "setup": "node .claude/skills/award-site/scripts/setup.mjs",
     "new-site": "node .claude/skills/award-site/scripts/new-site.mjs",
-    "status": "node .claude/skills/award-site/scripts/status.mjs"
+    "status": "node .claude/skills/award-site/scripts/status.mjs",
+    "skills": "node .claude/skills/award-site/scripts/skills.mjs"
   },
   "engines": {
     "node": ">=20"

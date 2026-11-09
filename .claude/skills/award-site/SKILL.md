@@ -38,7 +38,7 @@ All work happens in the **design-portfolio** repo (github.com/saigoutham/design-
 | `library/` | Reference repos read at named stages: scroll-craft, elaya, bencho (committed), MotionSites (fetched by setup) |
 | `.claude/skills/`, `.claude/agents/` | Every skill and agent this pipeline uses, scoped to this repo, pinned in `skills.lock.json` |
 | `.claude/skills/award-site/references/` | One file per stage, plus `floor.md`, `templates.md` and `skills.md` |
-| `.claude/skills/award-site/scripts/` | `new-site.mjs`, `status.mjs`, `setup.mjs` (also `npm run new-site`, `status`, `setup`) |
+| `.claude/skills/award-site/scripts/` | `new-site.mjs`, `status.mjs`, `setup.mjs`, `skills.mjs` (also `npm run new-site`, `status`, `setup`, `skills`) |
 
 If `references/` isn't next to this file, you're running a profile copy outside the repo. Clone or attach saigoutham/design-portfolio first, then work from its root.
 
@@ -51,7 +51,8 @@ If `references/` isn't next to this file, you're running a profile copy outside 
 | `/award-site next [site]` | `npm run status -- <site>`, then read and run the next stage's file |
 | `/award-site jury [site]` | Stage 8's blind jury only |
 | `/award-site learn <site>` | Log real award scores; see stage 9 |
-| `/award-site setup [--with <packs>]` | `npm run setup -- [--with ...]` |
+| `/award-site setup [--with <packs>] [--remove <packs>]` | `npm run setup -- [--with ...] [--remove ...]` |
+| `/award-site skills` | `npm run skills`, then answer from its output and `references/skills.md`: what's installed, what ran, what costs context, what's proposed for removal |
 
 Plain requests map to the same commands: "start a site for…" is `new` (ask client or own if it isn't clear, and choose the slug yourself), "where are we" is `status`, "carry on" or "what's next" is `next`.
 
@@ -90,12 +91,26 @@ Needs from you: <approval, assets or answers> | nothing
 
 Lead with any problem or blocker instead of the done line. If a gate or a missing asset blocks progress, "Needs from you" comes first and says exactly what to send. Each stage file lists the usual recommendations for that point; use them as a starting point, not a script.
 
+## Skill router
+
+award-site loads no other skill up front. At each stage:
+
+1. Read that stage's file, and only that one.
+2. Name the task in one line.
+3. Take the skills the stage file names for that task. A skill marked "only when" in `references/skills.md` (the capability registry) is loaded only when its condition holds: 3D, product UI, client track, keys available.
+4. Install its pack if it's missing (`npm run setup -- --with <pack>`).
+5. Load each one with the Skill tool and follow its own instructions, opening only the reference files they name for this task.
+6. Check the output exists and does what the step asked: a file, a score, a screenshot, a film.
+7. Log it in `docs/decisions.md` as `- <date> · skill <name> · stage <n> · <output path or result>`. Hand the next step the output path, not the conversation.
+
+A skill with no log line didn't run, whatever the docs say. When a subagent does the work, give it the skill's name to load and the input paths; never paste a skill's text into its prompt. `npm run skills` checks the registry against the lock, the disk, the stage files and the logs, and shows what each installed skill costs in context.
+
 ## Working efficiently
 
 - Read one stage file at a time, and open library files only when a step names them.
 - Use the scripts for anything deterministic: scaffolding, status, setup.
 - Hand code searches, edits of 2 files or fewer, and diff reviews to the cavecrew agents (`cavecrew-investigator`, `cavecrew-builder`, `cavecrew-reviewer`); their compressed answers keep the main context small. Larger work goes through subagent-driven-development.
-- Install packs only when a stage needs them: `research` (last30days), `taste`, `3d`, `video` (hyperframes, remotion), `library` (MotionSites), `ui` (stageshow), `compress`, `manim`, `gstack`, `rea`. Stage 4 always needs `library` and `video` for the floor check.
+- Install packs only when a stage needs them: `research` (last30days), `taste`, `3d`, `video` (hyperframes, remotion), `library` (MotionSites), `ui` (stageshow), `marketing` (launch, social, public-relations, marketing-council), `compress`, `manim`, `blender`, `gstack`, `rea`. Stage 4 always needs `library` and `video` for the floor check. Remove a pack with `npm run setup -- --remove <pack>` once no site in progress needs it: every installed skill costs context in every session.
 - Write long tool output to a file and keep one line about it in decisions.md, not in the conversation.
 
 ## Conflict rules
@@ -109,6 +124,7 @@ Lead with any problem or blocker instead of the done line. If a gate or a missin
 7. **ponytail touches plumbing only.** Its job is less code; the signature move's job is to be unrepeatable.
 8. **Caveman voice stays between agents.** Never in messages to the user or anything a client reads.
 9. **Honesty in what ships:** no tool vendor mentions, invented brands labelled as concepts, no invented statistics, quotes or reviews, no dark patterns.
-10. **Never install or call** Agent Reach (flagged as suspicious on ClawHub; pulls browser cookies), OpenSEO (needs its own server), kie.ai (ruled out by the user), or oh-my-claudecode's orchestration runtime (it would compete with Superpowers).
+10. **Never install or call** Agent Reach (flagged as suspicious on ClawHub; pulls browser cookies), OpenSEO (needs its own server), kie.ai (ruled out by the user), oh-my-claudecode's orchestration runtime, or any other pipeline's orchestrator or router skill, such as the marketing collections' `orchestrator` and `full-pipeline` (each would compete with Superpowers and award-site).
+11. **Councils are selective.** marketing-council (pack `marketing`) reviews a written positioning or launch draft only when the call is genuinely contested. It never interviews (rule 3) and never runs by default.
 
-`references/skills.md` maps every installed skill and pack to the stage that uses it.
+`references/skills.md` is the capability registry: every skill, agent, library and tool, with its class, stage, cost, overlaps, evidence of use and recommended action. Changes to it (adding, removing, re-classing) go through the user; "Proposed" actions there wait for approval.

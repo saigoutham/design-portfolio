@@ -72,7 +72,7 @@ function read(site) {
       info.gates.set(Number(m[2]), { date: m[1], state: m[3], note: m[4] || "" });
     } else if ((m = line.match(/^- (\d{4}-\d{2}-\d{2}) · jury · (pass|fail) · ([\d.]+)/))) {
       info.jury = { date: m[1], pass: m[2] === "pass", estimate: Number(m[3]) };
-    } else if (/^- \d{4}-\d{2}-\d{2} · /.test(line) && !/· (stage|gate|jury) /.test(line)) {
+    } else if (/^- \d{4}-\d{2}-\d{2} · /.test(line) && !/· (stage|gate|jury|skill) /.test(line)) {
       info.decisions.push(line.slice(2));
     }
   }

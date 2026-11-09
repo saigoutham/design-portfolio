@@ -81,6 +81,10 @@
     { "name": "remotion-best-practices", "source": "remotion-dev/skills", "path": "skills/remotion-best-practices", "mode": "pack", "pack": "video", "why": "no licence published, so not redistributed" },
     { "name": "remotion-license", "source": "remotion-dev/skills", "path": "skills/remotion-license", "mode": "pack", "pack": "video" },
     { "name": "stageshow", "source": "benjitaylor/skills", "path": "stageshow", "mode": "pack", "pack": "ui", "why": "3.5 MB of examples, kit and filming scripts; needed only for product UI and case-study frames" },
+    { "name": "launch", "source": "coreyhaines31/marketingskills", "path": "skills/launch", "mode": "pack", "pack": "marketing", "why": "stage 9 launch plan; same pinned source as seo-audit, ai-seo and schema" },
+    { "name": "social", "source": "coreyhaines31/marketingskills", "path": "skills/social", "mode": "pack", "pack": "marketing", "why": "stage 9 launch posts built on the case-study film" },
+    { "name": "public-relations", "source": "coreyhaines31/marketingskills", "path": "skills/public-relations", "mode": "pack", "pack": "marketing", "why": "stage 9 press, client track only, when the site has a story worth pitching" },
+    { "name": "marketing-council", "source": "coreyhaines31/marketingskills", "path": "skills/marketing-council", "mode": "pack", "pack": "marketing", "why": "selective: reviews a written positioning or launch draft only when the call is contested" },
     { "name": "caveman-compress", "source": "JuliusBrussee/caveman", "path": "skills/caveman-compress", "mode": "pack", "pack": "compress", "why": "sends file text to a model; opt-in" },
     { "name": "manimce-best-practices", "source": "adithya-s-k/manim_skill", "path": "skills/manimce-best-practices", "mode": "pack", "pack": "manim" },
     { "name": "manim-composer", "source": "adithya-s-k/manim_skill", "path": "skills/manim-composer", "mode": "pack", "pack": "manim" }
@@ -97,7 +101,8 @@
     { "name": "motionsites", "source": "Motionsites-AI/claude-skill", "path": "plugins/motionsites-web-builder/skills/motionsites-web-builder", "mode": "fetch", "why": "example prompts and media are (c) MotionSites; usable in sites built with it, not redistributable here" }
   ],
   "external": [
-    { "name": "gstack", "pack": "gstack", "how": "git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git .claude/skills/gstack && (cd .claude/skills/gstack && ./setup)", "needs": "Bun", "used_for": "plan-design-review and qa-only (optional)" },
+    { "name": "Blender (bpy)", "pack": "blender", "how": "pip install bpy  (each bpy release supports one Python version; robot-mammoth used Blender 5.2)", "needs": "the Python version that bpy release supports", "used_for": "hard-surface models and Cycles stills, exported as GLB for R3F (stage 5; stage 4 when the world is 3D)" },
+    { "name": "gstack", "pack": "gstack", "provides": ["plan-design-review", "qa-only"], "how": "git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git .claude/skills/gstack && (cd .claude/skills/gstack && ./setup)", "needs": "Bun", "used_for": "plan-design-review and qa-only (optional)" },
     { "name": "REA (reverse-engineer-anything)", "pack": "rea", "how": "install its CLI and run `rea setup --client claude_code` per its README", "used_for": "Research: how one reference effect is built (notes only)" }
   ]
 }
