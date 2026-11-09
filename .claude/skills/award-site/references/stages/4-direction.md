@@ -10,6 +10,7 @@ Setup: `npm run setup -- --with library,video`, plus `3d` when the world is 3D.
    python3 .claude/skills/ui-ux-pro-max/scripts/search.py "<product> <industry> <mood>" --design-system --persist -p "<Site>" --output-dir sites/<site>
    ```
    `design-system/<site>/MASTER.md` is the single source of design values. If it already exists, read it before regenerating anything.
+   Then run **design-system** on MASTER.md to turn the values into primitive, semantic and component tokens in `src/styles/tokens.css`, mapped into Tailwind's theme. It structures the values; it never adds new ones.
 2. **World and hero planes.** Choose the world from `library/scroll-craft/references/worlds.md`: photographic, real 3D, typographic, or illustrated only if the brand truly is. Plan the hero's depth planes from `library/scroll-craft/references/hero-depth.md`: background, subject, foreground, atmosphere, and the headline between planes.
 3. **Check, don't replace.** Run **design-taste-frontend** (`--with taste`) as a check only. Also check against `library/scroll-craft/references/taste.md` (the craft floor and refuse list) and elaya's visual rules (`library/elaya/landing-page-design/SKILL.md`, Part B). They check MASTER.md's values; they never supply competing ones. Remove the taste pack afterwards.
 4. **DESIGN.md** (site root): the direction, what the tokens are for, the hero layer plan, and how the signature move looks.

@@ -11,9 +11,9 @@ Don't load this file during stage work: the stage file is the menu. Read it to a
 - **What's used:** only a `skill` line in a site's `docs/decisions.md` counts (format in `templates.md`). `npm run skills` counts them. Before logging began on 9 Nov, 5 lines were backfilled, and only where a site's docs name both the skill and its output (find-skills and ui-ux-pro-max on both sites, Blender on robot-mammoth). The Ran column also notes weaker evidence that wasn't logged, such as interviews held without proof that brainstorming was loaded.
 - **Loaded by default:** nothing except award-site itself. Every installed skill still puts its description in every session's skill list: about 4.3k tokens now, about 3.2k of it from committed skills. `npm run skills -- --all` lists the cost per skill.
 - **Loaded conditionally:** the packs, and the rows marked Conditional below.
-- **Duplicates:** grill-me (alias of grilling); design-system (inside ui-ux-pro-max's job); gsap-performance and animation-performance (partial); gstack's two skills (impeccable and jury already cover them).
-- **Unnecessary context:** design-taste-frontend (235 listing tokens, only a stage 4 check); the 3d pack (561) when no 3D site is active; gsap-frameworks (92, Vue and Svelte only); design-system (82).
-- **Remove, retain, replace:** "Proposed" in the Action column needs the user's approval. Nothing has been removed.
+- **Duplicates:** grill-me (an alias of grilling); gsap-performance and animation-performance (partial overlap, different scopes); gstack design-motion and hyperframes (held back; hyperframes makes the films).
+- **Unnecessary context:** design-taste-frontend (235 listing tokens for one stage 4 check: remove the taste pack after it); the 3d pack (561) when no 3D site is active; the gstack, council and marketing packs between uses. Packs come off with `npm run setup -- --remove <pack>`.
+- **Remove, retain, replace:** nothing is proposed for removal. Every skill the user brought has a job in SKILL.md's skill plan, or a stated reason it's held back. Adding, removing or re-classing anything goes through the user.
 
 ## Classes
 
@@ -23,16 +23,16 @@ Core: the pipeline breaks without it. Conditional: loaded only for some sites (3
 
 | Stage | Task | Load with the Skill tool | Only when | Read (library, evidence only) | Verify before moving on |
 |---|---|---|---|---|---|
-| 0 | scaffold the site | none (scripts) | | | `npm run status` shows the site |
+| 0 | scaffold the site | none (scripts) | caveman-compress (site CLAUDE.md past about 1k tokens) | | `npm run status` shows the site |
 | 1 | interview, write the brief | brainstorming (in grilling's style), grilling, find-skills | | elaya intake | PRODUCT.md, docs/brief.md; client track: gate 1 |
 | 2 | research | | last30days (API keys and network), scrapling-official (client track), REA | motionsites examples, scroll-craft approved collection, system/lessons.md | docs/research.md with 3 opportunities |
 | 3 | concept | brainstorming | council (two concepts still close, costly to pick wrong) | scroll-craft feel and uniqueness, motionsites techniques | docs/concept.md, fingerprint differs on 4 of 6 |
-| 4 | direction, hero proof, floor check | ui-ux-pro-max, design-taste-frontend (one check), writing-plans, subagent-driven-development, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, review-animations, impeccable, visual-verdict, jury (critic brief), hyperframes | r3f-* (3D), blender (models), stageshow (product UI), council (floor failed 3 rounds and the direction is contested) | scroll-craft worlds, hero-depth, taste; elaya Part B; bencho sounds | MASTER.md, DESIGN.md, `floor pass` line, hero film |
+| 4 | direction, hero proof, floor check | ui-ux-pro-max, design-system (tokens), design-taste-frontend (one check), writing-plans, subagent-driven-development, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, review-animations, impeccable, visual-verdict, jury (critic brief), hyperframes | r3f-* (3D), blender (models), stageshow (product UI), council (floor failed 3 rounds and the direction is contested) | scroll-craft worlds, hero-depth, taste; elaya Part B; bencho sounds | MASTER.md, DESIGN.md, `floor pass` line, hero film |
 | 5 | assets, copy | | hyperframes, remotion-best-practices and remotion-license, stageshow, blender, r3f-* | scroll-craft assets, elaya Part A, motionsites media | assets/, docs/assets.md with every licence |
-| 6 | spec, plan | writing-plans | gstack plan-design-review (experimental) | motionsites spec template, elaya structure | docs/spec.md, the plan |
-| 7 | build | subagent-driven-development, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, ponytail, schema, ai-seo, impeccable | r3f-*, stageshow, gsap-plugins, gsap-utils, gsap-performance, systematic-debugging, test-driven-development, using-git-worktrees, finishing-a-development-branch, Context7 | scroll-craft devices, bencho blocks | each section's floor rows; the plan's tasks done |
-| 8 | verify, blind jury | impeccable, review-animations, animation-performance, visual-verdict, seo-audit, jury, verification-before-completion | gstack qa-only (experimental) | scroll-craft shoot.mjs, motionsites review.md | docs/qa.md, `jury · pass` |
-| 9 | launch and learn | hyperframes, launch, social | remotion-best-practices and remotion-license, stageshow (case-study frames), public-relations (client track), manim | | deploy, film, submissions logged, fingerprint row |
+| 6 | spec, plan | plan-design-review (gstack), writing-plans, plan-eng-review (gstack) | diagram (gstack) | motionsites spec template, elaya structure | docs/spec.md, the reviewed plan |
+| 7 | build | freeze (gstack), subagent-driven-development, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, choreograph, emil-design-eng, ponytail, schema, ai-seo, impeccable | r3f-*, stageshow, gsap-plugins, gsap-utils, gsap-performance, gsap-frameworks (non-React site only), systematic-debugging, test-driven-development, using-git-worktrees, finishing-a-development-branch, Context7 | scroll-craft devices, bencho blocks | each section's floor rows; the plan's tasks done |
+| 8 | verify, blind jury | impeccable, design-review (gstack, report mode), review-animations, animation-performance, benchmark (gstack), visual-verdict, seo-audit, qa-only (gstack), jury, verification-before-completion | cso (gstack; client sites that take input or data) | scroll-craft shoot.mjs, motionsites review.md | docs/qa.md, `jury · pass` |
+| 9 | launch and learn | hyperframes, launch, social, canary (gstack), retro (gstack) | remotion-best-practices and remotion-license, stageshow (case-study frames), public-relations (client track), manim | | deploy, film, submissions logged, fingerprint row, lessons |
 | every | handoffs, small jobs | minimal-prose-discipline; cavecrew-investigator (search), cavecrew-builder (edits of 2 files or fewer), cavecrew-reviewer (diff review); verification-before-completion | | | the handoff block |
 
 ## Registry
@@ -61,7 +61,7 @@ Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference 
 | Name | Source | Class | Why it's here | Stage | In → out | Depends on | Load / refs / list | Overlaps | Ran | Action |
 |---|---|---|---|---|---|---|---|---|---|---|
 | `ui-ux-pro-max` | nextlevelbuilder/ui-ux-pro-max-skill | Core | the single source of design values | 4 | concept → MASTER.md | python3 | 4.2k / 8.9k / 128 | design-system, design-taste-frontend | yes: both sites' MASTER.md | retain |
-| `design-system` | nextlevelbuilder/ui-ux-pro-max-skill | Redundant | token architecture and slides; MASTER.md already holds the tokens, and no stage names it | none | | | 1.9k / 9.1k / 82 | ui-ux-pro-max | no | Proposed: remove |
+| `design-system` | nextlevelbuilder/ui-ux-pro-max-skill | Specialist | turns MASTER.md into primitive, semantic and component tokens (src/styles/tokens.css, mapped into Tailwind) without adding values | 4 | MASTER.md → tokens.css | ui-ux-pro-max | 1.9k / 9.1k / 82 | ui-ux-pro-max (same repo; it supplies the values, this structures them) | no | retain; first run at Diwali stage 4 |
 | `design-taste-frontend` | Leonxlnx/taste-skill | Specialist | a check on the direction, never a source of values | 4 | DESIGN.md → findings | ui-ux-pro-max wins any conflict | 7.7k / 115k / 235 | impeccable, ui-ux-pro-max | rules read on both sites | retain as pack; `--remove taste` after stage 4 |
 | `impeccable` | pbakaus/impeccable | Core | critique, audit and polish against PRODUCT.md and DESIGN.md | 4 floor, 7, 8 | build → critique, fixes | PRODUCT.md, DESIGN.md | 2.9k / 113k / 51 | jury, gstack plan-design-review | no | retain; load only the command in use (critique, audit, polish) |
 | `visual-verdict` | Yeachan-Heo/oh-my-claudecode | Core | scored comparison against a reference | 4 floor, 8 | two screenshots → score, deltas | none | 0.6k / 0 / 20 | jury | no | retain |
@@ -74,7 +74,7 @@ Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference 
 |---|---|---|---|---|---|---|---|---|---|---|
 | `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-react` | greensock/gsap-skills | Core | the engine's own guidance | 4, 7 | motion spec → GSAP code | gsap | 11k / 0 / 372 | none | GSAP used on Diwali; skills never loaded | retain |
 | `gsap-plugins`, `gsap-utils`, `gsap-performance` | greensock/gsap-skills | Conditional | only when a task uses a plugin, a util or hits jank | 7 | | gsap | 9.4k / 0 / 211 | animation-performance | no | retain |
-| `gsap-frameworks` | greensock/gsap-skills | Deprecated | Vue and Svelte; every site here is Next.js | none | | | 2.7k / 0 / 92 | gsap-react | no | Proposed: remove |
+| `gsap-frameworks` | greensock/gsap-skills | Conditional | GSAP in Vue, Svelte or another non-React framework | 7 | | gsap | 2.7k / 0 / 92 | gsap-react | no | retain; only for a site that isn't React |
 | `choreograph` | emilkowalski/skill | Core | several things moving as one | 4, 7 | moving parts → order, overlap | gsap | 4.0k / 2.5k / 243 | emil-design-eng | no | retain |
 | `emil-design-eng` | emilkowalski/skill | Core | feel and polish of interactions | 4, 7 | interaction → refined feel | none | 6.9k / 0 / 42 | review-animations | no | retain |
 | `review-animations` | emilkowalski/skill | Specialist | the motion review gate | 4, 8 | motion code → findings | none | 2.1k / 2.5k / 51 | emil-design-eng | no | retain |
@@ -101,8 +101,8 @@ Cost: **Load** is the SKILL.md tokens when it runs. **Refs** is extra reference 
 | `seo-audit`, `schema`, `ai-seo` | coreyhaines31/marketingskills | Specialist | SEO, structured data, answer engines | schema, ai-seo: 7; seo-audit: 8 | page → markup, fixes | none | 15.5k / 46k / 596 | none | no | retain |
 | `ponytail` | DietrichGebert/ponytail | Specialist | the smallest code for plumbing, never the signature move | 7 | task → minimal code | none | 0.9k / 0 / 108 | none | no | retain |
 | `cavecrew`, `cavecrew-investigator`, `cavecrew-builder`, `cavecrew-reviewer` | JuliusBrussee/caveman | Core | small jobs with compressed reports that keep context small | 4, 7, 8 | question or diff → table | none | 1.0k / 0 / 64 | Explore agent | no | retain; caveman voice stays between agents |
-| `caveman-compress` | JuliusBrussee/caveman | Experimental | shrinks a long site CLAUDE.md | any | file → shorter file | sends file text to a model | measure on install | none | no | retain, opt-in |
-| `gstack` (`plan-design-review`, `qa-only`) | garrytan/gstack (external pack) | Experimental | plan-design-review, qa-only | 6, 8 | | Bun | not measured | impeccable, jury | no | Proposed: drop from the optional list (needs Bun, fully covered); the stage 6 and 8 lines that name it go with it |
+| `caveman-compress` | JuliusBrussee/caveman | Conditional | shrinks a site CLAUDE.md past about 1k tokens | 0, any | file → shorter file | sends file text to a model, so only with the user's yes | measure on install | none | no | retain |
+| `gstack` (`plan-design-review`, `plan-eng-review`, `diagram`, `freeze`, `design-review`, `benchmark`, `qa-only`, `cso`, `canary`, `retro`) | garrytan/gstack (external pack, pinned 6473a17) | Specialist | design and eng reviews of the spec and plan (6), edits fenced to the site (7), design QA in report mode, performance, QA and security (8), post-deploy canary and retro (9) | 6, 7, 8, 9 | spec, plan, live URL → findings | Bun (`npm i -g bun` works here); `./setup --team --no-browser` | 5–21k per skill, loaded one at a time / list cost measured on install | impeccable (design-review), jury (qa), cavecrew-reviewer | no | install at stage 6. Held back: office-hours (rule 3), autoplan, captain, crew, pair-agent (rule 10), design-consultation (rule 5), design-html, design-shotgun (paid image API), codex (other provider) |
 
 ### Launch marketing and decisions (added 9 Nov; fill verified gaps only)
 
@@ -146,4 +146,6 @@ These come with the session, not the lock, so `npm run skills` doesn't track the
 - **oh-my-claudecode's orchestration** (autopilot, ralph, team, its hooks): a second orchestrator would compete with Superpowers. Only two standalone skills are used.
 - **stageshow's own player on a live page:** a second animation clock; its demos are rebuilt in GSAP or filmed.
 - **caveman voice for the user:** your updates stay in plain sentences; caveman is for agent-to-agent reports.
+- **Image-generation skills** (gstack design-shotgun, the nano-banana family on GitHub): they call paid OpenAI or Gemini image APIs, which are unreachable from this workspace (403 or no route) and against the user's no-paid-generation rule. Art is sourced, rendered in Blender, or built as shaders and film.
+- **find-skills' registry (skills.sh)** is unreachable from this workspace; find-skills falls back to `gh search repos` here.
 - **Agent Reach** (flagged as suspicious on ClawHub), **OpenSEO** (needs its own server), **kie.ai** (ruled out), **juliobsz/awwwards** (a competing pipeline).

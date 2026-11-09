@@ -20,8 +20,11 @@ Repeat until every check passes. If one issue survives 3 rounds, stop and flag i
 4. **Feel check:** scroll the page cold, write one word per act, then compare with the feeling curve in docs/concept.md. Where they disagree, the page is wrong, not the concept.
 5. **Craft and usability:**
    - **impeccable** critique and audit.
+   - gstack's **design-review** in report mode: visual inconsistency, spacing, hierarchy, AI-slop patterns, slow interactions. Its fixes go back through stage 7, not straight into the code.
+   - gstack's **benchmark** for performance, and **qa-only** for a bug report with evidence.
+   - gstack's **cso** security audit, for client sites that take input or data.
    - **review-animations** and **animation-performance**.
-   - **seo-audit**, and gstack's qa-only if it's installed.
+   - **seo-audit**.
    - Core Web Vitals green on a throttled phone, and keyboard focus visible throughout.
    - **cavecrew-reviewer** on the final diff.
 

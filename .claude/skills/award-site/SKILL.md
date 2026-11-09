@@ -58,18 +58,45 @@ Plain requests map to the same commands. "Start a site for…" is `new`: ask cli
 
 ## Stages
 
-| # | Stage | Lead | Needs | Writes |
-|---|---|---|---|---|
-| 0 | Setup | award-site | nothing | site folder, CLAUDE.md, decisions.md, planned fingerprint |
-| 1 | Intake | brainstorming | nothing | PRODUCT.md, docs/brief.md |
-| 2 | Research | award-site | docs/brief.md | docs/research.md |
-| 3 | Concept | brainstorming | docs/research.md | docs/concept.md |
-| 4 | Direction and hero proof | ui-ux-pro-max | docs/concept.md | MASTER.md, DESIGN.md, a hero that passes the floor, hero film, proposal (client) |
-| 5 | Assets | award-site | DESIGN.md | assets/, docs/assets.md, final copy |
-| 6 | Spec and plan | writing-plans | docs/assets.md | docs/spec.md, a plan |
-| 7 | Build | subagent-driven-development | the plan | the site |
-| 8 | Verify | award-site | production build | docs/qa.md, .jury/ |
-| 9 | Launch and learn | award-site | passing jury, approvals | deploy, film, launch plan, submissions, fingerprint |
+| # | Stage | Needs | Writes |
+|---|---|---|---|
+| 0 | Setup | nothing | site folder, CLAUDE.md, decisions.md, planned fingerprint |
+| 1 | Intake | nothing | PRODUCT.md, docs/brief.md |
+| 2 | Research | docs/brief.md | docs/research.md |
+| 3 | Concept | docs/research.md | docs/concept.md |
+| 4 | Direction and hero proof | docs/concept.md | MASTER.md, tokens, DESIGN.md, a hero that passes the floor, hero film, proposal (client) |
+| 5 | Assets | DESIGN.md | assets/, docs/assets.md, final copy |
+| 6 | Spec and plan | docs/assets.md | docs/spec.md, a reviewed plan |
+| 7 | Build | the plan | the site |
+| 8 | Verify | production build | docs/qa.md, .jury/ |
+| 9 | Launch and learn | passing jury, approvals | deploy, film, launch plan, submissions, fingerprint, lessons |
+
+## The skill plan
+
+Every skill the user brought has a job here, or a stated reason it's held back. Run them in this order. "Only when" skills run when their condition holds. Library entries are reference files read at that step, never run as skills.
+
+| # | Runs, in order | Only when |
+|---|---|---|
+| 0 | `npm run new-site`, `npm run setup` | caveman-compress, if the site CLAUDE.md grows past about 1k tokens |
+| 1 | brainstorming (the interviewer), in grilling's style (grill-me calls the same skill); the elaya and scroll-craft intake questions (library); find-skills for gaps | client track: the Gate 1 doc |
+| 2 | MotionSites examples and the scroll-craft approved collection (library); system/lessons.md | last30days, if API keys and network exist (otherwise web search); scrapling-official on competitors (client track); REA on one reference effect |
+| 3 | brainstorming (2 or 3 concepts); scroll-craft feel, uniqueness and devices, plus MotionSites techniques (library) | council, if two concepts stay close and the choice is costly |
+| 4 | ui-ux-pro-max (MASTER.md), design-system (MASTER.md as primitive, semantic and component tokens), design-taste-frontend (a check only, with elaya Part B and scroll-craft taste), writing-plans, subagent-driven-development with using-git-worktrees. The tracks it runs: gsap-core, gsap-timeline, gsap-scrolltrigger and gsap-react to build; choreograph, emil-design-eng and review-animations for motion; Bencho sounds (library). Then the floor check: hyperframes film, visual-verdict, MotionSites rubric, impeccable critique, a blind critic on jury's brief. cavecrew-reviewer on every track's diff. | r3f-* (one or two per task) and Blender models for a 3D world; stageshow for product UI; council, if the floor fails 3 rounds; elaya figma-designer, if the client wants Figma |
+| 5 | hyperframes for clips; scroll-craft assets and encode.sh, elaya Part A copy rules, MotionSites media shelf (library) | Blender (bpy) models and Cycles renders; remotion-best-practices with remotion-license, when hyperframes can't do it; stageshow; r3f-* |
+| 6 | MotionSites spec template and the scroll-craft scroll score (library); gstack plan-design-review on the spec; writing-plans; gstack plan-eng-review on the plan | gstack diagram, for a flow the spec can't say in a table |
+| 7 | subagent-driven-development, gstack freeze (edits stay inside the site folder), the four core gsap skills, choreograph, emil-design-eng, Bencho blocks (library), ponytail (plumbing only), schema, ai-seo, impeccable polish, the floor check per section, cavecrew agents | r3f-*; stageshow; gsap-plugins, gsap-utils, gsap-performance; gsap-frameworks, only for a site that isn't React; test-driven-development for logic; systematic-debugging when a bug survives one fix; finishing-a-development-branch; Context7 for current API docs |
+| 8 | scroll-craft shoot.mjs (library), visual-verdict, the MotionSites rubric, impeccable critique and audit, gstack design-review in report mode, review-animations, animation-performance, gstack benchmark, seo-audit, gstack qa-only, jury (blind), verification-before-completion, cavecrew-reviewer | gstack cso, for client sites that take input or data |
+| 9 | hyperframes (case-study film), launch, social, submissions, gstack canary after deploy, gstack retro feeding system/lessons.md | remotion; stageshow frames; manim explainer; public-relations (client track) |
+| every turn | minimal-prose-discipline for the handoff; cavecrew-investigator, cavecrew-builder and cavecrew-reviewer for small jobs | |
+
+**Held back, and why:**
+- gstack office-hours: brainstorming is the only interviewer (rule 3).
+- gstack autoplan, captain, crew and pair-agent, plus oh-my-claudecode's runtime: these are competing orchestrators (rule 10).
+- gstack design-consultation: it would propose a second design system (rule 5).
+- gstack design-html: a second builder.
+- gstack design-shotgun, nano-banana and any other image-generation skill: they need paid OpenAI or Gemini image APIs. Those are unreachable from this workspace, and the user ruled out paid asset generation. Art is sourced, rendered in Blender, or built as shaders and film, never generated (quality floor rule 2).
+- gstack codex: it sends work to another model provider.
+- The account-level frontend-design and video-making skills duplicate ui-ux-pro-max, impeccable and hyperframes, so they aren't loaded in this repo.
 
 Each stage's steps are in `references/stages/<n>-<name>.md`. Don't start a stage until its inputs exist; that one rule stops building before there's a brief. Paths inside a site are relative to its folder. When a stage finishes, add its line to the stage log in `docs/decisions.md` (formats in `references/templates.md`), because `status.mjs` reads that log.
 
@@ -79,7 +106,7 @@ Load nothing up front. For each stage:
 
 1. Read that stage's file, and only that one.
 2. Name the task in one line.
-3. Take the skills the file names for that task, and nothing else. When a skill is conditional (3D, product UI, client track, API keys), `references/skills.md` says when it applies.
+3. Take the skills the stage file and the skill plan name for that task, and nothing else. When a skill is conditional (3D, product UI, client track, API keys), `references/skills.md` says when it applies.
 4. Install its pack if it's missing: `npm run setup -- --with <pack>`.
 5. Load each skill with the Skill tool and follow its own instructions, opening only the reference files it names for this task.
 6. Check the output exists and does what the step asked: a file, a score, a screenshot, a film.

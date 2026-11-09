@@ -3,7 +3,7 @@
 **Goal:** the site, built to the spec, task by task, with each visible section passing the floor before the next starts.
 
 ## Steps
-1. Run **subagent-driven-development**: one task per subagent, reviewed before the next starts. Use **using-git-worktrees** to isolate parallel tasks and **finishing-a-development-branch** to merge them. Use the cavecrew agents for small jobs inside a task.
+1. Run gstack's **freeze** on `sites/<site>/` so no task edits files outside the site. Then run **subagent-driven-development**: one task per subagent, reviewed before the next starts. Use **using-git-worktrees** to isolate parallel tasks and **finishing-a-development-branch** to merge them. Use the cavecrew agents for small jobs inside a task.
 2. **Stack:** Next.js App Router, TypeScript, Tailwind with MASTER.md tokens, GSAP with ScrollTrigger, Lenis, and R3F with drei only where the concept needs 3D. The `3d` pack installs the r3f-* skills; the site needs `three @react-three/fiber @react-three/drei @react-three/postprocessing`. Run Lenis on GSAP's ticker so scroll, tweens and WebGL share one clock:
    ```ts
    gsap.registerPlugin(ScrollTrigger);

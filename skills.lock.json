@@ -121,7 +121,7 @@
   ],
   "external": [
     { "name": "Blender (bpy)", "pack": "blender", "how": "pip install bpy  (each bpy release supports one Python version; robot-mammoth used Blender 5.2)", "needs": "the Python version that bpy release supports", "used_for": "hard-surface models and Cycles stills, exported as GLB for R3F (stage 5; stage 4 when the world is 3D)" },
-    { "name": "gstack", "pack": "gstack", "provides": ["plan-design-review", "qa-only"], "how": "git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git .claude/skills/gstack && (cd .claude/skills/gstack && ./setup)", "needs": "Bun", "used_for": "plan-design-review and qa-only (optional)" },
+    { "name": "gstack", "pack": "gstack", "commit": "6473a17de47998b235bdcc67700695215e29f9f9", "provides": ["plan-design-review", "plan-eng-review", "diagram", "freeze", "design-review", "benchmark", "qa-only", "cso", "canary", "retro"], "how": "git clone https://github.com/garrytan/gstack.git .claude/skills/gstack && cd .claude/skills/gstack && git checkout 6473a17de47998b235bdcc67700695215e29f9f9 && ./setup --team --no-browser", "needs": "Bun (npm i -g bun works here)", "used_for": "stage 6 plan reviews, stage 7 freeze, stage 8 design-review (report mode), benchmark, qa-only, cso; stage 9 canary and retro" },
     { "name": "REA (reverse-engineer-anything)", "pack": "rea", "how": "install its CLI and run `rea setup --client claude_code` per its README", "used_for": "Research: how one reference effect is built (notes only)" }
   ]
 }

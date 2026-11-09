@@ -13,14 +13,15 @@
 3. Add a motion table, and responsive rules: phones are art-directed separately, not just stacked. Add a reduced-motion version that keeps depth in a still composition.
 4. Add a performance budget: LCP, INP and CLS green on a throttled phone; a still image first, and 3D loaded after first paint.
 5. Apply elaya's page structure and conversion rules to every call to action. A site with a quiet ending and no call to action says so.
-6. If gstack is installed (`--with gstack`, experimental, needs Bun), run **plan-design-review** on the spec.
+6. Run gstack's **plan-design-review** on the spec (`npm run setup -- --with gstack`; Bun installs with `npm i -g bun`). It rates each design dimension and says what a 10 would look like. Fix what it finds, with MASTER.md still the only source of values. Where a flow is clearer drawn than tabled, use gstack's **diagram**.
 7. Run **writing-plans**. Put the signature move first in the plan, since it's the riskiest task, and record the plan's path in decisions.md.
+8. Run gstack's **plan-eng-review** on the plan: architecture, edge cases, failure modes, tests. writing-plans owns the plan (Superpowers leads); the review feeds it fixes.
 
 ## Verify
-Every element in the spec has values, not adjectives, and the scroll score meets its five checks.
+Every element in the spec has values, not adjectives, the scroll score meets its five checks, and both gstack reviews' findings are fixed or answered.
 
 ## Log
-`stage 6 spec · done`, plus a skill line for writing-plans.
+`stage 6 spec · done`, plus a skill line for writing-plans, plan-design-review and plan-eng-review.
 
 ## Handoff
 - Next: stage 7, Build.
