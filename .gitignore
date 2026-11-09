@@ -1,0 +1,46 @@
+# Dependencies and builds
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Per-site working output (screenshots, jury evidence, raw scrapes of other people's sites)
+sites/*/lab/
+sites/*/.jury/
+sites/*/docs/research/raw/
+
+# Installed on demand by `npm run setup -- --with <pack>` (see skills.lock.json)
+library/motionsites/
+.claude/skills/gstack/
+.claude/skills/design-taste-frontend/
+.claude/skills/last30days/
+.claude/skills/r3f-fundamentals/
+.claude/skills/r3f-geometry/
+.claude/skills/r3f-materials/
+.claude/skills/r3f-textures/
+.claude/skills/r3f-lighting/
+.claude/skills/r3f-loaders/
+.claude/skills/r3f-animation/
+.claude/skills/r3f-interaction/
+.claude/skills/r3f-shaders/
+.claude/skills/r3f-postprocessing/
+.claude/skills/r3f-physics/
+.claude/skills/hyperframes/
+.claude/skills/remotion-best-practices/
+.claude/skills/remotion-license/
+.claude/skills/caveman-compress/
+.claude/skills/manimce-best-practices/
+.claude/skills/manim-composer/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

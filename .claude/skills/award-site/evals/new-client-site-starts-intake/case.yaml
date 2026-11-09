@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: new-client-site-starts-intake
+expected_outcome: |
+  The skill creates sites/halli-roasters on the client track with the new-site script, logs stage 0,
+  then moves to Intake and asks exactly one interview question, pushing toward something concrete.
+  It does not start research, pick a design direction or write code.

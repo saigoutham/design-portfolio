@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: status-gives-next-step
+expected_outcome: |
+  The skill runs the status script for kaala, sees stages 0 to 3 done on the own track, and
+  replies with the handoff block: stage 3 Concept done, Next is stage 4 Direction and hero proof
+  with the command to run it, one specific recommendation with a reason, and what it needs from
+  the user. No recap of earlier stages, no caveman voice.
+context:
+  scaffold_script: place-files.sh

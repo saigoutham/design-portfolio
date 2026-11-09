@@ -1,0 +1,13 @@
+{
+  "name": "design-portfolio",
+  "private": true,
+  "description": "Award-site pipeline: one folder per site, project-scoped skills, shared fingerprint log.",
+  "scripts": {
+    "setup": "node .claude/skills/award-site/scripts/setup.mjs",
+    "new-site": "node .claude/skills/award-site/scripts/new-site.mjs",
+    "status": "node .claude/skills/award-site/scripts/status.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
