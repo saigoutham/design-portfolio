@@ -5,7 +5,7 @@
 //   node .claude/skills/award-site/scripts/setup.mjs --with 3d,video install on-demand packs
 //   node .claude/skills/award-site/scripts/setup.mjs --vendor        re-copy committed skills from their pinned commits (maintainers)
 //
-// Packs: research, 3d, video, library, compress, manim, gstack, rea.
+// Packs: research, taste, 3d, video, library, ui, compress, manim, gstack, rea.
 // Everything is fetched at the exact commit pinned in skills.lock.json, never "latest".
 
 import { execSync } from "node:child_process";

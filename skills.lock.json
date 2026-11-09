@@ -24,7 +24,8 @@
     "nateherkai/scroll-craft": { "commit": "75d81f74e83692add18cd7a8a8e078b8a887a579", "license": "MIT" },
     "Motionsites-AI/claude-skill": { "commit": "faa30d512e3973e58675c72101a7ef42ed37ae83", "license": "MIT for instructions and code; example prompts and media (c) MotionSites" },
     "elayadesign/ai-design-skills": { "commit": "456d9e0d3e2d84c748bb143c6ca3d90c45e16213", "license": "MIT" },
-    "cabralorenzo/bencho": { "commit": "c65992417427bb09e661674ffa800bef29adef49", "license": "MIT for free blocks and sounds; Bencho name, goat and photographs excluded" }
+    "cabralorenzo/bencho": { "commit": "c65992417427bb09e661674ffa800bef29adef49", "license": "MIT for free blocks and sounds; Bencho name, goat and photographs excluded" },
+    "benjitaylor/skills": { "commit": "299140fafd08df55a9c234e610c3f64af3f45531", "license": "MIT (app icons and brand marks in assets/ and kit/brands/ stay with their owners; see NOTICE.md)" }
   },
   "skills": [
     { "name": "brainstorming", "source": "obra/superpowers", "path": "skills/brainstorming", "mode": "vendored" },
@@ -79,6 +80,7 @@
     { "name": "hyperframes", "source": "heygen-com/hyperframes", "path": "skills/hyperframes", "mode": "pack", "pack": "video" },
     { "name": "remotion-best-practices", "source": "remotion-dev/skills", "path": "skills/remotion-best-practices", "mode": "pack", "pack": "video", "why": "no licence published, so not redistributed" },
     { "name": "remotion-license", "source": "remotion-dev/skills", "path": "skills/remotion-license", "mode": "pack", "pack": "video" },
+    { "name": "stageshow", "source": "benjitaylor/skills", "path": "stageshow", "mode": "pack", "pack": "ui", "why": "3.5 MB of examples, kit and filming scripts; needed only for product UI and case-study frames" },
     { "name": "caveman-compress", "source": "JuliusBrussee/caveman", "path": "skills/caveman-compress", "mode": "pack", "pack": "compress", "why": "sends file text to a model; opt-in" },
     { "name": "manimce-best-practices", "source": "adithya-s-k/manim_skill", "path": "skills/manimce-best-practices", "mode": "pack", "pack": "manim" },
     { "name": "manim-composer", "source": "adithya-s-k/manim_skill", "path": "skills/manim-composer", "mode": "pack", "pack": "manim" }

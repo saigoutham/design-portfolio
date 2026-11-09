@@ -20,6 +20,7 @@ sites/*/docs/research/raw/
 library/motionsites/
 .claude/skills/gstack/
 .claude/skills/design-taste-frontend/
+.claude/skills/stageshow/
 .claude/skills/last30days/
 .claude/skills/r3f-fundamentals/
 .claude/skills/r3f-geometry/

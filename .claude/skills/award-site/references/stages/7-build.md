@@ -14,7 +14,9 @@ Run **subagent-driven-development**: one task per subagent, reviewed before the 
   ```
 - **Motion:** the gsap-* skills, **choreograph** for anything that moves together, **emil-design-eng** for feel. Rebuild scroll-craft's devices (`library/scroll-craft/references/devices.md`) and MotionSites' technique recipes in GSAP; don't load either engine. Animate transform, opacity and clip-path only.
 - **Markers:** put `data-sc-act="<beat>"` on each act and `data-sc-scrub` on scrubbed videos so scroll-craft's scroll walker can check the page.
-- **Components:** Bencho blocks from `library/bencho/blocks/` (free, MIT; photos not included), restyled to the tokens. A block keeps the animation code it ships with; nothing else gets added on top.
+- **Floor per section:** each task that changes what a visitor sees ends with the floor check (`references/floor.md`, steps 1, 3 and 4) before the next task starts. When the page is complete, run **impeccable** polish across it.
+- **Product UI:** any interface the page shows is built with **stageshow** (`--with ui`), following its restraint and framing rules. Its motion is rewritten in GSAP or filmed to video (conflict rule 4).
+- **Components:** Bencho blocks from `library/bencho/blocks/` (free, MIT; photos not included), restyled to the tokens, and Bencho's sounds where the concept has sound. A block keeps the animation code it ships with; nothing else gets added on top.
 - **Plumbing:** **ponytail** handles forms, data fetching, config, SEO markup and third-party embeds (checkout, CMS, analytics). It never touches motion, WebGL or the signature move.
 - **Markup:** semantic HTML, real headings and alt text, **schema** for structured data, **ai-seo** for answer engines.
 - Commit per finished task, inside the site folder.
