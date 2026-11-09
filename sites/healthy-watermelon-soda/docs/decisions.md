@@ -6,6 +6,7 @@ Repo: design-portfolio/sites/healthy-watermelon-soda
 ## Stage log
 - 2026-11-09 · stage 0 setup · done
 - 2026-11-09 · stage 1 intake · done
+- 2026-11-10 · stage 2 research · done
 - 2026-11-09 · skill new-site · stage 0 · sites/healthy-watermelon-soda (Next.js, gsap, @gsap/react, lenis; FINGERPRINTS planned row)
 - 2026-11-09 · skill setup · stage 0 · prerequisites ok (node 22, python3, ffmpeg, git, bun); no packs on
 - 2026-11-09 · metrics · stage 0 · 3 min, ~40k tokens, 2 skills, 0 agents, 0 retries, 2 files, 0 review cycles, floor n/a
@@ -25,3 +26,11 @@ Repo: design-portfolio/sites/healthy-watermelon-soda
 - 2026-11-09 · skill find-skills · stage 1 · skipped: no capability gap (no shop, CMS or booking)
 - 2026-11-09 · Needs --3d: the r3f pack gets installed at stage 4
 - 2026-11-09 · metrics · stage 1 · 25 min, ~90k tokens, 2 skills, 0 agents, 0 retries, 3 files, 0 review cycles, floor n/a
+- 2026-11-10 · skill setup · stage 2 · research and library packs on (last30days, MotionSites)
+- 2026-11-10 · skill content-strategy · stage 2 · skipped: not installed in this repo; the audience lane was done by web search
+- 2026-11-10 · skill last30days · stage 2 · skipped: no API keys in this workspace; web search instead
+- 2026-11-10 · skill scrapling-official · stage 2 · skipped: own track; sameness map built from Awwwards and press
+- 2026-11-10 · skill rea · stage 2 · skipped: optional, time budget
+- 2026-11-10 · library motionsites + scroll-craft approved-collection · stage 2 · read; values in docs/research.md §3
+- 2026-11-10 · research · stage 2 · docs/research.md; opportunity 1 (fruit as hero, visitor as cause) picked for the concept
+- 2026-11-10 · metrics · stage 2 · 15 min, ~70k tokens, 1 skill, 0 agents, 0 retries, 1 file, 0 review cycles, floor n/a
