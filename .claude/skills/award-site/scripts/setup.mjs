@@ -6,7 +6,7 @@
 //   node .claude/skills/award-site/scripts/setup.mjs --remove 3d     uninstall packs (each installed skill costs context; --with puts them back from the pin)
 //   node .claude/skills/award-site/scripts/setup.mjs --vendor        re-copy committed skills from their pinned commits (maintainers)
 //
-// Packs: research, taste, 3d, video, library, ui, marketing, compress, manim, blender, gstack, rea.
+// Packs: research, taste, 3d, video, library, ui, marketing, council, compress, manim, blender, gstack, rea.
 // Everything is fetched at the exact commit pinned in skills.lock.json, never "latest".
 
 import { execSync } from "node:child_process";
@@ -113,8 +113,11 @@ function installPacks(packs) {
       continue;
     }
     const items = lock.skills.filter((s) => s.pack === pack);
-    if (!items.length) { console.log(`Unknown pack: ${pack}`); continue; }
+    const agents = lock.agents.filter((a) => a.pack === pack);
+    if (!items.length && !agents.length) { console.log(`Unknown pack: ${pack}`); continue; }
     for (const s of items) { install(s, skillDir(s.name)); console.log(`installed ${pack.padEnd(8)} ${s.name}`); }
+    for (const a of agents) install(a, agentFile(a.name));
+    if (agents.length) console.log(`installed ${pack.padEnd(8)} ${agents.length} agents`);
   }
 }
 
@@ -125,8 +128,11 @@ function removePacks(packs) {
       continue;
     }
     const items = lock.skills.filter((s) => s.pack === pack);
-    if (!items.length) { console.log(`Unknown or external pack: ${pack} (remove it by hand)`); continue; }
+    const agents = lock.agents.filter((a) => a.pack === pack);
+    if (!items.length && !agents.length) { console.log(`Unknown or external pack: ${pack} (remove it by hand)`); continue; }
     for (const s of items) { fs.rmSync(skillDir(s.name), { recursive: true, force: true }); console.log(`removed ${pack.padEnd(8)} ${s.name}`); }
+    for (const a of agents) fs.rmSync(agentFile(a.name), { force: true });
+    if (agents.length) console.log(`removed ${pack.padEnd(8)} ${agents.length} agents`);
   }
 }
 
@@ -148,7 +154,7 @@ function check() {
 
   const missing = (list, where) => list.filter((x) => !fs.existsSync(where(x.name)));
   const vSkills = missing(lock.skills.filter((s) => s.mode === "vendored"), skillDir);
-  const vAgents = missing(lock.agents, agentFile);
+  const vAgents = missing(lock.agents.filter((a) => a.mode === "vendored"), agentFile);
   const vLib = missing(lock.library.filter((l) => l.mode === "vendored"), libDir);
   console.log(`\nCommitted skills: ${lock.skills.filter((s) => s.mode === "vendored").length - vSkills.length} present${vSkills.length ? `, missing: ${vSkills.map((s) => s.name).join(", ")}` : ""}`);
   console.log(`Agents: ${vAgents.length ? `missing ${vAgents.map((a) => a.name).join(", ")}` : "all present"}`);
@@ -158,8 +164,9 @@ function check() {
   console.log("\nOn-demand packs (npm run setup -- --with <pack>)");
   for (const p of packs) {
     const items = lock.skills.filter((s) => s.pack === p);
+    const agents = lock.agents.filter((a) => a.pack === p);
     const n = items.filter((s) => fs.existsSync(skillDir(s.name))).length;
-    console.log(`  ${n === items.length ? "on " : "off"} ${p.padEnd(9)} ${items.map((s) => s.name).join(", ")}`);
+    console.log(`  ${n === items.length ? "on " : "off"} ${p.padEnd(9)} ${items.map((s) => s.name).join(", ")}${agents.length ? ` + ${agents.length} agents` : ""}`);
   }
   const mot = fs.existsSync(libDir("motionsites"));
   console.log(`  ${mot ? "on " : "off"} library   MotionSites examples, rubric and spec template`);

@@ -25,7 +25,8 @@
     "Motionsites-AI/claude-skill": { "commit": "faa30d512e3973e58675c72101a7ef42ed37ae83", "license": "MIT for instructions and code; example prompts and media (c) MotionSites" },
     "elayadesign/ai-design-skills": { "commit": "456d9e0d3e2d84c748bb143c6ca3d90c45e16213", "license": "MIT" },
     "cabralorenzo/bencho": { "commit": "c65992417427bb09e661674ffa800bef29adef49", "license": "MIT for free blocks and sounds; Bencho name, goat and photographs excluded" },
-    "benjitaylor/skills": { "commit": "299140fafd08df55a9c234e610c3f64af3f45531", "license": "MIT (app icons and brand marks in assets/ and kit/brands/ stay with their owners; see NOTICE.md)" }
+    "benjitaylor/skills": { "commit": "299140fafd08df55a9c234e610c3f64af3f45531", "license": "MIT (app icons and brand marks in assets/ and kit/brands/ stay with their owners; see NOTICE.md)" },
+    "0xNyk/council-of-high-intelligence": { "commit": "79a36a8561c34df4f2df172bd5b0fd5f3e174834", "license": "MIT" }
   },
   "skills": [
     { "name": "brainstorming", "source": "obra/superpowers", "path": "skills/brainstorming", "mode": "vendored" },
@@ -84,7 +85,7 @@
     { "name": "launch", "source": "coreyhaines31/marketingskills", "path": "skills/launch", "mode": "pack", "pack": "marketing", "why": "stage 9 launch plan; same pinned source as seo-audit, ai-seo and schema" },
     { "name": "social", "source": "coreyhaines31/marketingskills", "path": "skills/social", "mode": "pack", "pack": "marketing", "why": "stage 9 launch posts built on the case-study film" },
     { "name": "public-relations", "source": "coreyhaines31/marketingskills", "path": "skills/public-relations", "mode": "pack", "pack": "marketing", "why": "stage 9 press, client track only, when the site has a story worth pitching" },
-    { "name": "marketing-council", "source": "coreyhaines31/marketingskills", "path": "skills/marketing-council", "mode": "pack", "pack": "marketing", "why": "selective: reviews a written positioning or launch draft only when the call is contested" },
+    { "name": "council", "source": "0xNyk/council-of-high-intelligence", "paths": ["skills/council/SKILL.md", "scripts", "configs"], "mode": "pack", "pack": "council", "why": "selective multi-persona deliberation for contested, costly decisions; 14k-token skill plus 18 agents, so on demand only" },
     { "name": "caveman-compress", "source": "JuliusBrussee/caveman", "path": "skills/caveman-compress", "mode": "pack", "pack": "compress", "why": "sends file text to a model; opt-in" },
     { "name": "manimce-best-practices", "source": "adithya-s-k/manim_skill", "path": "skills/manimce-best-practices", "mode": "pack", "pack": "manim" },
     { "name": "manim-composer", "source": "adithya-s-k/manim_skill", "path": "skills/manim-composer", "mode": "pack", "pack": "manim" }
@@ -92,7 +93,25 @@
   "agents": [
     { "name": "cavecrew-investigator", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-investigator.md", "mode": "vendored" },
     { "name": "cavecrew-builder", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-builder.md", "mode": "vendored" },
-    { "name": "cavecrew-reviewer", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-reviewer.md", "mode": "vendored" }
+    { "name": "cavecrew-reviewer", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-reviewer.md", "mode": "vendored" },
+    { "name": "council-ada", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-ada.md", "mode": "pack", "pack": "council" },
+    { "name": "council-aristotle", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-aristotle.md", "mode": "pack", "pack": "council" },
+    { "name": "council-aurelius", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-aurelius.md", "mode": "pack", "pack": "council" },
+    { "name": "council-feynman", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-feynman.md", "mode": "pack", "pack": "council" },
+    { "name": "council-kahneman", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-kahneman.md", "mode": "pack", "pack": "council" },
+    { "name": "council-karpathy", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-karpathy.md", "mode": "pack", "pack": "council" },
+    { "name": "council-lao-tzu", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-lao-tzu.md", "mode": "pack", "pack": "council" },
+    { "name": "council-machiavelli", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-machiavelli.md", "mode": "pack", "pack": "council" },
+    { "name": "council-meadows", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-meadows.md", "mode": "pack", "pack": "council" },
+    { "name": "council-munger", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-munger.md", "mode": "pack", "pack": "council" },
+    { "name": "council-musashi", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-musashi.md", "mode": "pack", "pack": "council" },
+    { "name": "council-rams", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-rams.md", "mode": "pack", "pack": "council" },
+    { "name": "council-socrates", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-socrates.md", "mode": "pack", "pack": "council" },
+    { "name": "council-sun-tzu", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-sun-tzu.md", "mode": "pack", "pack": "council" },
+    { "name": "council-sutskever", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-sutskever.md", "mode": "pack", "pack": "council" },
+    { "name": "council-taleb", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-taleb.md", "mode": "pack", "pack": "council" },
+    { "name": "council-torvalds", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-torvalds.md", "mode": "pack", "pack": "council" },
+    { "name": "council-watts", "source": "0xNyk/council-of-high-intelligence", "path": "agents/council-watts.md", "mode": "pack", "pack": "council" }
   ],
   "library": [
     { "name": "scroll-craft", "source": "nateherkai/scroll-craft", "path": "plugins/nateherk-design/skills/scroll-craft", "mode": "vendored" },

@@ -1,0 +1,6 @@
+# Council of High Intelligence: project defaults for this repo.
+# award-site convenes it only at the decision points listed in
+# .claude/skills/award-site/references/skills.md, with an explicit --triad or --quick.
+# Claude-only: client briefs and unreleased work never go to other model providers.
+no_auto_route: true
+triad: design

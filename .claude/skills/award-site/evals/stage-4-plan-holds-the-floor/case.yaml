@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: stage-4-plan-holds-the-floor
+expected_outcome: |
+  The skill reads the stage 4 file and plans the hero proof the way the pipeline now requires:
+  media sourced before code (no hand-drawn code art), parallel tracks run with
+  subagent-driven-development, the named skills loaded and logged as skill lines, and a floor
+  check (three references, rubric, impeccable, blind critic) plus a hyperframes film before the
+  user sees anything. It builds and installs nothing, and ends with the handoff block.
+context:
+  scaffold_script: place-files.sh

@@ -54,7 +54,7 @@ function sites() {
 }
 
 function read(site) {
-  const info = { ...site, track: "?", done: new Map(), blocked: null, gates: new Map(), jury: null, decisions: [] };
+  const info = { ...site, track: "?", done: new Map(), blocked: null, gates: new Map(), jury: null, decisions: [], skills: new Map() };
   const file = site.dir && path.join(site.dir, "docs", "decisions.md");
   if (!file || !fs.existsSync(file)) {
     info.missing = site.dir && fs.existsSync(site.dir) ? "no docs/decisions.md" : `not cloned here${site.repo ? `: ${site.repo}` : ""}`;
@@ -70,6 +70,10 @@ function read(site) {
       else if (state.startsWith("blocked")) info.blocked = { stage: Number(n), date, why: state.replace(/^blocked:?\s*/, "") };
     } else if ((m = line.match(/^- (\d{4}-\d{2}-\d{2}) · gate (\d) · (approved|changes requested)(?: · (.*))?$/))) {
       info.gates.set(Number(m[2]), { date: m[1], state: m[3], note: m[4] || "" });
+    } else if ((m = line.match(/^- (\d{4}-\d{2}-\d{2}) · skill ([\w-]+) · stage (\d)/))) {
+      const n = Number(m[3]);
+      if (!info.skills.has(n)) info.skills.set(n, new Set());
+      info.skills.get(n).add(m[2]);
     } else if ((m = line.match(/^- (\d{4}-\d{2}-\d{2}) · jury · (pass|fail) · ([\d.]+)/))) {
       info.jury = { date: m[1], pass: m[2] === "pass", estimate: Number(m[3]) };
     } else if (/^- \d{4}-\d{2}-\d{2} · /.test(line) && !/· (stage|gate|jury|skill) /.test(line)) {
@@ -81,6 +85,10 @@ function read(site) {
   if (info.blocked && info.blocked.stage <= last) info.blocked = null;
   return info;
 }
+
+// The skill each stage can't be done without. A done stage with no skill line for it
+// means the skill never ran (SKILL.md, "Running a stage"), so status says so.
+const LEAD_SKILL = { 1: "brainstorming", 3: "brainstorming", 4: "ui-ux-pro-max", 6: "writing-plans", 7: "subagent-driven-development", 8: "jury" };
 
 // What each finished stage must have left behind. Cheap checks, so status never has to open files.
 const LEFT_BEHIND = {
@@ -174,6 +182,8 @@ for (const s of STAGES) {
 }
 for (const [n, g] of [...info.gates].sort()) console.log(`  gate  ${n} ${g.state} ${g.date}${g.note ? ` (${g.note})` : ""}`);
 if (info.jury) console.log(`  jury  ${info.jury.pass ? "pass" : "fail"} ${info.jury.estimate} ${info.jury.date}`);
+const unlogged = Object.entries(LEAD_SKILL).filter(([n, sk]) => info.done.has(Number(n)) && !(info.skills.get(Number(n)) || new Set()).has(sk));
+if (unlogged.length) console.log(`\nNo skill line for: ${unlogged.map(([n, sk]) => `stage ${n} ${sk}`).join(", ")}. Log it if it ran (with "(backfilled)" if logged late); if it didn't, the stage was skipped, not done.`);
 if (!info.next) {
   console.log("\nAll stages done. Next: /award-site learn " + info.name + " when award scores arrive.");
   process.exit(0);

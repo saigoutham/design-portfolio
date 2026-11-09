@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: council-only-when-it-qualifies
+expected_outcome: |
+  The skill treats the grammar choice as a council-worthy decision (contested, costly to reverse,
+  not settled by existing evidence) and the label size as a design-values or floor-check question
+  that the council should not handle. For the grammar it proposes a small panel (a triad or duo,
+  never the full council), run Claude-only per .council.yaml, with the verdict saved and logged
+  and the pack removed afterwards. It installs nothing and runs no council.
+context:
+  scaffold_script: place-files.sh

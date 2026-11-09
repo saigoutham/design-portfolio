@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: skills-audit-proposes-not-removes
+expected_outcome: |
+  The skill runs the skills audit (npm run skills), answers from its output and the capability
+  registry: how many skills are installed, which have logged runs (noting the backfilled ones),
+  which have never run, and the removals it proposes (gsap-frameworks, design-system, gstack) as
+  waiting for the user's approval. It deletes and uninstalls nothing.

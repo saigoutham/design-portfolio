@@ -24,7 +24,8 @@ library/motionsites/
 .claude/skills/launch/
 .claude/skills/social/
 .claude/skills/public-relations/
-.claude/skills/marketing-council/
+.claude/skills/council/
+.claude/agents/council-*.md
 .claude/skills/last30days/
 .claude/skills/r3f-fundamentals/
 .claude/skills/r3f-geometry/
