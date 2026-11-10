@@ -1,0 +1,9 @@
+{
+  "phase": 4, "name": "build", "leaves": "docs/spec.md, copy, assets and the whole site",
+  "steps": [
+    { "id": "d1", "do": "Spec: every section with values, from the animatic", "by": ["writing-plans"], "out": [{ "glob": "docs/spec.md", "has": "made-with:" }] },
+    { "id": "d2", "parallel": "d", "do": "One build agent per section, in worktrees; cavecrew-reviewer reads each diff", "by": ["subagent-driven-development", "using-git-worktrees", "cavecrew-reviewer"], "out": [{ "glob": "docs/reviews/*.md", "has": "made-with:" }] },
+    { "id": "d3", "parallel": "d", "do": "Copy", "by": ["copywriting"], "out": [{ "glob": "docs/copy.md" }] },
+    { "id": "d4", "do": "Floor per section", "by": ["visual-verdict", "impeccable critique", "jury"], "guards": ["docs/film/site-*", "docs/sections/*"], "out": [{ "glob": "docs/floor/section-*.md", "has": "FLOOR: PASS" }] }
+  ]
+}

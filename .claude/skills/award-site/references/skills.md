@@ -1,4 +1,6 @@
-# Skills, agents and library, by stage
+# Skills, agents and library
+
+Which skill runs at which step is set by `references/phases/*.json` (the `by` field); this file is the inventory and where each comes from. Stage numbers below are from v3 and are kept only as a rough guide.
 
 Everything is pinned in `skills.lock.json` at the repo root. "Committed" means it's in this repo and works on a fresh clone. A pack is installed on demand with `npm run setup -- --with <pack>`.
 

@@ -1,6 +1,6 @@
 # Templates
 
-Formats the scripts and later stages depend on. Keep the stage log format exact: `status.mjs` parses it.
+Formats the scripts and later phases depend on. `phase.mjs` writes the phase lines; don't hand-write them.
 
 ## docs/decisions.md
 
@@ -11,8 +11,8 @@ Track: client | own
 Repo: design-portfolio/sites/<site> | <git url>
 
 ## Stage log
-- 2026-11-09 · stage 0 setup · done
-- 2026-11-10 · stage 1 intake · done
+- 2026-11-09 · phase 0 start · done
+- 2026-11-10 · phase 1 brief · done
 - 2026-11-11 · gate 1 · approved · <who, how>
 - 2026-11-14 · jury · pass · 7.4
 
@@ -20,7 +20,7 @@ Repo: design-portfolio/sites/<site> | <git url>
 - 2026-11-12 · Grammar: chaptered editorial. Continuous world fits the geography but is the most fragile; the brief doesn't need one unbroken flight.
 ```
 
-Stage lines: `- <YYYY-MM-DD> · stage <0-9> <name> · <started | done | blocked: reason>`. Gate lines: `- <date> · gate <1|2|3> · <approved | changes requested> · <note>`. Jury lines: `- <date> · jury · <pass | fail> · <estimate>`. Gates: 1 brief, 2 concept and hero, 3 production URL (client track only).
+Phase lines (written by `npm run phase -- <site> done`): `- <YYYY-MM-DD> · phase <0-5> <name> · done`. Gate lines: `- <date> · gate <1|2|3> · <approved | changes requested> · <note>`. Jury lines: `- <date> · jury · <pass | fail> · <estimate>`. Gates: 1 brief, 2 concept and hero, 3 production URL (client track only).
 
 ## docs/concept.md
 

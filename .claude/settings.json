@@ -1,0 +1,25 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/award-site/scripts/hook-status.mjs\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "SendUserFile|mcp__claude-artifacts__publish_files|mcp__claude-artifacts__publish_version",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/skills/award-site/scripts/hook-gate.mjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "phase": 2, "name": "concept", "leaves": "docs/concept.md, docs/art.md and an art proof that passed 3 critics",
+  "steps": [
+    { "id": "c1", "parallel": "c", "do": "Research: 3 references (one award winner), what the category looks like, what to avoid", "by": ["agent: research (haiku)", "library/motionsites", "library/scroll-craft"], "out": [{ "glob": "docs/research.md", "has": "made-with:" }] },
+    { "id": "c2", "parallel": "c", "do": "Art route A, code first: a real piece of the hero art made in code (three.js/R3F shaders, canvas, SVG, GSAP)", "by": ["agent: art A (sonnet)", "r3f-materials", "r3f-shaders", "r3f-lighting"], "out": [{ "glob": "docs/art-proof/a-*" }] },
+    { "id": "c3", "parallel": "c", "do": "Art route B: supplied or generated stills used as materials on coded geometry (never flat layers moved by masks)", "by": ["agent: art B (sonnet)"], "out": [{ "glob": "docs/art-proof/b-*" }] },
+    { "id": "c4", "do": "2-3 concepts, one signature idea each, picked from the art that exists", "by": ["brainstorming"], "out": [{ "glob": "docs/concept.md", "has": "made-with:" }] },
+    { "id": "c5", "do": "3 blind critics on the art proof, at once", "by": ["agent: critic x3 (jury brief)"], "guards": ["docs/art-proof/*"], "out": [{ "glob": "docs/critics/art-proof-*.md", "min": 3, "has": "VERDICT:" }, { "glob": "docs/critics/art-proof-*.md", "min": 2, "has": "VERDICT: PASS" }] },
+    { "id": "c6", "do": "Origin and licence of every asset", "by": ["you"], "out": [{ "glob": "docs/art.md" }] },
+    { "id": "c7", "do": "Council only if two concepts stay close and the choice is costly", "by": ["council (quick, design triad)"], "optional": true, "out": [{ "glob": "docs/council/*.md" }] }
+  ]
+}

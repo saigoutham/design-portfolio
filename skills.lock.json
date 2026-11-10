@@ -457,6 +457,20 @@
       ],
       "mode": "pack",
       "pack": "council"
+    },
+    {
+      "name": "copywriting",
+      "source": "coreyhaines31/marketingskills",
+      "path": "skills/copywriting",
+      "mode": "pack",
+      "pack": "copy"
+    },
+    {
+      "name": "copy-editing",
+      "source": "coreyhaines31/marketingskills",
+      "path": "skills/copy-editing",
+      "mode": "pack",
+      "pack": "copy"
     }
   ],
   "agents": [

@@ -1,0 +1,9 @@
+{
+  "phase": 5, "name": "ship", "leaves": "docs/qa.md, a deploy, submissions and lessons",
+  "steps": [
+    { "id": "p1", "do": "5 evaluators at once: phones, accessibility, performance, SEO/metadata, copy", "by": ["agent: evaluator x5 (haiku)"], "out": [{ "glob": "docs/qa.md", "has": "made-with:" }] },
+    { "id": "p2", "do": "Deploy and record the URL (client: gate 3)", "by": ["you"], "out": [{ "glob": "docs/launch.md", "has": "http" }] },
+    { "id": "p3", "do": "Blind jury on the live URL", "by": ["jury"], "guards": ["docs/launch.md"], "out": [{ "glob": "docs/jury.md", "has": "made-with:" }] },
+    { "id": "p4", "do": "Lessons into system/lessons.md", "by": ["you"], "out": [{ "glob": "../../system/lessons.md" }] }
+  ]
+}

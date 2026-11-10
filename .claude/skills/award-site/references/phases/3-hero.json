@@ -1,0 +1,136 @@
+{
+  "phase": 3,
+  "name": "hero",
+  "leaves": "an approved animatic of the whole site, DESIGN.md and a hero that passed the floor",
+  "steps": [
+    {
+      "id": "h1",
+      "do": "Load the 3D skills and the library before writing any scene; note what applies",
+      "by": [
+        "r3f-materials",
+        "r3f-shaders",
+        "r3f-lighting",
+        "r3f-postprocessing",
+        "library/motionsites",
+        "library/scroll-craft"
+      ],
+      "out": [
+        {
+          "glob": "docs/notes/3d-and-library.md",
+          "has": "made-with:"
+        }
+      ]
+    },
+    {
+      "id": "h2",
+      "do": "Animatic: every section and every scroll beat, 20-40 s, 1920x1080, all art in code; check passes",
+      "by": [
+        "hyperframes"
+      ],
+      "out": [
+        {
+          "glob": "animatic/REVIEW.md"
+        },
+        {
+          "glob": "docs/film/animatic-v*.mp4"
+        }
+      ]
+    },
+    {
+      "id": "h3",
+      "do": "3 blind critics on the animatic frames, at once",
+      "by": [
+        "agent: critic x3 (jury brief)"
+      ],
+      "guards": [
+        "docs/film/animatic-*",
+        "animatic/renders/*"
+      ],
+      "out": [
+        {
+          "glob": "docs/critics/animatic-*.md",
+          "min": 3,
+          "has": "VERDICT:"
+        },
+        {
+          "glob": "docs/critics/animatic-*.md",
+          "min": 2,
+          "has": "VERDICT: PASS"
+        }
+      ]
+    },
+    {
+      "id": "h4",
+      "do": "The user (and the client) approves the animatic",
+      "by": [
+        "user"
+      ],
+      "out": [
+        {
+          "glob": "docs/decisions.md",
+          "has": "animatic approved"
+        }
+      ]
+    },
+    {
+      "id": "h5",
+      "do": "DESIGN.md: type, colour, layout, motion values",
+      "by": [
+        "impeccable"
+      ],
+      "out": [
+        {
+          "glob": "DESIGN.md",
+          "has": "made-with:"
+        }
+      ]
+    },
+    {
+      "id": "h6",
+      "do": "Hero built from the animatic's scene code, driven by scroll",
+      "by": [
+        "gsap-scrolltrigger",
+        "gsap-react",
+        "r3f-fundamentals"
+      ],
+      "out": [
+        {
+          "glob": "src/components/Hero*.tsx",
+          "has": "@react-three/fiber"
+        }
+      ]
+    },
+    {
+      "id": "h7",
+      "do": "Floor: side by side, rubric, impeccable critique, blind critic 7.2+",
+      "by": [
+        "visual-verdict",
+        "impeccable critique",
+        "jury"
+      ],
+      "guards": [
+        "docs/film/hero-*",
+        "docs/hero-proof/*"
+      ],
+      "out": [
+        {
+          "glob": "docs/floor/hero-*.md",
+          "has": "FLOOR: PASS"
+        }
+      ]
+    },
+    {
+      "id": "h8",
+      "do": "Council if the floor fails twice or the user rejects the art or motion",
+      "by": [
+        "council (quick, design triad)"
+      ],
+      "optional": true,
+      "out": [
+        {
+          "glob": "docs/council/*.md"
+        }
+      ]
+    }
+  ]
+}

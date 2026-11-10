@@ -1,0 +1,8 @@
+{
+  "phase": 1, "name": "brief", "leaves": "PRODUCT.md and docs/brief.md",
+  "steps": [
+    { "id": "b1", "do": "One message, at most five questions, each with a default; the user's reply in their words", "by": ["brainstorming"], "out": [{ "glob": "docs/brief.md", "has": "made-with:" }] },
+    { "id": "b2", "do": "Positioning, audience and the one primary action", "by": ["impeccable shape"], "out": [{ "glob": "PRODUCT.md" }] },
+    { "id": "b3", "do": "Client track only: brief approved (gate 1)", "by": ["user"], "client_only": true, "out": [{ "glob": "docs/decisions.md", "has": "gate 1" }] }
+  ]
+}

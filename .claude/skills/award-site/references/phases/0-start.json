@@ -1,0 +1,7 @@
+{
+  "phase": 0, "name": "start", "leaves": "the site folder and system/capabilities.json",
+  "steps": [
+    { "id": "s1", "do": "Create the site folder", "by": ["npm run new-site"], "out": [{ "glob": "CLAUDE.md" }, { "glob": "docs/decisions.md" }] },
+    { "id": "s2", "do": "Record which art rungs are open today (code always; generated, sourced, rendered, supplied)", "by": ["npm run probe"], "out": [{ "glob": "../../system/capabilities.json" }] }
+  ]
+}
