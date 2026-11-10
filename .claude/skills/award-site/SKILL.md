@@ -53,12 +53,13 @@ Fourteen skills are always installed; the rest are packs installed for the phase
 | Design lead: direction, type, colour, layout, critique, polish | impeccable (`shape`, `typeset`, `colorize`, `layout`, `critique`, `polish`) |
 | Anti-generic gate: real-browser checks for layout, copy, weight | design-taste-frontend's checker scripts (pack `taste`). Its ban on scroll-driven motion is waived for the signature scene only |
 | Motion | gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react; review-animations. GSAP is the only engine on a live page |
+| UI components: nav, buttons, menus, dialogs, forms, toasts | Astryx (`@astryxdesign/core`, installed in every site). Ask its CLI first: `npx @astryxdesign/cli search <thing>`, then `component <Name>`. Its theme extends `neutral` with the values in `DESIGN.md`. Never the hero, the art or the signature move |
 | Film | hyperframes (pack `video`) |
 | Planning and building | brainstorming (concept options only), writing-plans, subagent-driven-development, systematic-debugging, verification-before-completion |
 | Judging | visual-verdict, jury (blind: never sees code or docs) |
 | Small jobs | cavecrew agents (search, edits of 1-2 files, diff review) |
 
-There is one source of design values per site: `DESIGN.md`, written with impeccable. Nothing else supplies colours or type.
+There is one source of design values per site: `DESIGN.md`, written with impeccable. The Astryx theme is generated from it; nothing else supplies colours or type.
 
 ## Running agents
 

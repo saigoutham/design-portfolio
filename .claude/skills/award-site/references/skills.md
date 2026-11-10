@@ -5,6 +5,9 @@ Pinned in `skills.lock.json`. `npm run setup` shows what's on. Install with `--w
 ## Core (always installed, 14)
 brainstorming, writing-plans, subagent-driven-development, verification-before-completion, systematic-debugging, impeccable, gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react, review-animations, jury, visual-verdict, cavecrew (plus its three agents) and award-site itself.
 
+## Libraries in every site (npm, not skills)
+GSAP, Lenis, and Astryx (`@astryxdesign/core`, Meta, MIT): accessible UI components themed from DESIGN.md. Its CLI is the agent's reference (`search`, `component`, `docs`). Scope: interface pieces only; the hero, art and signature move are bespoke, so sites don't share a component look.
+
 ## Packs
 | Pack | Skills | Phase |
 |---|---|---|

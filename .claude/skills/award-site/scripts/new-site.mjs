@@ -93,10 +93,11 @@ if (!fs.existsSync(path.join(target, "package.json"))) {
 if (!repo && fs.existsSync(path.join(target, ".git"))) fs.rmSync(path.join(target, ".git"), { recursive: true, force: true });
 
 if (install) {
-  const deps = ["gsap", "@gsap/react", "lenis"];
+  const deps = ["gsap", "@gsap/react", "lenis", "@astryxdesign/core", "@astryxdesign/theme-neutral", "@stylexjs/stylex@^0.19.0"];
   if (want3d) deps.push("three", "@react-three/fiber", "@react-three/drei", "@react-three/postprocessing");
   console.log(`Installing ${deps.join(", ")}...`);
-  run(`npm install --no-audit --no-fund && npm install --no-audit --no-fund ${deps.join(" ")}`, target);
+  run(`npm install --no-audit --no-fund && npm install --no-audit --no-fund ${deps.join(" ")} && npm install --no-audit --no-fund -D @astryxdesign/cli`, target);
+  run("npx @astryxdesign/cli init --features agents,theme --agent claude && npx @astryxdesign/cli theme add neutral", target);
 } else {
   console.log("Skipped npm install (--no-install). Run npm install in the site folder before building.");
 }
