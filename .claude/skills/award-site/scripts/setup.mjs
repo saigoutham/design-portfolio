@@ -40,6 +40,11 @@ const withArg = (() => {
   return i >= 0 && args[i + 1] ? args[i + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
 })();
 
+const removeArg = (() => {
+  const i = args.indexOf("--remove");
+  return i >= 0 && args[i + 1] ? args[i + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
+})();
+
 const sh = (cmd, opts = {}) => execSync(cmd, { stdio: ["ignore", "pipe", "pipe"], encoding: "utf8", ...opts }).trim();
 const has = (cmd) => {
   try { sh(`command -v ${cmd}`); return true; } catch { return false; }
@@ -115,6 +120,16 @@ function installPacks(packs) {
   }
 }
 
+// Remove on-demand packs. --prune removes every installed pack skill and retired library, leaving only the core.
+function removePacks(packs, all) {
+  for (const s of lock.skills.filter((s) => s.mode === "pack" && (all || packs.includes(s.pack)))) {
+    if (fs.existsSync(skillDir(s.name))) { fs.rmSync(skillDir(s.name), { recursive: true, force: true }); console.log(`removed ${String(s.pack).padEnd(8)} ${s.name}`); }
+  }
+  for (const l of lock.library.filter((l) => (all && l.mode === "retired") || ((all || packs.includes("library")) && l.mode === "fetch"))) {
+    if (fs.existsSync(libDir(l.name))) { fs.rmSync(libDir(l.name), { recursive: true, force: true }); console.log(`removed library  ${l.name}`); }
+  }
+}
+
 function version(cmd) {
   try { return sh(cmd).split("\n")[0]; } catch { return null; }
 }
@@ -124,7 +139,7 @@ function check() {
     ["node 20+", version("node --version"), "needed for every site"],
     ["npm", version("npm --version"), "needed for every site"],
     ["git", version("git --version"), "needed for setup"],
-    ["python3", version("python3 --version"), "ui-ux-pro-max search, Scrapling"],
+    ["python3", version("python3 --version"), "Blender (bpy), background removal, Scrapling"],
     ["ffmpeg", version("ffmpeg -version"), "scroll-scrubbed video encoding (scroll-craft encode.sh)"],
     ["bun", version("bun --version"), "optional: gstack"],
   ];
@@ -139,7 +154,7 @@ function check() {
   console.log(`Agents: ${vAgents.length ? `missing ${vAgents.map((a) => a.name).join(", ")}` : "all present"}`);
   console.log(`Library: ${vLib.length ? `missing ${vLib.map((l) => l.name).join(", ")}` : "all present"}`);
 
-  const packs = [...new Set(lock.skills.filter((s) => s.pack).map((s) => s.pack))];
+  const packs = [...new Set(lock.skills.filter((s) => s.pack && s.pack !== "retired").map((s) => s.pack))];
   console.log("\nOn-demand packs (npm run setup -- --with <pack>)");
   for (const p of packs) {
     const items = lock.skills.filter((s) => s.pack === p);
@@ -156,6 +171,10 @@ if (flag("--help") || flag("-h")) {
   console.log(fs.readFileSync(fileURLToPath(import.meta.url), "utf8").split("\n").slice(1, 9).join("\n").replace(/^\/\/ ?/gm, ""));
 } else if (flag("--vendor")) {
   vendorAll();
+} else if (flag("--prune")) {
+  removePacks([], true);
+} else if (removeArg.length) {
+  removePacks(removeArg, false);
 } else if (withArg.length) {
   installPacks(withArg);
 } else {

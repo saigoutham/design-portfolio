@@ -110,11 +110,11 @@ const writeNew = (rel, text) => {
 };
 writeNew(
   "docs/decisions.md",
-  `# ${title}: decisions\n\nTrack: ${track}\nRepo: ${repoLine}\n\n## Stage log\n- ${today} · stage 0 setup · done\n\n## Decisions\n- ${today} · Created with ${want3d ? "3D dependencies" : "no 3D dependencies yet"}.\n`
+  `# ${title}: decisions\n\nTrack: ${track}\nRepo: ${repoLine}\n\n## Phase log\n- ${today} · phase 0 start · done\n\n## Decisions\n- ${today} · Created with ${want3d ? "3D dependencies" : "no 3D dependencies yet"}.\n`
 );
 writeNew(
   "CLAUDE.md",
-  `# ${title}\n\nA ${track === "client" ? "client" : "personal concept"} site built with the award-site pipeline${repo ? " (system files live in design-portfolio)" : ""}.\nStart every session with \`/award-site status ${site}\`; it reports the stage and the next step.\n\nContext, read only when the current stage needs it: PRODUCT.md, DESIGN.md, docs/brief.md, docs/research.md, docs/concept.md, docs/assets.md, docs/spec.md, docs/qa.md. Decisions and the stage log: docs/decisions.md.\n`
+  `# ${title}\n\nA ${track === "client" ? "client" : "personal concept"} site built with the award-site pipeline${repo ? " (system files live in design-portfolio)" : ""}.\nStart every session with \`/award-site status ${site}\`; it reports the phase and the next step.\n\nContext, read only when the current phase needs it: PRODUCT.md, DESIGN.md, docs/brief.md, docs/concept.md, docs/art.md, docs/spec.md, docs/qa.md. Decisions and the phase log: docs/decisions.md.\n`
 );
 
 if (repo) {

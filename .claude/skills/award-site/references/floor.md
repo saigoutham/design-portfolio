@@ -1,28 +1,25 @@
 # The quality floor
 
-Run before any visual leaves the studio: hero proof, proposal, preview link, a finished section. Stages prove work exists; this proves it's good.
+Run before any visual reaches the user or a client: the art proof, the hero, each finished section, the final site.
 
-Reconstructed on 2026-11-09 from SKILL.md v3 ("The quality floor"), because the original file never reached the repo. Tighten it when a real jury teaches something.
+## Automatic fails (check these first; they cost nothing)
+- A real-world object imitated in code (SVG, CSS, canvas illustration) as the look.
+- Hero art with no entry in `docs/art.md`.
+- The hero doesn't say what it is, who it's for and what to do next.
+- On a throttled phone: unreadable text, dead or janky scroll, LCP over 2.5 s.
+- Built by one agent with no diff review.
 
-## Inputs
-- The live link (local or preview) and a 10–20 s hyperframes film of the motion. Screenshots alone don't count.
-- Three references chosen at stage 2/3 (from `docs/research.md`): any medium, at least one award-winning site.
-- `MASTER.md` for the values the work must hold.
+## The check (launch all three critics in one message)
+Give each only the live URL or screenshots, the 10-20 s film, and three references chosen in phase 2. No code, no docs, no history.
 
-## The four parts (all must pass)
+| Critic | Skill | Model | Pass |
+|---|---|---|---|
+| Side by side with the references | visual-verdict | haiku | holds up against at least 2 of 3; gaps named |
+| Design and UX critique | impeccable `critique` | sonnet | no open "high" item |
+| Blind juror: Design, Usability, Creativity, Content | jury's critic brief | sonnet | weighted 7.2 or more |
 
-1. **Side by side.** visual-verdict compares the work against the three references and, after Gate 2, the approved hero. Verdict per reference: matches or beats the bar, or the named gaps.
-2. **MotionSites rubric** (`library/` MotionSites pack, `npm run setup -- --with library`). Average 8+ and no category under 7.
-3. **impeccable critique.** Design and UX critique, kept apart from functional defects. Every "high" item fixed or explicitly accepted in decisions.md.
-4. **Blind critic.** A fresh subagent with jury's brief scores Design, Usability, Creativity, Content from the link and film only: no code, no docs, no history. Weighted score 7.2+.
-
-## Automatic fails (no scoring needed)
-- Art drawn in code (hand SVG, CSS gradients standing in for light, canvas illustration) presented as the look. Code-as-medium work is exempt.
-- One agent built it alone with no review of the diff.
-- The hero doesn't say the positioning, audience and primary action from PRODUCT.md.
-- Phone (throttled) feels broken: unreadable text, dead scroll, LCP over 2.5 s.
+Then run the taste gate (pack `taste`, its checker scripts in a real browser) for layout, copy and weight. Its findings are fixes, not a score; its rule against scroll-driven motion doesn't apply to the signature scene.
 
 ## Result
-Log `- <date> · floor · stage <n> · <pass|fail> · side-by-side <verdict>, rubric <avg>/<min>, impeccable <highs open>, critic <score>` in docs/decisions.md.
-On fail, fix the three biggest gaps and rerun. After 3 failed rounds, consider the council (SKILL.md, "The council").
-If the user asks to see work below the floor, lead with "Below the floor:" and the three biggest gaps.
+Pass: write `docs/hero-approved` (phase 3) or note the score in the phase's `ran` line.
+Fail: fix the three biggest gaps the critics agree on, rerun only the critics that failed. After two failed rounds, stop and bring the user the choice: change the art route, change the concept, or ship lower. Don't run a third round on your own.

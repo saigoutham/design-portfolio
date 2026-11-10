@@ -3,5 +3,5 @@ name: delegated-own-site
 expected_outcome: |
   The skill creates the site on the own track, treats "use your judgment" as creative delegation,
   writes docs/brief.md starting with "Self-authored under creative delegation" without forcing an
-  interview, logs stage 1, and ends with the handoff block recommending Research next. No client
+  interview, logs phase 1, and ends with the handoff block recommending the concept and art proof next. No client
   gates are mentioned as blockers.

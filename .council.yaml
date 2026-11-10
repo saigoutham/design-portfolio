@@ -1,7 +1,0 @@
-# Council of High Intelligence defaults for this repo (see award-site SKILL.md, "The council").
-provider: claude
-no_auto_route: true        # client material never goes to another model provider
-default_mode: triad
-default_triad: design      # Rams, Torvalds, Watts
-allow_full: false
-agents_path: .claude/agents

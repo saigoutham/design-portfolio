@@ -1,0 +1,7 @@
+schema_version: "1.1"
+name: art-proof-before-concept
+expected_outcome: |
+  With a brief in place and only the code and supplied art rungs open, the skill proposes concepts
+  whose hero art can be made from an open rung, launches research and two art-route agents in one
+  message, and does not mark the concept approved until a real asset has passed the critic. It never
+  proposes a photographed object drawn in SVG or CSS.

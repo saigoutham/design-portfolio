@@ -21,10 +21,12 @@ npm run setup          # checks prerequisites and shows what's installed
 
 Then open the folder in Claude Code (terminal, desktop, web or phone). Every skill and agent the pipeline uses is in `.claude/`, so it's available only inside this repo and nothing is installed globally.
 
-Some skills are installed only when a stage needs them, to keep sessions lean. The stages do this for you, or by hand:
+Fourteen skills are always installed. The rest are packs a phase installs when it needs them and removes after, or by hand:
 
 ```bash
-npm run setup -- --with research,library,taste   # stage 2 and 4 tools, MotionSites reference library
+npm run setup -- --with library,taste,video      # phase 2 and 3 tools
+npm run setup -- --remove taste,video            # take them out again
+npm run probe                                    # which ways of getting art are open here
 npm run setup -- --with 3d                        # React Three Fiber skills
 npm run setup -- --with video                     # HyperFrames and Remotion
 npm run setup -- --with compress,manim,gstack,rea # optional extras
@@ -39,8 +41,8 @@ In Claude Code, from the repo root:
 | `/award-site new halli-roasters --client` | Creates `sites/halli-roasters/` (Next.js, GSAP, Lenis) and starts the client interview |
 | `/award-site new kaala --own --3d` | A concept site of your own, with 3D dependencies |
 | `/award-site new acme --client --repo <git url>` | The site lives in its own repo; this repo keeps a pointer and the shared logs |
-| `/award-site status` | Every site, its stage and what's blocking it |
-| `/award-site next <site>` | Runs the next stage, then tells you what to do after |
+| `/award-site status` | Every site, its phase and what's blocking it |
+| `/award-site next <site>` | Runs the next phase, then tells you what to do after |
 | `/award-site jury <site>` | Blind Awwwards-style score of the current build |
 | `/award-site learn <site>` | Logs real award scores and lessons |
 
@@ -52,7 +54,7 @@ The same scripts work without Claude: `npm run new-site -- <site> --client`, `np
 |---|---|
 | `sites/<site>/` | One site: a Next.js app plus its context (PRODUCT.md, DESIGN.md, `docs/`) |
 | `system/` | Shared across sites: fingerprint log (no two sites alike), jury calibration, lessons |
-| `.claude/skills/award-site/` | The orchestrator: SKILL.md, one reference file per stage, scripts |
+| `.claude/skills/award-site/` | The orchestrator: SKILL.md, one reference file per phase, the art ladder, the quality floor, scripts |
 | `.claude/skills/`, `.claude/agents/` | Third-party skills and agents, pinned in `skills.lock.json` |
 | `library/` | Reference material read at named stages: scroll-craft, elaya, Bencho blocks (and MotionSites, fetched by setup) |
 | `skills.lock.json` | Every source, the exact commit it was read at, and its licence |
