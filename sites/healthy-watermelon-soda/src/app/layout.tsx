@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: "Real fruit. Real fizz. (a concept watermelon soda)",
   description:
     "A concept watermelon soda with no added sugar. A portfolio site: one cut, one scroll.",
+  openGraph: {
+    title: "Real fruit. Real fizz.",
+    description: "A concept watermelon soda with no added sugar. One cut, one scroll.",
+    type: "website",
+  },
+  twitter: { card: "summary", title: "Real fruit. Real fizz." },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
