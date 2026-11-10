@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>B proof: the melon opens</title>
+<style>
+html,body{margin:0;height:100%;background:radial-gradient(120% 90% at 50% 38%,#fff6f7 0%,#fff0f2 55%,#f8dfe4 100%);overflow:hidden}
+canvas{display:block;width:1920px;height:1080px}
+</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+
+const A = 1.6, B = 1.03, C = 1.24;          // ellipsoid radii: long axis x, height y, depth z (cut face is 2C x 2B, photo aspect 1.20)
+const BEV = 0.035, EB = 0.045;              // bevel depth (fraction of radius) and its width along x (fraction of A)
+const W = 1920, H = 1080;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setSize(W, H, false);
+renderer.setPixelRatio(1);
+renderer.toneMapping = THREE.NoToneMapping;          // keep the photo's own values; only sRGB output conversion
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, W / H, 0.1, 100);
+camera.position.set(0, 2.5, 8.4); camera.lookAt(0, -0.25, 0);
+
+// ---------- geometry: half shell (x side*>=0) built directly, never mirrored with negative scale ----------
+function orient(geo, test) {             // make winding face 'test' (outward) direction; checks a real triangle
+  const p = geo.attributes.position, idx = geo.index.array;
+  for (let t = 0; t < idx.length; t += 3) {
+    const a = new THREE.Vector3().fromBufferAttribute(p, idx[t]), b = new THREE.Vector3().fromBufferAttribute(p, idx[t+1]), c = new THREE.Vector3().fromBufferAttribute(p, idx[t+2]);
+    const n = new THREE.Vector3().subVectors(b, a).cross(new THREE.Vector3().subVectors(c, a));
+    if (n.lengthSq() < 1e-12) continue;
+    if (n.dot(test(a, b, c)) < 0) { for (let i = 0; i < idx.length; i += 3) { const s = idx[i+1]; idx[i+1] = idx[i+2]; idx[i+2] = s; } }
+    break;
+  }
+  geo.computeVertexNormals(); return geo;
+}
+function shell(side, NA = 90, NP = 160) {
+  const pos = [], ind = [];
+  for (let i = 0; i < NA; i++) {            // alpha from the cut plane (0) toward the end pole, dense near the cut for the bevel
+    const al = (Math.PI / 2) * Math.pow(i / NA, 1.7);
+    const xn = Math.sin(al), R0 = Math.cos(al);
+    const k = Math.max(0, 1 - xn / EB), R = R0 * (1 - BEV * k * k);   // rounded lip into the cut
+    for (let j = 0; j < NP; j++) { const f = j / NP * Math.PI * 2; pos.push(side * A * xn, B * R * Math.cos(f), C * R * Math.sin(f)); }
+  }
+  const pole = NA * NP; pos.push(side * A, 0, 0);
+  for (let i = 0; i < NA - 1; i++) for (let j = 0; j < NP; j++) {
+    const a = i * NP + j, b = i * NP + (j + 1) % NP, c = (i + 1) * NP + j, d = (i + 1) * NP + (j + 1) % NP;
+    ind.push(a, b, c, b, d, c);
+  }
+  for (let j = 0; j < NP; j++) ind.push((NA - 1) * NP + j, (NA - 1) * NP + (j + 1) % NP, pole);
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(ind);
+  return orient(g, (a) => new THREE.Vector3(a.x / (A*A), a.y / (B*B), a.z / (C*C)));
+}
+function cap(side, NP = 160) {
+  const pos = [0, 0, 0], ind = [], r = 1 - BEV;
+  for (let j = 0; j < NP; j++) { const f = j / NP * Math.PI * 2; pos.push(0, B * r * Math.cos(f), C * r * Math.sin(f)); }
+  for (let j = 0; j < NP; j++) ind.push(0, 1 + j, 1 + (j + 1) % NP);
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(ind);
+  return orient(g, () => new THREE.Vector3(-side, 0, 0));       // cap of the x>0 half faces -x, and vice versa
+}
+
+// ---------- shaders ----------
+const VS = `
+varying vec3 vP; varying vec3 vN; varying vec3 vW;
+void main(){
+  vP = position;
+  vN = normalize(mat3(modelMatrix) * normal);
+  vec4 w = modelMatrix * vec4(position, 1.0); vW = w.xyz;
+  gl_Position = projectionMatrix * viewMatrix * w;
+}`;
+const LIGHT = `
+uniform vec3 uL;                 // key light direction (world), low intensity: the photos carry their own light
+vec3 blush = vec3(1.0, 0.871, 0.889);
+`;
+const RIND_FS = `
+uniform sampler2D uRind; uniform vec3 uABC; uniform float uEB; uniform float uOpen;
+${LIGHT}
+varying vec3 vP; varying vec3 vN; varying vec3 vW;
+void main(){
+  float xn = clamp(vP.x / uABC.x, -1.0, 1.0);
+  float th = atan(vP.y / uABC.y, vP.z / uABC.z);           // 0 = facing the photo camera (+z)
+  if (abs(th) > 1.5707963) th = sign(th) * 3.1415927 - th;  // back hemisphere mirrors the front: no seam
+  float ths = th * 0.80;                                     // stay off the photo's dark silhouette edge
+  float r = sqrt(max(1.0 - xn * xn, 0.0));
+  vec2 uv = vec2(0.5 + 0.5 * xn * 0.965, 0.5 + 0.5 * sin(ths) * r);
+  vec3 col = texture2D(uRind, uv).rgb;
+  // the lip at the cut shows the pale inner rind
+  float lip = 1.0 - smoothstep(0.0, uEB, abs(xn));
+  col = mix(col, vec3(0.62, 0.72, 0.42), smoothstep(0.35, 1.0, lip) * 0.85 * uOpen);
+  col *= 1.0 - 0.55 * (1.0 - uOpen) * smoothstep(0.6, 1.0, lip);   // closed: a dark hairline, not a pale band
+  vec3 N = normalize(vN), V = normalize(cameraPosition - vW), L = normalize(uL), Hh = normalize(L + V);
+  float d = max(dot(N, L), 0.0);
+  float shade = 0.80 + 0.30 * d;
+  shade *= mix(0.72, 1.0, smoothstep(-0.9, 0.2, N.y));      // floor occlusion
+  float spec = pow(max(dot(N, Hh), 0.0), 70.0) * 0.10 + pow(max(dot(N, Hh), 0.0), 8.0) * 0.025;
+  float rim = pow(1.0 - max(dot(N, V), 0.0), 3.0) * 0.18;
+  vec3 c = col * shade + spec + rim * blush * 0.5;
+  gl_FragColor = vec4(c, 1.0);
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
+}`;
+const CAP_FS = `
+uniform sampler2D uFace; uniform vec3 uABC; uniform float uSide; uniform float uR; uniform vec2 uTexel;
+${LIGHT}
+varying vec3 vP; varying vec3 vN; varying vec3 vW;
+float lum(vec2 uv){ return dot(texture2D(uFace, uv).rgb, vec3(0.3, 0.59, 0.11)); }
+void main(){
+  // cut-face photo spans the full ellipse; the x<0 half reads it mirrored (two halves of one fruit are mirror images)
+  vec2 q = vec2(-uSide * vP.z / uABC.z, vP.y / uABC.y) / uR;
+  vec2 uv = 0.5 + 0.5 * q;
+  vec3 col = texture2D(uFace, uv).rgb;
+  vec3 N = normalize(vN), V = normalize(cameraPosition - vW), L = normalize(uL);
+  // wet flesh: bump from the photo's own luminance, tangent frame from screen derivatives
+  float h0 = lum(uv), hx = lum(uv + vec2(uTexel.x * 2.0, 0.0)), hy = lum(uv + vec2(0.0, uTexel.y * 2.0));
+  vec3 dpx = dFdx(vW), dpy = dFdy(vW); vec2 dux = dFdx(uv), duy = dFdy(uv);
+  float det = dux.x * duy.y - dux.y * duy.x;
+  vec3 T = normalize((dpx * duy.y - dpy * dux.y) / det), Bt = normalize((dpy * dux.x - dpx * duy.x) / det);
+  vec3 Nb = normalize(N - 2.2 * ((hx - h0) * T + (hy - h0) * Bt));
+  vec3 Hh = normalize(L + V);
+  float d = max(dot(N, L), 0.0);
+  float shade = 0.86 + 0.20 * d;
+  float spec = pow(max(dot(Nb, Hh), 0.0), 160.0) * 0.55 + pow(max(dot(N, Hh), 0.0), 12.0) * 0.04;
+  float edge = smoothstep(0.82, 1.0, length(q));             // slight darkening into the rind ring
+  vec3 c = col * shade * (1.0 - 0.12 * edge) + spec * vec3(1.0, 0.97, 0.96);
+  gl_FragColor = vec4(c, 1.0);
+  #include <tonemapping_fragment>
+  #include <colorspace_fragment>
+}`;
+const SH_FS = `
+uniform vec4 uB0; uniform vec4 uB1; uniform vec2 uR0; uniform vec2 uR1; uniform float uLift;
+varying vec3 vP; varying vec3 vN; varying vec3 vW;
+float blob(vec4 b, vec2 r, float soft){
+  vec2 d = vW.xz - b.xy; float ca = cos(b.z), sa = sin(b.z);
+  d = vec2(ca * d.x - sa * d.y, sa * d.x + ca * d.y);
+  float e = length(d / (r * soft));
+  return exp(-e * e * 2.2);
+}
+void main(){
+  float s = 1.0 + uLift * 2.5;
+  float a = 0.0;
+  a += 0.30 * blob(uB0, uR0 * 1.25, s) + 0.30 * blob(uB1, uR1 * 1.25, s);       // soft ambient pool
+  a += 0.55 * blob(uB0, uR0 * 0.62, s * s) + 0.55 * blob(uB1, uR1 * 0.62, s * s); // contact core
+  a = clamp(a, 0.0, 0.7) / (1.0 + uLift * 3.0);
+  gl_FragColor = vec4(vec3(0.42, 0.16, 0.22), a);
+  #include <colorspace_fragment>
+}`;
+
+// ---------- textures ----------
+const loader = new THREE.TextureLoader();
+const load = (u) => new Promise((res, rej) => loader.load(u, (t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; res(t); }, undefined, rej));
+
+const uL = { value: new THREE.Vector3(-0.55, 0.85, 0.65) };
+const uOpen = { value: 0 };
+const halves = [];
+const shadow = new THREE.Mesh(new THREE.PlaneGeometry(14, 8).rotateX(-Math.PI / 2),
+  new THREE.ShaderMaterial({ vertexShader: VS, fragmentShader: SH_FS, transparent: true, depthWrite: false,
+    uniforms: { uB0: { value: new THREE.Vector4() }, uB1: { value: new THREE.Vector4() }, uR0: { value: new THREE.Vector2() }, uR1: { value: new THREE.Vector2() }, uLift: { value: 0 } } }));
+shadow.position.y = -B - 0.004; shadow.renderOrder = -1;
+scene.add(shadow);
+const group = new THREE.Group(); scene.add(group);
+
+window.__ready = (async () => {
+  const [rind, face] = await Promise.all([load('/docs/art-proof/b-tex/rind.png'), load('/docs/art-proof/b-tex/face.png')]);
+  for (const side of [-1, 1]) {
+    const pivot = new THREE.Group();
+    const rindMat = new THREE.ShaderMaterial({ vertexShader: VS, fragmentShader: RIND_FS,
+      uniforms: { uRind: { value: rind }, uABC: { value: new THREE.Vector3(A, B, C) }, uEB: { value: EB }, uOpen, uL } });
+    const capMat = new THREE.ShaderMaterial({ vertexShader: VS, fragmentShader: CAP_FS,
+      uniforms: { uFace: { value: face }, uABC: { value: new THREE.Vector3(A, B, C) }, uSide: { value: side }, uR: { value: 1 - BEV },
+        uTexel: { value: new THREE.Vector2(1 / face.image.width, 1 / face.image.height) }, uL } });
+    pivot.add(new THREE.Mesh(shell(side), rindMat), new THREE.Mesh(cap(side), capMat));
+    group.add(pivot); halves.push({ side, pivot });
+  }
+  renderer.compile(scene, camera);
+  window.renderAt(0);
+})();
+
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const smoother = (x) => { x = clamp(x, 0, 1); return x * x * x * (x * (x * 6 - 15) + 10); };
+
+// motion: pure function of t (seconds). 0 = whole melon in 3/4 view; ~3 = halves opened like a book toward camera
+window.renderAt = (t) => {
+  const e = smoother((t - 0.1) / 2.7);
+  const ang = 0.9 * e;                                // each half turns ~57 deg, hinged at the back edge: the rind body stays visible
+  const lift = 0.22 * Math.sin(Math.PI * smoother((t - 0.1) / 2.9));
+  group.rotation.y = 0.42 * (1 - e) - 0.2 * e;   // ends off-square so the two mirror faces read at different angles                  // starts turned, settles square to camera
+  group.position.y = lift;
+  uOpen.value = smoother(e * 6.0);
+  group.updateMatrixWorld(true);                      // parent first, or the shadow reads last frame's pose
+  const blobs = [];
+  for (const h of halves) {
+    const s = h.side;
+    h.pivot.rotation.y = s * ang;                      // x<0 half (cap faces +x) turns its cap to +z with rotY = -ang
+    h.pivot.position.x = s * (C * Math.sin(ang) + 0.07 * e);
+    h.pivot.position.z = 0.25 * e;
+    // footprint for the contact shadow: centroid of the half, in world xz
+    h.pivot.updateMatrixWorld();
+    const cen = new THREE.Vector3(s * A * 0.36, 0, 0).applyMatrix4(h.pivot.matrixWorld);
+    const yaw = group.rotation.y + h.pivot.rotation.y;
+    blobs.push([cen.x, cen.z, yaw]);
+  }
+  group.updateMatrixWorld(true);
+  const u = shadow.material.uniforms;
+  u.uB0.value.set(blobs[0][0], blobs[0][1], blobs[0][2], 0); u.uB1.value.set(blobs[1][0], blobs[1][1], blobs[1][2], 0);
+  u.uR0.value.set(A * 0.5, C * 0.8); u.uR1.value.set(A * 0.5, C * 0.8); u.uLift.value = lift;
+  renderer.render(scene, camera);
+};
+</script></body></html>

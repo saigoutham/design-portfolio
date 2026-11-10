@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Art proof A: pure-code watermelon</title>
+<style>
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{background:radial-gradient(120% 90% at 50% 38%, #fff7f8 0%, #fff0f2 48%, #f8dfe3 100%)}
+  canvas{display:block;width:1920px;height:1080px}
+</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const W = 1920, H = 1080;
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H, false);
+renderer.setClearColor(0x000000, 0);
+renderer.toneMapping = THREE.NeutralToneMapping;   // keeps the red hue (ACES pushes it orange)
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;     // soft on r182+
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.55;
+
+const camera = new THREE.PerspectiveCamera(26, W / H, 0.1, 100);
+
+// ---------- lights ----------
+const key = new THREE.DirectionalLight(0xfff3e8, 2.1);
+key.position.set(-4.5, 7, 5.5);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -4, right: 4, top: 3, bottom: -3, near: 1, far: 20 });
+key.shadow.radius = 6; key.shadow.normalBias = 0.02; key.shadow.bias = -0.0004;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xeaf3ff, 1.4);
+rim.position.set(3.5, 3.5, -5);
+scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xfff0f2, 0x9fb07a, 0.35));
+
+// ---------- shared GLSL ----------
+const NOISE = /* glsl */`
+vec3 wm_m289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 wm_m289(vec4 x){return x-floor(x*(1.0/289.0))*289.0;}
+vec4 wm_perm(vec4 x){return wm_m289(((x*34.0)+10.0)*x);}
+vec4 wm_tis(vec4 r){return 1.79284291400159-0.85373472095314*r;}
+float snoise(vec3 v){
+  const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+  vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+  vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g; vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+  vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+  i=wm_m289(i);
+  vec4 p=wm_perm(wm_perm(wm_perm(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+  float n_=0.142857142857; vec3 ns=n_*D.wyz-D.xzx;
+  vec4 j=p-49.0*floor(p*ns.z*ns.z); vec4 x_=floor(j*ns.z); vec4 y_=floor(j-7.0*x_);
+  vec4 x=x_*ns.x+ns.yyyy; vec4 y=y_*ns.x+ns.yyyy; vec4 h=1.0-abs(x)-abs(y);
+  vec4 b0=vec4(x.xy,y.xy); vec4 b1=vec4(x.zw,y.zw);
+  vec4 s0=floor(b0)*2.0+1.0; vec4 s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+  vec4 a0=b0.xzyw+s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw+s1.xzyw*sh.zzww;
+  vec3 p0=vec3(a0.xy,h.x); vec3 p1=vec3(a0.zw,h.y); vec3 p2=vec3(a1.xy,h.z); vec3 p3=vec3(a1.zw,h.w);
+  vec4 norm=wm_tis(vec4(dot(p0,p0),dot(p1,p1),dot(p2,p2),dot(p3,p3)));
+  p0*=norm.x;p1*=norm.y;p2*=norm.z;p3*=norm.w;
+  vec4 m=max(0.5-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m=m*m;
+  return 105.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
+}
+float fbm(vec3 p){float a=0.5,s=0.0;for(int i=0;i<5;i++){s+=a*snoise(p);p=p*2.03+vec3(1.7,9.2,3.1);a*=0.5;}return s;}
+float fbm3(vec3 p){float a=0.5,s=0.0;for(int i=0;i<3;i++){s+=a*snoise(p);p=p*2.11+vec3(4.3,1.1,7.7);a*=0.5;}return s;}
+// screen-space bump (same maths as three's perturbNormalArb), height is procedural
+vec3 wmBump(vec3 surf_pos, vec3 n, float h){
+  vec3 sx=dFdx(surf_pos), sy=dFdy(surf_pos);
+  vec3 r1=cross(sy,n), r2=cross(n,sx);
+  float det=dot(sx,r1);
+  vec2 dh=vec2(dFdx(h),dFdy(h));
+  vec3 grad=sign(det)*(dh.x*r1+dh.y*r2);
+  return normalize(abs(det)*n-grad);
+}
+`;
+
+// ---------- rind (outer skin) ----------
+const RIND = /* glsl */`
+void wmSurface(vec3 p, out vec3 col, out float rough, out float h, out vec3 emis){
+  vec3 q=p; q.z/=1.3;                         // back to unit sphere; z is the long axis
+  float phi=atan(q.y,q.x);
+  float w=fbm(q*1.3+uSeed)*1.5+fbm3(q*3.7+uSeed+4.0)*0.4;
+  float s=sin(phi*8.0+w*2.4+q.z*0.9);
+  float edge=fbm(q*13.0+uSeed)*0.55+snoise(q*38.0)*0.14;
+  float stripe=smoothstep(-0.08,0.22,s+edge-0.05);      // 1 = dark stripe, jagged irregular edge
+  vec3 dark=mix(vec3(0.010,0.036,0.007),vec3(0.022,0.060,0.012),smoothstep(-0.4,0.6,fbm3(q*18.0)));
+  float mott=fbm(q*6.0+uSeed+11.0);
+  vec3 light=mix(vec3(0.12,0.24,0.045),vec3(0.25,0.38,0.09),smoothstep(-0.5,0.6,mott));
+  // fine veining in the pale ground: ridged noise network
+  float v=abs(snoise(q*vec3(9.0,9.0,5.0)+w*0.8));
+  float v2=abs(snoise(q*vec3(22.0,22.0,12.0)+w));
+  float vein=(1.0-smoothstep(0.0,0.07,v))*0.5*smoothstep(-0.3,0.4,fbm3(q*4.0+2.0))+(1.0-smoothstep(0.0,0.06,v2))*0.25;
+  light=mix(light,vec3(0.07,0.15,0.03),clamp(vein,0.0,1.0)*0.7);
+  // pale speckle (lenticels)
+  float sp=smoothstep(0.72,0.86,snoise(q*70.0));
+  col=mix(light,dark,stripe);
+  col=mix(col,vec3(0.38,0.46,0.20),sp*0.35);
+  // field spot where it rested on the ground
+  float fs=smoothstep(0.80,0.95,dot(normalize(q),normalize(vec3(0.5,-0.4,-0.75)))+fbm3(q*5.0)*0.12);
+  col=mix(col,vec3(0.48,0.46,0.17),fs*0.55);
+  h=fbm3(q*8.0+uSeed)*0.6+snoise(q*26.0)*0.10-vein*0.25+stripe*0.08;
+  rough=0.34+fbm3(q*24.0)*0.08-stripe*0.05+fs*0.15;
+  emis=vec3(0.0);
+}
+`;
+
+// ---------- cut face ----------
+const FACE = /* glsl */`
+void wmSurface(vec3 p, out vec3 col, out float rough, out float h, out vec3 emis){
+  float r=length(p.xy);
+  vec2 dir=p.xy/max(r,1e-4);
+  float wob=fbm3(vec3(dir*2.5,uSeed))*0.012;
+  float rr=r+wob;
+  if(r>1.003) discard;
+  // fibrous radial grain: streaks running out from the heart
+  vec2 wdir=normalize(dir+0.10*vec2(snoise(vec3(p.xy*3.0,1.0)),snoise(vec3(p.xy*3.0,5.0))));
+  float fib=snoise(vec3(wdir*38.0,r*2.6+uSeed))*0.45+snoise(vec3(wdir*95.0,r*4.0+7.0))*0.22+snoise(vec3(wdir*12.0,r*1.4+3.0))*0.4;
+  fib*=smoothstep(0.08,0.55,r)*0.85;                       // fibres converge and fade at the heart
+  // soft sugary blotches and wet glints
+  float cell=fbm3(vec3(p.xy*9.0,uSeed*3.0));
+  float glint=snoise(vec3(p.xy*48.0+dir*fib*0.6,2.0));
+  // faint placental lines from heart to the seed ring (three locules)
+  float ang=atan(p.y,p.x)+uSeed;
+  float loc=1.0-smoothstep(0.0,0.06,abs(sin(ang*1.5+fbm3(vec3(p.xy*2.0,9.0))*0.6)));
+  loc*=smoothstep(0.08,0.3,r)*(1.0-smoothstep(0.5,0.7,r));
+  vec3 deep=vec3(0.66,0.028,0.05), bright=vec3(0.86,0.09,0.105), heart=vec3(0.93,0.22,0.21);
+  vec3 flesh=mix(deep,bright,clamp(0.5+fib*0.38+cell*0.45,0.0,1.0));
+  flesh=mix(flesh,heart,(1.0-smoothstep(0.0,0.5,rr))*0.45*(0.6+0.4*cell));
+  flesh=mix(flesh,vec3(0.95,0.45,0.42),loc*0.18);
+  float cell2=glint;
+  // zones toward the rind
+  vec3 pinkEdge=vec3(0.86,0.30,0.26);
+  vec3 pale=vec3(0.62,0.72,0.40);
+  vec3 green=vec3(0.13,0.26,0.05);
+  vec3 skin=vec3(0.012,0.045,0.010);
+  float fbf=fbm3(vec3(dir*6.0,3.0))*0.012;
+  col=flesh;
+  col=mix(col,pinkEdge,smoothstep(0.80+fbf,0.875+fbf,rr));
+  col=mix(col,pale,smoothstep(0.875+fbf,0.915,rr));
+  col=mix(col,green,smoothstep(0.955,0.975,rr));
+  col=mix(col,skin,smoothstep(0.978,0.990,rr));
+  float fleshM=1.0-smoothstep(0.84,0.9,rr);
+  float bandM=smoothstep(0.87,0.9,rr)*(1.0-smoothstep(0.95,0.97,rr));
+  // pale band has its own fine radial striation
+  col*=1.0+bandM*fib*0.06;
+  h=fleshM*(fib*0.7+cell*0.5+glint*0.12)+bandM*fib*0.2;
+  rough=mix(0.42,0.10+0.26*smoothstep(-0.4,0.9,glint),fleshM);
+  // fake subsurface: light bleeding through the thin pale band, and a little through flesh
+  emis=bandM*vec3(0.30,0.36,0.17)*0.22+fleshM*vec3(0.45,0.02,0.03)*0.10;
+}
+`;
+
+function patchedMaterial(params, surfaceGLSL, seed, bump) {
+  const m = new THREE.MeshPhysicalMaterial(params);
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uSeed = { value: seed };
+    sh.uniforms.uBump = { value: bump };
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vObj;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvObj = position;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vObj;\nuniform float uSeed;\nuniform float uBump;\n' + NOISE + surfaceGLSL)
+      .replace('#include <color_fragment>', '#include <color_fragment>\nvec3 wmCol; float wmRough; float wmH; vec3 wmEmis;\nwmSurface(vObj, wmCol, wmRough, wmH, wmEmis);\ndiffuseColor.rgb = wmCol;')
+      .replace('#include <roughnessmap_fragment>', 'float roughnessFactor = wmRough;')
+      .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>\nnormal = wmBump(-vViewPosition, normal, wmH * uBump);')
+      .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += wmEmis;');
+  };
+  m.customProgramCacheKey = () => 'wm-' + (surfaceGLSL === FACE ? 'face' : 'rind');
+  return m;
+}
+
+// ---------- geometry ----------
+const R = 1, LONG = 1.3;
+const halfGeo = new THREE.SphereGeometry(R, 192, 96, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2);
+halfGeo.rotateX(Math.PI / 2);          // dome now extends to -z, cut plane at z=0
+halfGeo.scale(1, 1, LONG);
+// gentle organic irregularity in the silhouette
+{
+  const pos = halfGeo.attributes.position, v = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i);
+    const k = 1 + 0.012 * Math.sin(v.x * 3.1 + v.z * 1.7) + 0.008 * Math.sin(v.y * 4.3 - v.z * 2.2);
+    pos.setXYZ(i, v.x * k, v.y * k, v.z);
+  }
+  halfGeo.computeVertexNormals();
+}
+const faceGeo = new THREE.PlaneGeometry(2.02, 2.02, 220, 220);
+{
+  const pos = faceGeo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), r2 = Math.min(1, x * x + y * y);
+    const z = (0.010 * Math.sin(x * 4.1 + y * 2.3) + 0.007 * Math.sin(y * 6.7 - x * 3.1) + 0.004 * Math.sin(x * 11.0 + y * 9.0)) * (1 - r2);
+    pos.setZ(i, z);
+  }
+  faceGeo.computeVertexNormals();
+}
+
+const seedGeo = new THREE.SphereGeometry(1, 24, 16);
+{ // teardrop: pinch one end
+  const pos = seedGeo.attributes.position, v = new THREE.Vector3();
+  for (let i = 0; i < pos.count; i++) {
+    v.fromBufferAttribute(pos, i);
+    const t = (v.y + 1) / 2;                  // 0 bottom .. 1 tip
+    const w = 0.55 + 0.45 * Math.sin(Math.PI * Math.pow(1 - t, 0.8) * 0.5 + 0.4);
+    pos.setXYZ(i, v.x * w * (1 - 0.35 * t), v.y, v.z * w);
+  }
+  seedGeo.computeVertexNormals();
+}
+const seedMat = new THREE.MeshPhysicalMaterial({ color: 0x24120a, roughness: 0.35, clearcoat: 1, clearcoatRoughness: 0.04, specularIntensity: 1.0 });
+
+function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+
+function makeHalf(seed) {
+  const g = new THREE.Group();
+  const rind = new THREE.Mesh(halfGeo, patchedMaterial({ color: 0xffffff, clearcoat: 0.35, clearcoatRoughness: 0.35, specularIntensity: 0.6 }, RIND, seed, 0.007));
+  rind.castShadow = true; rind.receiveShadow = true;
+  const face = new THREE.Mesh(faceGeo, patchedMaterial({ color: 0xffffff, clearcoat: 0.6, clearcoatRoughness: 0.1, specularIntensity: 0.8, envMapIntensity: 1.6 }, FACE, seed, 0.006));
+  face.receiveShadow = true;
+  g.add(rind, face);
+  // seeds: two jittered rings, long axis radial, half-embedded
+  const rand = rng(seed * 997 + 13);
+  const N = 30;
+  const seeds = new THREE.InstancedMesh(seedGeo, seedMat, N);
+  const m = new THREE.Matrix4(), q = new THREE.Quaternion(), e = new THREE.Euler(), s = new THREE.Vector3(), p = new THREE.Vector3();
+  const c = new THREE.Color(); const placed = [];
+  let i = 0, guard = 0;
+  while (i < N && guard++ < 2000) {
+    const a = rand() * Math.PI * 2;
+    const r = 0.56 + 0.09 * Math.sin(3 * (a + seed)) + (rand() - 0.5) * 0.2;
+    const x = Math.cos(a) * r, y = Math.sin(a) * r;
+    if (placed.some(([px, py]) => (px - x) ** 2 + (py - y) ** 2 < 0.085 ** 2)) continue;
+    placed.push([x, y]);
+    const len = 0.046 + rand() * 0.024;
+    p.set(x, y, 0.0);
+    e.set((rand() - 0.5) * 0.7, (rand() - 0.5) * 0.7, a - Math.PI / 2 + (rand() - 0.5) * 0.9);
+    q.setFromEuler(e);
+    s.set(len * 0.6, len, len * 0.34);
+    m.compose(p, q, s);
+    seeds.setMatrixAt(i, m);
+    const pale = rand() < 0.15;
+    seeds.setColorAt(i, pale ? c.setRGB(4.0, 3.2, 2.2) : c.setRGB(0.8 + rand() * 0.9, 0.7 + rand() * 0.5, 0.6 + rand() * 0.3));
+    i++;
+  }
+  seeds.count = i;
+  seeds.castShadow = false;
+  g.add(seeds);
+  return g;
+}
+
+const left = makeHalf(2.0), right = makeHalf(5.0);
+scene.add(left, right);
+
+// ---------- ground: shadow catcher + soft contact blob ----------
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ color: 0x5a2a33, opacity: 0.16 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
+scene.add(ground);
+const blobMat = new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false,
+  uniforms: {},
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `varying vec2 vUv; void main(){ float d=length((vUv-0.5)*2.0); float a=exp(-d*d*5.0)*0.42+exp(-d*d*40.0)*0.25; gl_FragColor=vec4(0.30,0.10,0.13,a); }`,
+});
+function blob() { const b = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), blobMat); b.rotation.x = -Math.PI / 2; b.position.y = 0.002; b.renderOrder = 1; scene.add(b); return b; }
+const blobL = blob(), blobR = blob();
+
+// ---------- motion: pure function of t ----------
+const smooth = (a, b, x) => { const k = Math.min(1, Math.max(0, (x - a) / (b - a))); return k * k * (3 - 2 * k); };
+window.renderAt = (t) => {
+  const open = 0.22 + 0.5 * smooth(0, 3, t);              // halves swing open like a book
+  const gap = Math.sin(open) + 0.03 + 0.12 * smooth(0, 3, t);
+  right.rotation.set(0, -Math.PI / 2 + open, 0);
+  left.rotation.set(0, Math.PI / 2 - open, 0);
+  right.position.set(gap, R, 0);
+  left.position.set(-gap, R, 0);
+  // contact blobs follow each half's lowest region (centre of the dome footprint)
+  for (const [half, b] of [[left, blobL], [right, blobR]]) {
+    const back = new THREE.Vector3(0, 0, -LONG * 0.45).applyEuler(half.rotation).add(half.position);
+    b.position.x = back.x; b.position.z = back.z;
+    b.scale.set(2.4, 2.4, 1);
+  }
+  const ca = -0.12 + 0.12 * Math.sin(t * 0.5);
+  camera.position.set(Math.sin(ca) * 8.4, 3.4 - 0.2 * smooth(0, 3, t), Math.cos(ca) * 8.4);
+  camera.lookAt(0, 0.85, 0);
+  renderer.render(scene, camera);
+};
+
+window.__ready = new Promise((res) => {
+  renderer.compile(scene, camera);
+  window.renderAt(0);
+  requestAnimationFrame(() => res(true));
+});
+</script>
+</body>
+</html>
