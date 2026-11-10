@@ -31,7 +31,7 @@ const tools = {
 };
 const sourced = Object.entries(net).filter(([k, v]) => v && k !== "replicate").map(([k]) => k);
 const rungs = {
-  code: { open: true, note: "type, shaders, particles, generative and data visuals; HyperFrames renders them to film" },
+  code: { open: true, limited: !tools.chromium, note: tools.chromium ? "type, shaders, particles, generative and data visuals; HyperFrames renders them to film" : "LIMITED: no browser, so shaders and HyperFrames can't be previewed or filmed; offline numpy renders scored 4-5/10. Not enough on its own for a hero" },
   generated: { open: keys.length > 0 && (net.replicate || keys.some((k) => k !== "REPLICATE_API_TOKEN")), note: keys.length ? `keys: ${keys.join(", ")}` : "no image API key in this workspace (set REPLICATE_API_TOKEN, then: npm run setup -- --with imagegen)" },
   sourced: { open: sourced.length > 0, note: sourced.length ? `reachable: ${sourced.join(", ")}` : "no free-licence media site is reachable from here; the user downloads the files" },
   rendered: { open: tools.blender, note: tools.blender ? (tools.gpu ? "Blender with GPU" : `Blender on ${tools.cores} CPU cores: hard-surface stills only (can, glass, pack); never an organic hero, never a long sequence`) : "no Blender" },
@@ -41,5 +41,7 @@ const out = { checked: new Date().toISOString().slice(0, 10), keys, net, tools, 
 fs.mkdirSync(path.join(root, "system"), { recursive: true });
 fs.writeFileSync(path.join(root, "system", "capabilities.json"), JSON.stringify(out, null, 2) + "\n");
 console.log("Art ladder in this workspace (system/capabilities.json)");
-for (const [k, v] of Object.entries(rungs)) console.log(`  ${v.open ? "open  " : "closed"} ${k.padEnd(10)} ${v.note}`);
+for (const [k, v] of Object.entries(rungs)) console.log(`  ${v.limited ? "limited" : v.open ? "open   " : "closed "} ${k.padEnd(10)} ${v.note}`);
+const strong = Object.entries(rungs).filter(([k, v]) => v.open && !v.limited && k !== "supplied" && !(k === "rendered" && !tools.gpu));
+if (!strong.length) console.log("\nNo rung here can make award-level hero art on its own. Ask for supplied art (or an image API key) in phase 1, before any art agent runs.");
 console.log(`Tools: ffmpeg ${tools.ffmpeg ? "ok" : "missing"}, browser ${tools.chromium ? "ok" : "missing"}, background removal ${tools.rembg ? "ok" : "missing (pip install rembg)"}`);

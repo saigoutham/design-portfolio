@@ -66,6 +66,7 @@ There is one source of design values per site: `DESIGN.md`, written with impecca
 - **Launch independent agents in one message** so they run at once. Sequential launches of independent work are a bug.
 - **Cheapest model that can do it:** search, checks and diff review on `haiku`; building on `sonnet`; art judgement and the final verdict stay with you.
 - **Every agent prompt has:** the skill to load by name (never pasted), input paths, the one output file, a cap (default 40k tokens, 2 attempts), and "hand back: decisions, files, evidence, blockers, in under 150 words".
+- **Caps are instructions, not limits:** agents overran 40k caps to 73-86k. Give art agents one attempt each and a smaller brief; launch a second round only after you've looked.
 - **You look at every image yourself** before trusting an agent's verdict on it.
 - Build agents work in git worktrees; cavecrew-reviewer reads each diff before it merges.
 
