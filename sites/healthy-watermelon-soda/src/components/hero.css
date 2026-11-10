@@ -97,3 +97,8 @@
 .wm-pourText { position: absolute; left: 4vw; top: 5svh; margin: 0; z-index: 3; font-family: var(--primitive-font-display); font-weight: 700; font-size: min(5vw, 8svh); line-height: .95; letter-spacing: -.02em; color: var(--color-primary); }
 @media (max-width: 720px) { .wm-glass, .wm-bubbles { height: 54svh; bottom: 16svh; } .wm-pourText { font-size: 8.4vw; top: 5.6svh; left: 5vw; } }
 @media (prefers-reduced-motion: reduce) { .wm-bubbles span { animation: none; opacity: .0; } }
+
+.wm-404 { min-height: 100svh; display: grid; align-content: center; justify-items: start; gap: 24px; padding: 6vw; background: var(--color-ground-fizz); }
+.wm-404n { margin: 0; font-family: var(--primitive-font-display); font-weight: 700; font-size: min(30vw, 40svh); line-height: .8; letter-spacing: -.04em; color: var(--color-primary); }
+.wm-404h { margin: 0; font-family: var(--primitive-font-display); font-weight: 700; font-size: min(8vw, 9svh); letter-spacing: -.03em; color: var(--color-ink); }
+.wm-404 .wm-cta { position: static; }
