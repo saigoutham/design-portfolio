@@ -10,3 +10,5 @@ All four are user-generated in Nano Banana (Google Gemini image), supplied by Go
 | assets-src/photos/seeds-macro.webp | Macro of seeds in wet flesh | Optional, bubble beat only. Seeds read flat like pumpkin seeds. 2528x1696 |
 
 Prompts: used the four prompts given in the 2026-11-10 session (whole first, others referencing it). Paste the exact wording here when the user shares it.
+
+- glass.png (assets-src/photos): user-generated in Nano Banana, same series as the fruit stills. AI-generated. Cropped to drop the Gemini sparkle, levelled to white, edge-feathered, shown with mix-blend-mode: multiply on the blush ground. Variants public/img/glass-560/1000.webp.

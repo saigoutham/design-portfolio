@@ -27,6 +27,13 @@ const SEEDS = [
 
 const clamp = (x: number, a = 0, b = 1) => Math.min(Math.max(x, a), b);
 const ss = (x: number) => { const c = clamp(x); return c * c * (3 - 2 * c); };
+const BUBBLES = Array.from({ length: 22 }, (_, i) => ({
+  x: 6 + ((i * 37) % 88),
+  s: 4 + ((i * 53) % 9),
+  t: 3.2 + ((i * 29) % 30) / 10,
+  d: ((i * 17) % 40) / 10,
+}));
+
 const pct = (n: number) => `${n.toFixed(2)}%`;
 
 export default function Hero() {
@@ -36,7 +43,7 @@ export default function Hero() {
     () => {
       const q = gsap.utils.selector(root);
       const mm = gsap.matchMedia();
-      const state = { t: 0, part: 0, seed: 0, col: 0 };
+      const state = { t: 0, part: 0, seed: 0, col: 0, pour: 0 };
 
       const paint = () => {
         const tip = TOP + (BOTTOM - TOP) * state.t; // knife tip, canvas %
@@ -90,7 +97,20 @@ export default function Hero() {
         gsap.set(q("[data-head-l]"), { opacity: 1 - ss(c * 2.2), xPercent: -c * 30 });
         gsap.set(q("[data-fact]"), { opacity: 1 - ss(c * 2) });
         gsap.set(q("[data-stage]"), { opacity: 1 - ss((c - 0.05) / 0.5), y: c * 40 });
-        gsap.set(q("[data-close]"), { opacity: ss((c - 0.78) / 0.22), y: (1 - ss((c - 0.78) / 0.22)) * 24 });
+        const closeIn = ss((c - 0.78) / 0.22);
+        const closeOut = ss(state.pour / 0.25);
+        gsap.set(q("[data-close]"), { opacity: closeIn * (1 - closeOut), y: (1 - closeIn) * 24 - closeOut * 30 });
+
+        // pour: the glass fills from the bottom, bubbles start to rise
+        const fill = ss((state.pour - 0.12) / 0.7);
+        const pourIn = ss((state.pour - 0.05) / 0.2);
+        gsap.set(q("[data-glass]"), {
+          "--fill": `${(fill * 112).toFixed(1)}%`,
+          opacity: pourIn,
+          y: (1 - pourIn) * 40,
+        });
+        gsap.set(q("[data-bubbles]"), { opacity: ss((state.pour - 0.35) / 0.4), visibility: state.pour > 0.3 ? "visible" : "hidden" });
+        gsap.set(q("[data-pour-text]"), { opacity: ss((state.pour - 0.75) / 0.25), y: (1 - ss((state.pour - 0.75) / 0.25)) * 16 });
       };
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -106,7 +126,9 @@ export default function Hero() {
           .to(state, { part: 1, duration: 0.14, ease: "power2.out" })
           .to(state, { seed: 1, duration: 0.22 })
           .to(state, { col: 1, duration: 0.18 })
-          .to(state, { col: 1, duration: 0.06 });
+          .to(state, { col: 1, duration: 0.06 })
+          .to(state, { pour: 1, duration: 0.32 })
+          .to(state, { pour: 1, duration: 0.06 });
 
         gsap.from(q("[data-enter]"), { y: 28, opacity: 0, duration: 0.64, ease: "expo.out", stagger: 0.08 });
       });
@@ -114,6 +136,8 @@ export default function Hero() {
       mm.add("(prefers-reduced-motion: reduce)", () => {
         state.t = 1;
         state.part = 1;
+        state.col = 1;
+        state.pour = 1;
         paint();
       });
     },
@@ -159,6 +183,17 @@ export default function Hero() {
         <div className="wm-line" data-line aria-hidden="true" />
 
         <p className="wm-close" data-close style={{ opacity: 0 }}>You made the cut.</p>
+
+        <div className="wm-glass" data-glass style={{ opacity: 0 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/img/glass-1000.webp" srcSet="/img/glass-560.webp 560w, /img/glass-1000.webp 1000w" sizes="(max-width: 720px) 60vw, 36svh" alt="A tall glass of pink watermelon soda with ice and a wedge of melon on the rim" width={1000} height={1393} decoding="async" fetchPriority="low" />
+        </div>
+        <div className="wm-bubbles" data-bubbles aria-hidden="true" style={{ visibility: "hidden", opacity: 0 }}>
+          {BUBBLES.map((b, i) => (
+            <span key={i} style={{ left: `${22 + b.x * 0.4}%`, width: b.s, height: b.s, animationDuration: `${b.t}s`, animationDelay: `-${b.d}s` }} />
+          ))}
+        </div>
+        <p className="wm-pourText" data-pour-text style={{ opacity: 0 }}>Cut it. Pour it.</p>
 
         <p className="wm-fact wm-factL" data-fact data-enter>
           A concept watermelon soda. No added sugar.
