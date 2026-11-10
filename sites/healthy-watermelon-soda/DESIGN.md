@@ -8,7 +8,7 @@ A real watermelon on two flat grounds, cut by the page's own line. Bright, tacti
 
 ## World
 
-**Real 3D, rendered.** Per scroll-craft `worlds.md` and the approved-collection rule "a real renderer when material response matters": the wet cut face, subsurface flesh and glossy seeds are the product, so the fruit is a Blender model rendered in Cycles. It is delivered as scroll-scrubbed video (image sequences encoded with `encode.sh`), not live WebGL. Phones get their own vertical render. Grounds are flat colour; no gradients, no glass, no glow.
+**Photographic, AI-generated stills (changed 2026-11-10).** The Blender fruit failed the floor, so the fruit is now four Nano Banana stills supplied by Goutham (`docs/assets.md`), matted to transparent layers by `assets-src/prep_stills.py` and animated by scroll with GSAP: the knife line reveals the parted halves over the whole fruit. Label the art as AI-generated wherever the site credits it. Grounds are flat colour; no gradients, no glass, no glow. The contact shadow is a soft ellipse in the page. Phones need their own vertical stills (see decisions.md).
 
 ## What the tokens are for
 

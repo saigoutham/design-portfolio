@@ -1,0 +1,75 @@
+/* Hero plan from DESIGN.md: two flat grounds, the fruit across the divider, one knife line. */
+.wm-hero { position: relative; height: 420vh; }
+.wm-pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+
+.wm-ground { position: absolute; top: 0; bottom: 0; }
+.wm-fruitGround { left: 0; width: 50%; background: var(--color-ground-fruit); }
+.wm-fizzGround { right: 0; width: 50%; background: var(--color-ground-fizz); }
+
+.wm-head {
+  position: absolute; top: 5svh; margin: 0;
+  font-family: var(--primitive-font-display); font-weight: 700;
+  font-size: min(8.2vw, 15svh); line-height: 0.86; letter-spacing: -0.03em;
+  text-wrap: balance; z-index: 3;
+}
+.wm-headL { left: 4vw; color: var(--color-ink); }
+.wm-headR { right: 4vw; text-align: right; color: var(--color-primary); }
+.wm-br { display: none; }
+
+/* stage: 2528 x 1530 canvas, cut column is exactly its centre */
+.wm-stage {
+  position: absolute; left: 50%; bottom: 11svh; transform: translateX(-50%);
+  width: min(78vw, 118svh); aspect-ratio: 2528 / 1530; z-index: 2;
+}
+.wm-shadow {
+  position: absolute; left: 17%; right: 20%; bottom: 3.5%; height: 7%;
+  background: radial-gradient(ellipse at center, rgba(42,14,18,0.38), rgba(42,14,18,0) 70%);
+  filter: blur(6px);
+}
+.wm-whole, .wm-halves, .wm-half { position: absolute; display: block; }
+.wm-whole { inset: 0; width: 100%; height: 100%; --f: 2.2%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--y, 9%) - var(--f)), #000 calc(var(--y, 9%) + var(--f)));
+  mask-image: linear-gradient(to bottom, transparent calc(var(--y, 9%) - var(--f)), #000 calc(var(--y, 9%) + var(--f))); }
+.wm-halves { inset: 0; --f: 2.2%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--y, 9%) - var(--f)), transparent calc(var(--y, 9%) + var(--f)));
+  mask-image: linear-gradient(to bottom, #000 calc(var(--y, 9%) - var(--f)), transparent calc(var(--y, 9%) + var(--f))); }
+.wm-half { top: 0; height: 100%; width: 50%; }
+.wm-halfL { left: 0; transform-origin: 14% 92%; }
+.wm-halfR { left: 50%; transform-origin: 86% 92%; }
+
+.wm-tick {
+  position: absolute; left: 50%; width: 22px; height: 4px; margin-left: -11px; margin-top: -2px;
+  background: var(--divider-line); border-radius: 2px; z-index: 4;
+}
+.wm-line {
+  position: absolute; top: 0; bottom: 0; left: 50%; width: var(--divider-width);
+  margin-left: calc(var(--divider-width) / -2); background: var(--divider-line); z-index: 3;
+}
+
+.wm-fact {
+  position: absolute; bottom: 4svh; margin: 0; max-width: 40vw;
+  color: var(--color-ink-muted); font-weight: 500; text-wrap: balance; z-index: 3;
+}
+.wm-factL { left: 4vw; }
+.wm-cta {
+  position: absolute; bottom: 3.4svh; z-index: 3; display: inline-flex; align-items: center;
+  min-height: 48px; padding: 0 28px; border-radius: var(--cta-radius);
+  background: var(--cta-bg); color: var(--cta-text); text-decoration: none; font-weight: 500;
+  transition: transform var(--primitive-motion-duration-ui) var(--primitive-motion-ease-arrive);
+}
+.wm-cta:hover { transform: translateY(-2px); }
+.wm-ctaR { right: 4vw; }
+
+@media (max-width: 720px) {
+  .wm-hero { height: 380vh; }
+  .wm-head { font-size: 15.5vw; top: 4svh; }
+  .wm-headL { left: 5vw; }
+  .wm-headR { right: 5vw; }
+  .wm-br { display: inline; }
+  .wm-stage { width: 124vw; bottom: 29svh; }
+  .wm-fact { max-width: 44vw; font-size: 15px; bottom: 4svh; }
+  .wm-factL { left: 5vw; }
+  .wm-ctaR { right: 5vw; padding: 0 16px; font-size: 14px; min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: reduce) { .wm-hero { height: 100svh; } }
