@@ -5,7 +5,8 @@
 //   node .claude/skills/award-site/scripts/setup.mjs --with 3d,video install on-demand packs
 //   node .claude/skills/award-site/scripts/setup.mjs --vendor        re-copy committed skills from their pinned commits (maintainers)
 //
-// Packs: research, 3d, video, library, compress, manim, gstack, rea.
+// Packs: research, 3d, video, library, compress, manim, gstack, rea, council.
+//   node .claude/skills/award-site/scripts/setup.mjs --remove council  remove a pack's skills and agents
 // Everything is fetched at the exact commit pinned in skills.lock.json, never "latest".
 
 import { execSync } from "node:child_process";
@@ -37,6 +38,10 @@ const args = process.argv.slice(2);
 const flag = (name) => args.includes(name);
 const withArg = (() => {
   const i = args.indexOf("--with");
+  return i >= 0 && args[i + 1] ? args[i + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
+})();
+const removeArg = (() => {
+  const i = args.indexOf("--remove");
   return i >= 0 && args[i + 1] ? args[i + 1].split(",").map((s) => s.trim()).filter(Boolean) : [];
 })();
 
@@ -110,8 +115,17 @@ function installPacks(packs) {
       continue;
     }
     const items = lock.skills.filter((s) => s.pack === pack);
-    if (!items.length) { console.log(`Unknown pack: ${pack}`); continue; }
+    const agents = lock.agents.filter((a) => a.pack === pack);
+    if (!items.length && !agents.length) { console.log(`Unknown pack: ${pack}`); continue; }
     for (const s of items) { install(s, skillDir(s.name)); console.log(`installed ${pack.padEnd(8)} ${s.name}`); }
+    for (const a of agents) { install(a, agentFile(a.name)); console.log(`installed ${pack.padEnd(8)} agent ${a.name}`); }
+  }
+}
+
+function removePacks(packs) {
+  for (const pack of packs) {
+    for (const s of lock.skills.filter((s) => s.pack === pack)) { fs.rmSync(skillDir(s.name), { recursive: true, force: true }); console.log(`removed ${pack.padEnd(8)} ${s.name}`); }
+    for (const a of lock.agents.filter((a) => a.pack === pack)) { fs.rmSync(agentFile(a.name), { force: true }); console.log(`removed ${pack.padEnd(8)} agent ${a.name}`); }
   }
 }
 
@@ -158,6 +172,8 @@ if (flag("--help") || flag("-h")) {
   vendorAll();
 } else if (withArg.length) {
   installPacks(withArg);
+} else if (removeArg.length) {
+  removePacks(removeArg);
 } else {
   check();
 }

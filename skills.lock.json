@@ -2,100 +2,550 @@
   "version": 1,
   "about": "Every third-party skill, agent and reference repo used by award-site, pinned to the commit that was read and reviewed. 'vendored' items are committed to this repo. 'pack' items are fetched on demand by `npm run setup -- --with <pack>` (too large, unlicensed for redistribution, or rarely needed). 'fetch' library items are downloaded because their content can't be redistributed in a public repo. Change a commit only after reading what changed upstream.",
   "sources": {
-    "obra/superpowers": { "commit": "22f0b463e7a5e579904dd6211a520321035526f7", "license": "MIT" },
-    "mattpocock/skills": { "commit": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d", "license": "MIT" },
-    "nextlevelbuilder/ui-ux-pro-max-skill": { "commit": "4f2dbb67e64969a9a30ab00742f2d55d66ddec2b", "license": "MIT" },
-    "Leonxlnx/taste-skill": { "commit": "f6b76575f949707b4e3c37cd86cb44b0b98643e8", "license": "MIT" },
-    "pbakaus/impeccable": { "commit": "4b6b80f9c21cac9376deadaa2ef4924f341b8b4d", "license": "Apache-2.0" },
-    "emilkowalski/skill": { "commit": "5206a950b715e0cabe7043ea0b2304332b91494e", "license": "MIT" },
-    "greensock/gsap-skills": { "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760", "license": "MIT" },
-    "juliobsz/skills": { "commit": "add880bd6ec9f5592a1482846fc0dd282c9161bc", "license": "MIT" },
-    "coreyhaines31/marketingskills": { "commit": "96798cf38736ecdba015a1d2b0521b0c8f8f41dd", "license": "MIT" },
-    "DietrichGebert/ponytail": { "commit": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846", "license": "MIT" },
-    "vercel-labs/skills": { "commit": "d3701c11b1101251af14c9d148f026e1a47ebe17", "license": "MIT" },
-    "D4Vinci/Scrapling": { "commit": "30cadb56a407fd631391441709ab792ebca52b08", "license": "BSD-3-Clause" },
-    "JuliusBrussee/caveman": { "commit": "3dc497a7f858c774d6e15b25e8c6120ef3a0eda8", "license": "Apache-2.0" },
-    "Yeachan-Heo/oh-my-claudecode": { "commit": "19e6daa3647ec9609a5ff11e9199c631167cbc3a", "license": "MIT" },
-    "mvanhorn/last30days-skill": { "commit": "71dc2a1529f23dfe7b0d0e3b3e11d4a7e8afd428", "license": "MIT" },
-    "enzed/r3f-skills": { "commit": "4a11805f097396fb0b893172efd1e359e8051f92", "license": "MIT (stated in README; no LICENSE file)" },
-    "heygen-com/hyperframes": { "commit": "c1e96a45b24c66c96ed9151075f5262d4a3614dc", "license": "Apache-2.0" },
-    "remotion-dev/skills": { "commit": "a2824c67f8b4585c294a8101db9f9f0ad3c643f8", "license": "none published" },
-    "adithya-s-k/manim_skill": { "commit": "cef045011722d285692e3381d12d4d637da56e18", "license": "MIT" },
-    "nateherkai/scroll-craft": { "commit": "75d81f74e83692add18cd7a8a8e078b8a887a579", "license": "MIT" },
-    "Motionsites-AI/claude-skill": { "commit": "faa30d512e3973e58675c72101a7ef42ed37ae83", "license": "MIT for instructions and code; example prompts and media (c) MotionSites" },
-    "elayadesign/ai-design-skills": { "commit": "456d9e0d3e2d84c748bb143c6ca3d90c45e16213", "license": "MIT" },
-    "cabralorenzo/bencho": { "commit": "c65992417427bb09e661674ffa800bef29adef49", "license": "MIT for free blocks and sounds; Bencho name, goat and photographs excluded" }
+    "obra/superpowers": {
+      "commit": "22f0b463e7a5e579904dd6211a520321035526f7",
+      "license": "MIT"
+    },
+    "mattpocock/skills": {
+      "commit": "4ae2317ddb22b046e26455e4f9c9b3aaaf62212d",
+      "license": "MIT"
+    },
+    "nextlevelbuilder/ui-ux-pro-max-skill": {
+      "commit": "4f2dbb67e64969a9a30ab00742f2d55d66ddec2b",
+      "license": "MIT"
+    },
+    "Leonxlnx/taste-skill": {
+      "commit": "f6b76575f949707b4e3c37cd86cb44b0b98643e8",
+      "license": "MIT"
+    },
+    "pbakaus/impeccable": {
+      "commit": "4b6b80f9c21cac9376deadaa2ef4924f341b8b4d",
+      "license": "Apache-2.0"
+    },
+    "emilkowalski/skill": {
+      "commit": "5206a950b715e0cabe7043ea0b2304332b91494e",
+      "license": "MIT"
+    },
+    "greensock/gsap-skills": {
+      "commit": "aed9cfd3277740755f6bfc1155c7aa645403b760",
+      "license": "MIT"
+    },
+    "juliobsz/skills": {
+      "commit": "add880bd6ec9f5592a1482846fc0dd282c9161bc",
+      "license": "MIT"
+    },
+    "coreyhaines31/marketingskills": {
+      "commit": "96798cf38736ecdba015a1d2b0521b0c8f8f41dd",
+      "license": "MIT"
+    },
+    "DietrichGebert/ponytail": {
+      "commit": "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846",
+      "license": "MIT"
+    },
+    "vercel-labs/skills": {
+      "commit": "d3701c11b1101251af14c9d148f026e1a47ebe17",
+      "license": "MIT"
+    },
+    "D4Vinci/Scrapling": {
+      "commit": "30cadb56a407fd631391441709ab792ebca52b08",
+      "license": "BSD-3-Clause"
+    },
+    "JuliusBrussee/caveman": {
+      "commit": "3dc497a7f858c774d6e15b25e8c6120ef3a0eda8",
+      "license": "Apache-2.0"
+    },
+    "Yeachan-Heo/oh-my-claudecode": {
+      "commit": "19e6daa3647ec9609a5ff11e9199c631167cbc3a",
+      "license": "MIT"
+    },
+    "mvanhorn/last30days-skill": {
+      "commit": "71dc2a1529f23dfe7b0d0e3b3e11d4a7e8afd428",
+      "license": "MIT"
+    },
+    "enzed/r3f-skills": {
+      "commit": "4a11805f097396fb0b893172efd1e359e8051f92",
+      "license": "MIT (stated in README; no LICENSE file)"
+    },
+    "heygen-com/hyperframes": {
+      "commit": "c1e96a45b24c66c96ed9151075f5262d4a3614dc",
+      "license": "Apache-2.0"
+    },
+    "remotion-dev/skills": {
+      "commit": "a2824c67f8b4585c294a8101db9f9f0ad3c643f8",
+      "license": "none published"
+    },
+    "adithya-s-k/manim_skill": {
+      "commit": "cef045011722d285692e3381d12d4d637da56e18",
+      "license": "MIT"
+    },
+    "nateherkai/scroll-craft": {
+      "commit": "75d81f74e83692add18cd7a8a8e078b8a887a579",
+      "license": "MIT"
+    },
+    "Motionsites-AI/claude-skill": {
+      "commit": "faa30d512e3973e58675c72101a7ef42ed37ae83",
+      "license": "MIT for instructions and code; example prompts and media (c) MotionSites"
+    },
+    "elayadesign/ai-design-skills": {
+      "commit": "456d9e0d3e2d84c748bb143c6ca3d90c45e16213",
+      "license": "MIT"
+    },
+    "cabralorenzo/bencho": {
+      "commit": "c65992417427bb09e661674ffa800bef29adef49",
+      "license": "MIT for free blocks and sounds; Bencho name, goat and photographs excluded"
+    },
+    "0xNyk/council-of-high-intelligence": {
+      "commit": "79a36a8561c34df4f2df172bd5b0fd5f3e174834",
+      "license": "MIT"
+    }
   },
   "skills": [
-    { "name": "brainstorming", "source": "obra/superpowers", "path": "skills/brainstorming", "mode": "vendored" },
-    { "name": "writing-plans", "source": "obra/superpowers", "path": "skills/writing-plans", "mode": "vendored" },
-    { "name": "subagent-driven-development", "source": "obra/superpowers", "path": "skills/subagent-driven-development", "mode": "vendored" },
-    { "name": "verification-before-completion", "source": "obra/superpowers", "path": "skills/verification-before-completion", "mode": "vendored" },
-    { "name": "systematic-debugging", "source": "obra/superpowers", "path": "skills/systematic-debugging", "mode": "vendored" },
-    { "name": "test-driven-development", "source": "obra/superpowers", "path": "skills/test-driven-development", "mode": "vendored" },
-    { "name": "using-git-worktrees", "source": "obra/superpowers", "path": "skills/using-git-worktrees", "mode": "vendored" },
-    { "name": "finishing-a-development-branch", "source": "obra/superpowers", "path": "skills/finishing-a-development-branch", "mode": "vendored" },
-    { "name": "grilling", "source": "mattpocock/skills", "path": "skills/productivity/grilling", "mode": "vendored" },
-    { "name": "grill-me", "source": "mattpocock/skills", "path": "skills/productivity/grill-me", "mode": "vendored" },
-    { "name": "ui-ux-pro-max", "source": "nextlevelbuilder/ui-ux-pro-max-skill", "path": ".claude/skills/ui-ux-pro-max", "mode": "vendored" },
-    { "name": "design-system", "source": "nextlevelbuilder/ui-ux-pro-max-skill", "path": ".claude/skills/design-system", "mode": "vendored" },
-    { "name": "design-taste-frontend", "source": "Leonxlnx/taste-skill", "path": "skills/taste-skill", "mode": "pack", "pack": "taste", "why": "38 MB of image assets; only its rules are used, as a check at Direction" },
-    { "name": "impeccable", "source": "pbakaus/impeccable", "path": ".claude/skills/impeccable", "mode": "vendored" },
-    { "name": "emil-design-eng", "source": "emilkowalski/skill", "path": "skills/emil-design-eng", "mode": "vendored" },
-    { "name": "choreograph", "source": "emilkowalski/skill", "path": "skills/choreograph", "mode": "vendored" },
-    { "name": "review-animations", "source": "emilkowalski/skill", "path": "skills/review-animations", "mode": "vendored" },
-    { "name": "animation-performance", "source": "emilkowalski/skill", "path": "skills/animation-performance", "mode": "vendored" },
-    { "name": "gsap-core", "source": "greensock/gsap-skills", "path": "skills/gsap-core", "mode": "vendored" },
-    { "name": "gsap-timeline", "source": "greensock/gsap-skills", "path": "skills/gsap-timeline", "mode": "vendored" },
-    { "name": "gsap-scrolltrigger", "source": "greensock/gsap-skills", "path": "skills/gsap-scrolltrigger", "mode": "vendored" },
-    { "name": "gsap-plugins", "source": "greensock/gsap-skills", "path": "skills/gsap-plugins", "mode": "vendored" },
-    { "name": "gsap-react", "source": "greensock/gsap-skills", "path": "skills/gsap-react", "mode": "vendored" },
-    { "name": "gsap-performance", "source": "greensock/gsap-skills", "path": "skills/gsap-performance", "mode": "vendored" },
-    { "name": "gsap-utils", "source": "greensock/gsap-skills", "path": "skills/gsap-utils", "mode": "vendored" },
-    { "name": "gsap-frameworks", "source": "greensock/gsap-skills", "path": "skills/gsap-frameworks", "mode": "vendored" },
-    { "name": "jury", "source": "juliobsz/skills", "path": "jury", "mode": "vendored" },
-    { "name": "seo-audit", "source": "coreyhaines31/marketingskills", "path": "skills/seo-audit", "mode": "vendored" },
-    { "name": "ai-seo", "source": "coreyhaines31/marketingskills", "path": "skills/ai-seo", "mode": "vendored" },
-    { "name": "schema", "source": "coreyhaines31/marketingskills", "path": "skills/schema", "mode": "vendored" },
-    { "name": "ponytail", "source": "DietrichGebert/ponytail", "path": "skills/ponytail", "mode": "vendored" },
-    { "name": "find-skills", "source": "vercel-labs/skills", "path": "skills/find-skills", "mode": "vendored" },
-    { "name": "scrapling-official", "source": "D4Vinci/Scrapling", "path": "agent-skill/Scrapling-Skill", "mode": "vendored" },
-    { "name": "cavecrew", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/skills/cavecrew", "mode": "vendored" },
-    { "name": "visual-verdict", "source": "Yeachan-Heo/oh-my-claudecode", "path": "skills/visual-verdict", "mode": "vendored" },
-    { "name": "minimal-prose-discipline", "source": "Yeachan-Heo/oh-my-claudecode", "path": "skills/minimal-prose-discipline", "mode": "vendored" },
-
-    { "name": "last30days", "source": "mvanhorn/last30days-skill", "path": "skills/last30days", "mode": "pack", "pack": "research", "why": "18 MB with assets" },
-    { "name": "r3f-fundamentals", "source": "enzed/r3f-skills", "path": "skills/r3f-fundamentals", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-geometry", "source": "enzed/r3f-skills", "path": "skills/r3f-geometry", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-materials", "source": "enzed/r3f-skills", "path": "skills/r3f-materials", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-textures", "source": "enzed/r3f-skills", "path": "skills/r3f-textures", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-lighting", "source": "enzed/r3f-skills", "path": "skills/r3f-lighting", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-loaders", "source": "enzed/r3f-skills", "path": "skills/r3f-loaders", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-animation", "source": "enzed/r3f-skills", "path": "skills/r3f-animation", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-interaction", "source": "enzed/r3f-skills", "path": "skills/r3f-interaction", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-shaders", "source": "enzed/r3f-skills", "path": "skills/r3f-shaders", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-postprocessing", "source": "enzed/r3f-skills", "path": "skills/r3f-postprocessing", "mode": "pack", "pack": "3d" },
-    { "name": "r3f-physics", "source": "enzed/r3f-skills", "path": "skills/r3f-physics", "mode": "pack", "pack": "3d" },
-    { "name": "hyperframes", "source": "heygen-com/hyperframes", "path": "skills/hyperframes", "mode": "pack", "pack": "video" },
-    { "name": "remotion-best-practices", "source": "remotion-dev/skills", "path": "skills/remotion-best-practices", "mode": "pack", "pack": "video", "why": "no licence published, so not redistributed" },
-    { "name": "remotion-license", "source": "remotion-dev/skills", "path": "skills/remotion-license", "mode": "pack", "pack": "video" },
-    { "name": "caveman-compress", "source": "JuliusBrussee/caveman", "path": "skills/caveman-compress", "mode": "pack", "pack": "compress", "why": "sends file text to a model; opt-in" },
-    { "name": "manimce-best-practices", "source": "adithya-s-k/manim_skill", "path": "skills/manimce-best-practices", "mode": "pack", "pack": "manim" },
-    { "name": "manim-composer", "source": "adithya-s-k/manim_skill", "path": "skills/manim-composer", "mode": "pack", "pack": "manim" }
+    {
+      "name": "brainstorming",
+      "source": "obra/superpowers",
+      "path": "skills/brainstorming",
+      "mode": "vendored"
+    },
+    {
+      "name": "writing-plans",
+      "source": "obra/superpowers",
+      "path": "skills/writing-plans",
+      "mode": "vendored"
+    },
+    {
+      "name": "subagent-driven-development",
+      "source": "obra/superpowers",
+      "path": "skills/subagent-driven-development",
+      "mode": "vendored"
+    },
+    {
+      "name": "verification-before-completion",
+      "source": "obra/superpowers",
+      "path": "skills/verification-before-completion",
+      "mode": "vendored"
+    },
+    {
+      "name": "systematic-debugging",
+      "source": "obra/superpowers",
+      "path": "skills/systematic-debugging",
+      "mode": "vendored"
+    },
+    {
+      "name": "test-driven-development",
+      "source": "obra/superpowers",
+      "path": "skills/test-driven-development",
+      "mode": "vendored"
+    },
+    {
+      "name": "using-git-worktrees",
+      "source": "obra/superpowers",
+      "path": "skills/using-git-worktrees",
+      "mode": "vendored"
+    },
+    {
+      "name": "finishing-a-development-branch",
+      "source": "obra/superpowers",
+      "path": "skills/finishing-a-development-branch",
+      "mode": "vendored"
+    },
+    {
+      "name": "grilling",
+      "source": "mattpocock/skills",
+      "path": "skills/productivity/grilling",
+      "mode": "vendored"
+    },
+    {
+      "name": "grill-me",
+      "source": "mattpocock/skills",
+      "path": "skills/productivity/grill-me",
+      "mode": "vendored"
+    },
+    {
+      "name": "ui-ux-pro-max",
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "path": ".claude/skills/ui-ux-pro-max",
+      "mode": "vendored"
+    },
+    {
+      "name": "design-system",
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "path": ".claude/skills/design-system",
+      "mode": "vendored"
+    },
+    {
+      "name": "design-taste-frontend",
+      "source": "Leonxlnx/taste-skill",
+      "path": "skills/taste-skill",
+      "mode": "pack",
+      "pack": "taste",
+      "why": "38 MB of image assets; only its rules are used, as a check at Direction"
+    },
+    {
+      "name": "impeccable",
+      "source": "pbakaus/impeccable",
+      "path": ".claude/skills/impeccable",
+      "mode": "vendored"
+    },
+    {
+      "name": "emil-design-eng",
+      "source": "emilkowalski/skill",
+      "path": "skills/emil-design-eng",
+      "mode": "vendored"
+    },
+    {
+      "name": "choreograph",
+      "source": "emilkowalski/skill",
+      "path": "skills/choreograph",
+      "mode": "vendored"
+    },
+    {
+      "name": "review-animations",
+      "source": "emilkowalski/skill",
+      "path": "skills/review-animations",
+      "mode": "vendored"
+    },
+    {
+      "name": "animation-performance",
+      "source": "emilkowalski/skill",
+      "path": "skills/animation-performance",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-core",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-core",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-timeline",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-timeline",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-scrolltrigger",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-scrolltrigger",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-plugins",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-plugins",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-react",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-react",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-performance",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-performance",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-utils",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-utils",
+      "mode": "vendored"
+    },
+    {
+      "name": "gsap-frameworks",
+      "source": "greensock/gsap-skills",
+      "path": "skills/gsap-frameworks",
+      "mode": "vendored"
+    },
+    {
+      "name": "jury",
+      "source": "juliobsz/skills",
+      "path": "jury",
+      "mode": "vendored"
+    },
+    {
+      "name": "seo-audit",
+      "source": "coreyhaines31/marketingskills",
+      "path": "skills/seo-audit",
+      "mode": "vendored"
+    },
+    {
+      "name": "ai-seo",
+      "source": "coreyhaines31/marketingskills",
+      "path": "skills/ai-seo",
+      "mode": "vendored"
+    },
+    {
+      "name": "schema",
+      "source": "coreyhaines31/marketingskills",
+      "path": "skills/schema",
+      "mode": "vendored"
+    },
+    {
+      "name": "ponytail",
+      "source": "DietrichGebert/ponytail",
+      "path": "skills/ponytail",
+      "mode": "vendored"
+    },
+    {
+      "name": "find-skills",
+      "source": "vercel-labs/skills",
+      "path": "skills/find-skills",
+      "mode": "vendored"
+    },
+    {
+      "name": "scrapling-official",
+      "source": "D4Vinci/Scrapling",
+      "path": "agent-skill/Scrapling-Skill",
+      "mode": "vendored"
+    },
+    {
+      "name": "cavecrew",
+      "source": "JuliusBrussee/caveman",
+      "path": "plugins/caveman/skills/cavecrew",
+      "mode": "vendored"
+    },
+    {
+      "name": "visual-verdict",
+      "source": "Yeachan-Heo/oh-my-claudecode",
+      "path": "skills/visual-verdict",
+      "mode": "vendored"
+    },
+    {
+      "name": "minimal-prose-discipline",
+      "source": "Yeachan-Heo/oh-my-claudecode",
+      "path": "skills/minimal-prose-discipline",
+      "mode": "vendored"
+    },
+    {
+      "name": "last30days",
+      "source": "mvanhorn/last30days-skill",
+      "path": "skills/last30days",
+      "mode": "pack",
+      "pack": "research",
+      "why": "18 MB with assets"
+    },
+    {
+      "name": "r3f-fundamentals",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-fundamentals",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-geometry",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-geometry",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-materials",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-materials",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-textures",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-textures",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-lighting",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-lighting",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-loaders",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-loaders",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-animation",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-animation",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-interaction",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-interaction",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-shaders",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-shaders",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-postprocessing",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-postprocessing",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "r3f-physics",
+      "source": "enzed/r3f-skills",
+      "path": "skills/r3f-physics",
+      "mode": "pack",
+      "pack": "3d"
+    },
+    {
+      "name": "hyperframes",
+      "source": "heygen-com/hyperframes",
+      "path": "skills/hyperframes",
+      "mode": "pack",
+      "pack": "video"
+    },
+    {
+      "name": "remotion-best-practices",
+      "source": "remotion-dev/skills",
+      "path": "skills/remotion-best-practices",
+      "mode": "pack",
+      "pack": "video",
+      "why": "no licence published, so not redistributed"
+    },
+    {
+      "name": "remotion-license",
+      "source": "remotion-dev/skills",
+      "path": "skills/remotion-license",
+      "mode": "pack",
+      "pack": "video"
+    },
+    {
+      "name": "caveman-compress",
+      "source": "JuliusBrussee/caveman",
+      "path": "skills/caveman-compress",
+      "mode": "pack",
+      "pack": "compress",
+      "why": "sends file text to a model; opt-in"
+    },
+    {
+      "name": "manimce-best-practices",
+      "source": "adithya-s-k/manim_skill",
+      "path": "skills/manimce-best-practices",
+      "mode": "pack",
+      "pack": "manim"
+    },
+    {
+      "name": "manim-composer",
+      "source": "adithya-s-k/manim_skill",
+      "path": "skills/manim-composer",
+      "mode": "pack",
+      "pack": "manim"
+    },
+    {
+      "name": "council",
+      "source": "0xNyk/council-of-high-intelligence",
+      "paths": [
+        "SKILL.md",
+        "configs",
+        "demos"
+      ],
+      "mode": "pack",
+      "pack": "council"
+    }
   ],
   "agents": [
-    { "name": "cavecrew-investigator", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-investigator.md", "mode": "vendored" },
-    { "name": "cavecrew-builder", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-builder.md", "mode": "vendored" },
-    { "name": "cavecrew-reviewer", "source": "JuliusBrussee/caveman", "path": "plugins/caveman/agents/cavecrew-reviewer.md", "mode": "vendored" }
+    {
+      "name": "cavecrew-investigator",
+      "source": "JuliusBrussee/caveman",
+      "path": "plugins/caveman/agents/cavecrew-investigator.md",
+      "mode": "vendored"
+    },
+    {
+      "name": "cavecrew-builder",
+      "source": "JuliusBrussee/caveman",
+      "path": "plugins/caveman/agents/cavecrew-builder.md",
+      "mode": "vendored"
+    },
+    {
+      "name": "cavecrew-reviewer",
+      "source": "JuliusBrussee/caveman",
+      "path": "plugins/caveman/agents/cavecrew-reviewer.md",
+      "mode": "vendored"
+    },
+    {
+      "name": "council-rams",
+      "source": "0xNyk/council-of-high-intelligence",
+      "path": "agents/council-rams.md",
+      "mode": "pack",
+      "pack": "council"
+    },
+    {
+      "name": "council-torvalds",
+      "source": "0xNyk/council-of-high-intelligence",
+      "path": "agents/council-torvalds.md",
+      "mode": "pack",
+      "pack": "council"
+    },
+    {
+      "name": "council-watts",
+      "source": "0xNyk/council-of-high-intelligence",
+      "path": "agents/council-watts.md",
+      "mode": "pack",
+      "pack": "council"
+    }
   ],
   "library": [
-    { "name": "scroll-craft", "source": "nateherkai/scroll-craft", "path": "plugins/nateherk-design/skills/scroll-craft", "mode": "vendored" },
-    { "name": "elaya", "source": "elayadesign/ai-design-skills", "path": "skills", "mode": "vendored" },
-    { "name": "bencho", "source": "cabralorenzo/bencho", "paths": ["blocks", "sounds", "tokens.css", "README.md", "THIRD_PARTY.md"], "mode": "vendored" },
-    { "name": "motionsites", "source": "Motionsites-AI/claude-skill", "path": "plugins/motionsites-web-builder/skills/motionsites-web-builder", "mode": "fetch", "why": "example prompts and media are (c) MotionSites; usable in sites built with it, not redistributable here" }
+    {
+      "name": "scroll-craft",
+      "source": "nateherkai/scroll-craft",
+      "path": "plugins/nateherk-design/skills/scroll-craft",
+      "mode": "vendored"
+    },
+    {
+      "name": "elaya",
+      "source": "elayadesign/ai-design-skills",
+      "path": "skills",
+      "mode": "vendored"
+    },
+    {
+      "name": "bencho",
+      "source": "cabralorenzo/bencho",
+      "paths": [
+        "blocks",
+        "sounds",
+        "tokens.css",
+        "README.md",
+        "THIRD_PARTY.md"
+      ],
+      "mode": "vendored"
+    },
+    {
+      "name": "motionsites",
+      "source": "Motionsites-AI/claude-skill",
+      "path": "plugins/motionsites-web-builder/skills/motionsites-web-builder",
+      "mode": "fetch",
+      "why": "example prompts and media are (c) MotionSites; usable in sites built with it, not redistributable here"
+    }
   ],
   "external": [
-    { "name": "gstack", "pack": "gstack", "how": "git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git .claude/skills/gstack && (cd .claude/skills/gstack && ./setup)", "needs": "Bun", "used_for": "plan-design-review and qa-only (optional)" },
-    { "name": "REA (reverse-engineer-anything)", "pack": "rea", "how": "install its CLI and run `rea setup --client claude_code` per its README", "used_for": "Research: how one reference effect is built (notes only)" }
+    {
+      "name": "gstack",
+      "pack": "gstack",
+      "how": "git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git .claude/skills/gstack && (cd .claude/skills/gstack && ./setup)",
+      "needs": "Bun",
+      "used_for": "plan-design-review and qa-only (optional)"
+    },
+    {
+      "name": "REA (reverse-engineer-anything)",
+      "pack": "rea",
+      "how": "install its CLI and run `rea setup --client claude_code` per its README",
+      "used_for": "Research: how one reference effect is built (notes only)"
+    }
   ]
 }
