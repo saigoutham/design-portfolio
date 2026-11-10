@@ -34,3 +34,5 @@ The whole page is one watermelon slice seen from the rind inward. The rind is th
 
 ## Studio pick
 1, the screen sweats. It is the most physical and the most "cold soda", the visitor does the action, and the art underneath is the owner's photo, which already passes. 3 is the strongest on the brand's claim if the owner wants the site to argue rather than play.
+
+picked by owner: 1, The screen sweats (2026-11-10)
