@@ -78,7 +78,10 @@
   .wm-headL { left: 5vw; }
   .wm-headR { right: 5vw; }
   .wm-br { display: inline; }
-  .wm-stage { width: 124vw; bottom: 29svh; }
+  .wm-stage { width: 108vw; aspect-ratio: 1000 / 1300; bottom: 14svh; }
+  .wm-shadow { left: 27%; right: 27%; bottom: 7%; height: 3.2%; }
+  .wm-halfL { transform-origin: 30% 92%; }
+  .wm-halfR { transform-origin: 70% 92%; }
   .wm-fact { max-width: 44vw; font-size: 15px; bottom: 4svh; }
   .wm-factL { left: 5vw; }
   .wm-ctaR { right: 5vw; padding: 0 16px; font-size: 14px; min-height: 44px; }

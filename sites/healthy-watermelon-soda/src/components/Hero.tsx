@@ -12,6 +12,8 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const TOP = 9;
 const BOTTOM = 140;
 
+const PWHOLE_SIZES = "108vw";
+const PHALF_SIZES = "54vw";
 const WHOLE_SIZES = "(max-width: 720px) 124vw, min(78vw, 118svh)";
 const HALF_SIZES = "(max-width: 720px) 62vw, min(39vw, 59svh)";
 
@@ -164,11 +166,23 @@ export default function Hero() {
         <div className="wm-stage" data-stage>
           <div className="wm-shadow" />
           {/* eslint-disable @next/next/no-img-element */}
-          <img data-whole-l className="wm-whole" src="/img/whole-2000.webp" srcSet="/img/whole-1000.webp 1000w, /img/whole-2000.webp 2000w" sizes={WHOLE_SIZES} alt="A whole striped watermelon" width={2000} height={1210} fetchPriority="high" decoding="async" />
-          <img data-whole-r className="wm-whole" src="/img/whole-2000.webp" srcSet="/img/whole-1000.webp 1000w, /img/whole-2000.webp 2000w" sizes={WHOLE_SIZES} alt="" width={2000} height={1210} decoding="async" />
+          <picture>
+            <source media="(max-width: 720px)" srcSet="/img/p-whole-600.webp 600w, /img/p-whole-1000.webp 1000w" sizes={PWHOLE_SIZES} />
+            <img data-whole-l className="wm-whole" src="/img/whole-2000.webp" srcSet="/img/whole-1000.webp 1000w, /img/whole-2000.webp 2000w" sizes={WHOLE_SIZES} alt="A whole striped watermelon" width={2000} height={1210} fetchPriority="high" decoding="async" />
+          </picture>
+          <picture>
+            <source media="(max-width: 720px)" srcSet="/img/p-whole-600.webp 600w, /img/p-whole-1000.webp 1000w" sizes={PWHOLE_SIZES} />
+            <img data-whole-r className="wm-whole" src="/img/whole-2000.webp" srcSet="/img/whole-1000.webp 1000w, /img/whole-2000.webp 2000w" sizes={WHOLE_SIZES} alt="" width={2000} height={1210} decoding="async" />
+          </picture>
           <div data-halves className="wm-halves">
-            <img data-half-l className="wm-half wm-halfL" src="/img/halves-L-1200.webp" srcSet="/img/halves-L-600.webp 600w, /img/halves-L-1200.webp 1200w" sizes={HALF_SIZES} alt="" width={1200} height={1453} fetchPriority="low" decoding="async" />
-            <img data-half-r className="wm-half wm-halfR" src="/img/halves-R-1200.webp" srcSet="/img/halves-R-600.webp 600w, /img/halves-R-1200.webp 1200w" sizes={HALF_SIZES} alt="" width={1200} height={1453} fetchPriority="low" decoding="async" />
+            <picture>
+              <source media="(max-width: 720px)" srcSet="/img/p-halves-L-300.webp 300w, /img/p-halves-L-500.webp 500w" sizes={PHALF_SIZES} />
+              <img data-half-l className="wm-half wm-halfL" src="/img/halves-L-1200.webp" srcSet="/img/halves-L-600.webp 600w, /img/halves-L-1200.webp 1200w" sizes={HALF_SIZES} alt="" width={1200} height={1453} fetchPriority="low" decoding="async" />
+            </picture>
+            <picture>
+              <source media="(max-width: 720px)" srcSet="/img/p-halves-R-300.webp 300w, /img/p-halves-R-500.webp 500w" sizes={PHALF_SIZES} />
+              <img data-half-r className="wm-half wm-halfR" src="/img/halves-R-1200.webp" srcSet="/img/halves-R-600.webp 600w, /img/halves-R-1200.webp 1200w" sizes={HALF_SIZES} alt="" width={1200} height={1453} fetchPriority="low" decoding="async" />
+            </picture>
           </div>
           <span data-tick className="wm-tick" aria-hidden="true" />
         </div>

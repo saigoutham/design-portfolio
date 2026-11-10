@@ -12,3 +12,5 @@ All four are user-generated in Nano Banana (Google Gemini image), supplied by Go
 Prompts: used the four prompts given in the 2026-11-10 session (whole first, others referencing it). Paste the exact wording here when the user shares it.
 
 - glass.png (assets-src/photos): user-generated in Nano Banana, same series as the fruit stills. AI-generated. Cropped to drop the Gemini sparkle, levelled to white, edge-feathered, shown with mix-blend-mode: multiply on the blush ground. Variants public/img/glass-560/1000.webp.
+
+- p-whole.png, p-halves.png, p-cutface.png (assets-src/photos): user-generated 2:3 portrait stills (Nano Banana, same series). AI-generated. assets-src/prep_portrait.py mattes and composes whole + halves on one shared 1000x1300 canvas; used on phones (<=720px) via <picture>. p-cutface.png unused so far.
