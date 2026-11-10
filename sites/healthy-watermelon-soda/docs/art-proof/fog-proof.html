@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The screen sweats: hero proof</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+
+const W = 1920, H = 1080, TEX = './fog-tex/';
+const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+// All compositing is done in display (sRGB-encoded) values on purpose: textures are NoColorSpace and
+// the passes write raw values, so no conversion is applied anywhere in the chain.
+renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2));
+const scene = new THREE.Scene(); scene.add(quad);
+const rt = (w, h) => new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, depthBuffer: false });
+const maskRT = rt(1920, 1080), sceneRT = rt(W, H), bA1 = rt(640, 360), bA2 = rt(640, 360), bB1 = rt(240, 135), bB2 = rt(240, 135);
+
+// ---------- scripted cursor path (pixel coords, y down) ----------
+const KEYS = [[0.80,-40,395],[1.00,40,380],[1.25,260,352],[1.55,620,332],[1.85,980,342],[2.10,1196,372],[2.30,1268,452],
+  [2.50,1176,522],[2.80,840,542],[3.10,460,536],[3.35,180,556],[3.50,60,580],[3.70,-40,600]];
+const R = 118, NP = 96, T0 = 1.0, T1 = 3.5;
+function cr(p0, p1, p2, p3, u) { const u2 = u*u, u3 = u2*u;
+  return 0.5*((2*p1) + (-p0+p2)*u + (2*p0-5*p1+4*p2-p3)*u2 + (-p0+3*p1-3*p2+p3)*u3); }
+function cursorAt(t) {
+  let i = 1; while (i < KEYS.length - 3 && t > KEYS[i+1][0]) i++;
+  const k0 = KEYS[i-1], k1 = KEYS[i], k2 = KEYS[i+1], k3 = KEYS[i+2];
+  const u = Math.min(1, Math.max(0, (t - k1[0]) / (k2[0] - k1[0])));
+  return [cr(k0[1],k1[1],k2[1],k3[1],u), cr(k0[2],k1[2],k2[2],k3[2],u)];
+}
+const pathArr = [];
+for (let i = 0; i < NP; i++) { const tt = T0 + (T1 - T0) * i / (NP - 1); const p = cursorAt(tt); pathArr.push(new THREE.Vector3(p[0], p[1], tt)); }
+
+// running drops: [x0, y0, startTime, radius, accel]
+const DROPS = [[1372,468,2.75,15,210],[992,652,3.15,19,300],[648,654,3.55,14,170],[318,656,3.95,17,260],[812,652,4.6,12,140],[1180,600,4.2,11,120]];
+function dropState(t) {
+  return DROPS.map(([x0,y0,ts,r,a]) => { const tau = Math.max(0, t - ts);
+    // stick then slip: a slow creep for the first 0.35 s, then gravity wins
+    const creep = Math.min(tau, 0.35) * 18; const slip = Math.max(0, tau - 0.35);
+    const yc = tau > 0 ? y0 + creep + 0.5 * a * slip * slip : -9999;
+    return new THREE.Vector4(x0, y0, yc, r); });
+}
+
+const NOISE = /* glsl */`
+float h21(vec2 p){ p = fract(p*vec2(123.34,456.21)); p += dot(p, p+45.32); return fract(p.x*p.y); }
+vec2 h22(vec2 p){ float n = h21(p); return vec2(n, h21(p+n+17.17)); }
+float vn(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+  return mix(mix(h21(i),h21(i+vec2(1,0)),f.x), mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x), f.y); }
+float fbm(vec2 p){ float s = 0.0, a = 0.5; for(int i=0;i<5;i++){ s += a*vn(p); p = mat2(1.6,1.2,-1.2,1.6)*p; a *= 0.5; } return s; }
+float dropX(float y, vec4 d, float idx){ float dy = y - d.y; return d.x + 2.5*sin(dy*0.013 + idx*1.7) + 9.0*(vn(vec2(dy*0.012, idx*7.3)) - 0.5); }
+`;
+const VS = `varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`;
+
+// ---------- pass A: wipe mask (R clear, G gather ridge, B was-wiped, A finger smear) ----------
+const maskMat = new THREE.ShaderMaterial({ vertexShader: VS, uniforms: {
+  uT: { value: 0 }, uPath: { value: pathArr }, uDrops: { value: dropState(0) }, uHint: { value: null } },
+  fragmentShader: NOISE + `
+  #define NP ${NP}
+  uniform float uT; uniform vec3 uPath[NP]; uniform vec4 uDrops[6]; uniform sampler2D uHint; varying vec2 vUv;
+  void main(){
+    vec2 p = vec2(vUv.x*1920.0, (1.0-vUv.y)*1080.0);
+    float d = 1e5, side = 0.0;
+    for (int i = 0; i < NP-1; i++) {
+      vec3 a = uPath[i], b = uPath[i+1];
+      if (a.z > uT) break;
+      vec2 B = b.xy;
+      if (b.z > uT) B = mix(a.xy, b.xy, (uT - a.z)/(b.z - a.z));
+      vec2 ab = B - a.xy; float l2 = max(dot(ab,ab), 1e-3);
+      float h = clamp(dot(p - a.xy, ab)/l2, 0.0, 1.0);
+      vec2 q = p - a.xy - ab*h; float dd = length(q);
+      if (dd < d) { d = dd; side = (ab.x*q.y - ab.y*q.x)/sqrt(l2); }
+    }
+    float k = clamp((uT - 3.8)/2.2, 0.0, 1.0);
+    float en = fbm(p*0.011 + 3.1) - 0.5, en2 = fbm(p*0.03 + 9.0) - 0.5;
+    float reff = ${R.toFixed(1)} * (1.0 - 0.56*k) + en*(16.0 + 60.0*k) + en2*(6.0 + 26.0*k);
+    float band = 6.0 + 34.0*k;
+    float clear = 1.0 - smoothstep(reff - band, reff + 4.0, d);
+    float was = 1.0 - smoothstep(${R.toFixed(1)} - 4.0, ${R.toFixed(1)} + 4.0, d + en*16.0);
+    float ridge = exp(-pow((d + en*16.0 - ${(R + 8).toFixed(1)})/16.0, 2.0)) * step(uPath[0].z, uT);
+    // finger smear: faint streaks running along the stroke
+    float smear = clear * (0.5 + 0.5*sin(side*0.19 + vn(vec2(side*0.05, 1.0))*6.0)) * smoothstep(0.35, 0.9, vn(vec2(side*0.08, d*0.002 + 4.0)));
+    // running drops leave clear streaks
+    for (int i = 0; i < 6; i++) {
+      vec4 dr = uDrops[i];
+      if (dr.z < dr.y) continue;
+      float y = clamp(p.y, dr.y, dr.z);
+      float xs = dropX(y, dr, float(i));
+      float w = dr.w * mix(0.22, 0.46, smoothstep(dr.y, dr.y + 160.0, p.y));
+      float inY = step(dr.y, p.y) * step(p.y, dr.z);
+      float s = inY * (1.0 - smoothstep(w - 2.5, w + 1.5, abs(p.x - xs)));
+      s *= 1.0 - 0.35*k*smoothstep(dr.z - 900.0, dr.y, p.y); // old streak tops refog a little
+      clear = max(clear, s * 0.62);
+      ridge = max(ridge, inY * exp(-pow((abs(p.x - xs) - w - 3.0)/3.5, 2.0)) * 0.7);
+      was = max(was, s);
+    }
+    // "Wipe me" written in the fog with a fingertip before the visitor arrived
+    float hint = texture2D(uHint, vUv).a;
+    clear = max(clear, hint * 0.92);
+    was = max(was, smoothstep(0.0, 0.2, texture2D(uHint, vUv).a));
+    gl_FragColor = vec4(clear, ridge, was, smear);
+  }` });
+
+// ---------- scene pass: graded photo, wet relight, headline ----------
+const sceneMat = new THREE.ShaderMaterial({ vertexShader: VS, uniforms: { uPhoto: { value: null }, uNormal: { value: null }, uType: { value: null } },
+  fragmentShader: `
+  uniform sampler2D uPhoto, uNormal, uType; varying vec2 vUv;
+  void main(){
+    vec3 c = texture2D(uPhoto, vUv).rgb;
+    vec3 n = normalize(texture2D(uNormal, vUv).xyz*2.0 - 1.0);
+    float l = dot(c, vec3(0.299,0.587,0.114));
+    c = mix(vec3(l), c, 1.12);                       // a touch more saturation
+    c = pow(c, vec3(1.06, 1.0, 1.0)) * vec3(1.0, 0.96, 0.97);
+    c *= mix(0.80, 1.0, smoothstep(0.0, 0.75, vUv.x)) * mix(0.92, 1.0, vUv.y); // darker left for the white type
+    vec3 L = normalize(vec3(-0.45, 0.55, 0.70)), Hh = normalize(L + vec3(0,0,1));
+    float sp = pow(max(dot(n, Hh), 0.0), 90.0) * smoothstep(0.25, 0.7, l + 0.2);
+    float sheen = pow(max(dot(n, Hh), 0.0), 14.0) * 0.06;
+    c += vec3(0.86, 0.93, 1.0) * (sp * 0.55 + sheen);  // cold wet glints
+    vec4 ty = texture2D(uType, vUv);
+    c = mix(c, vec3(1.0, 0.995, 0.985), ty.a);
+    gl_FragColor = vec4(c, 1.0);
+  }` });
+
+// ---------- blur passes ----------
+const blurMat = new THREE.ShaderMaterial({ vertexShader: VS, uniforms: { uSrc: { value: null }, uDir: { value: new THREE.Vector2() } },
+  fragmentShader: `uniform sampler2D uSrc; uniform vec2 uDir; varying vec2 vUv;
+  void main(){ vec3 s = vec3(0.0); float wt = 0.0;
+    for (int i = -6; i <= 6; i++) { float f = float(i); float w = exp(-f*f/18.0); s += texture2D(uSrc, vUv + uDir*f).rgb*w; wt += w; }
+    gl_FragColor = vec4(s/wt, 1.0); }` });
+
+// ---------- composite: fog, micro droplets, beads, running drops, frost, cursor ----------
+const compMat = new THREE.ShaderMaterial({ vertexShader: VS, uniforms: {
+  uT: { value: 0 }, uMask: { value: maskRT.texture }, uSharp: { value: sceneRT.texture }, uBlurA: { value: bA2.texture }, uBlurB: { value: bB2.texture },
+  uDrops: { value: dropState(0) }, uCursor: { value: new THREE.Vector3() } },
+  fragmentShader: NOISE + `
+  uniform float uT; uniform sampler2D uMask, uSharp, uBlurA, uBlurB; uniform vec4 uDrops[6]; uniform vec3 uCursor; varying vec2 vUv;
+  vec2 toUv(vec2 p){ return vec2(p.x/1920.0, 1.0 - p.y/1080.0); }
+  vec3 sharpAt(vec2 p){ return texture2D(uSharp, toUv(clamp(p, vec2(1.0), vec2(1919.0,1079.0)))).rgb; }
+  float lum(vec3 c){ return dot(c, vec3(0.299,0.587,0.114)); }
+
+  // one refractive bead: returns rgb in .rgb, coverage in .a ; also adds a contact shadow into sh
+  vec4 bead(vec2 p, vec2 c, float r, float seed, inout float sh, float elong){
+    vec2 d = p - c; d.y /= elong;
+    float ang = atan(d.y, d.x);
+    float rr = r * (1.0 + 0.07*sin(2.0*ang + seed*6.28) + 0.04*sin(3.0*ang + seed*12.0));
+    // soft shadow just below-right, where the lens throws light away
+    float sd = length((p - c - vec2(0.10, 0.22)*r) / vec2(1.0, elong)) / (rr*1.08);
+    sh = max(sh, (1.0 - smoothstep(0.75, 1.15, sd)) * 0.30);
+    float q = length(d)/rr;
+    if (q >= 1.0) return vec4(0.0);
+    vec2 qv = d/rr;
+    // lens: inverted, minified view of the sharp scene behind
+    vec3 refr = sharpAt(c - qv*r*2.6*vec2(1.0, elong) + vec2(0.0, -r*0.6));
+    refr = mix(vec3(lum(refr)), refr, 0.8) * 0.92 + 0.02;
+    float rim = smoothstep(0.55, 1.0, q);
+    vec3 col = refr * (1.0 - 0.72*rim*rim);
+    // dark meniscus line right at the contact edge
+    col *= 1.0 - 0.45*smoothstep(0.84, 0.97, q);
+    // thin bright ring just inside the rim (total internal reflection of the fogged sky)
+    col += 0.16*smoothstep(0.62, 0.78, q)*(1.0 - smoothstep(0.78, 0.9, q));
+    // bright caustic crescent on the lower side
+    float cres = smoothstep(0.45, 0.85, q) * (1.0 - smoothstep(0.85, 0.98, q)) * smoothstep(0.2, 0.8, dot(normalize(qv + 1e-4), normalize(vec2(0.35, 0.94))));
+    col += cres * 0.35 * (refr + 0.25);
+    // specular: a sharp window glint top-left plus a softer second one
+    float g1 = 1.0 - smoothstep(0.0, 0.22, length(qv - vec2(-0.36, -0.42)));
+    float g2 = 1.0 - smoothstep(0.0, 0.12, length(qv - vec2(0.30, 0.48)));
+    col += vec3(0.97, 0.99, 1.0) * (g1*g1*1.5 + g2*0.3);
+    float a = 1.0 - smoothstep(0.92, 1.0, q);
+    return vec4(col, a);
+  }
+
+  void main(){
+    vec2 p = vec2(vUv.x*1920.0, (1.0 - vUv.y)*1080.0);
+    vec4 m = texture2D(uMask, vUv);
+    float clear = m.r, ridge = m.g, was = m.b, smear = m.a;
+    vec3 sharp = texture2D(uSharp, vUv).rgb;
+    vec3 bA = texture2D(uBlurA, vUv).rgb, bB = texture2D(uBlurB, vUv).rgb;
+
+    // fog: scatter = blur + desaturate + lift toward a cold white; density breathes with low noise
+    float breath = fbm(p*0.0022 + vec2(uT*0.03, 0.0));
+    float dens = (1.0 - clear) * (0.80 + 0.30*breath + 0.10*smoothstep(400.0, 1080.0, p.y));
+    dens = max(dens, smear*0.16);
+    vec3 scat = mix(bA, bB, 0.6);
+    scat = mix(vec3(lum(scat)), scat, 0.24);
+    vec3 cold = vec3(0.80, 0.845, 0.875);
+    vec3 fogc = mix(scat, cold, 0.55) + 0.02;
+
+    // micro condensation: two grids of tiny droplets; each one is a little clearer lens with a dark rim and a glint
+    float micro = 0.0, mrim = 0.0, mglint = 0.0;
+    for (int L = 0; L < 2; L++) {
+      float cs = L == 0 ? 5.0 : 9.0;
+      vec2 gp = p/cs + float(L)*vec2(0.37, 0.71);
+      vec2 id = floor(gp), f = fract(gp);
+      vec2 o = 0.25 + 0.5*h22(id + float(L)*31.0);
+      float r = mix(0.12, 0.34, h21(id*1.7 + float(L)));
+      float q = length(f - o)/r;
+      float in_ = 1.0 - smoothstep(0.8, 1.0, q);
+      micro = max(micro, in_);
+      mrim = max(mrim, smoothstep(0.55, 0.95, q) * in_);
+      mglint = max(mglint, (1.0 - smoothstep(0.0, 0.35, length((f - o)/r - vec2(-0.35,-0.4)))) * in_);
+    }
+    vec3 dropletSeen = mix(vec3(lum(bA)), bA, 0.5);
+    vec3 fogTex = mix(fogc, mix(fogc, dropletSeen, 0.5), micro*0.35);
+    fogTex *= 1.0 - mrim*0.10;
+    fogTex += mglint*0.10;
+    // returning fog first blurs, then whitens: no ghost of sharp type under a thin fog
+    vec3 under = mix(sharp, mix(bA, bB, 0.3), smoothstep(0.0, 0.45, dens));
+    vec3 col = mix(under, fogTex, smoothstep(0.1, 1.0, dens));
+    // the clear trail stays wet: a cool film sheen across it
+    col += clear * 0.025 * vec3(0.8, 0.9, 1.0);
+
+    // frost creeping in from the corners: patchy ice with a crisp, dendritic front and fine crystal grain
+    float fr = 0.0;
+    float grow = 0.13 + 0.04*smoothstep(0.0, 6.0, uT);
+    for (int i = 0; i < 4; i++) {
+      vec2 cn = vec2(i == 1 || i == 3 ? 1920.0 : 0.0, i >= 2 ? 1080.0 : 0.0);
+      float dc = length((p - cn) * vec2(0.8, 1.0))/1080.0;
+      float n1 = fbm(p*0.0045 + float(i)*7.0), n2 = fbm(p*0.022 + float(i)*3.0);
+      float edge = grow*(i == 3 ? 1.35 : (i == 0 ? 0.9 : 1.0)) + 0.10*(n1 - 0.5) + 0.035*(n2 - 0.5);
+      fr = max(fr, 1.0 - smoothstep(edge - 0.035, edge + 0.002, dc));
+    }
+    float rid = 1.0 - abs(fbm(p*0.035) * 2.0 - 1.0);
+    float rid2 = 1.0 - abs(fbm(p*0.09 + 4.0) * 2.0 - 1.0);
+    float crys = pow(rid, 5.0) * 0.6 + pow(rid2, 7.0) * 0.4;
+    float grain = vn(p*0.8);
+    float frostA = clamp(fr * (0.35 + 0.55*crys + 0.1*grain) + fr*fr*0.15, 0.0, 0.85);
+    vec3 frostC = mix(fogc, vec3(0.90, 0.935, 0.96), 0.7) + crys*0.10 + (grain - 0.5)*0.05 + step(0.993, h21(floor(p*0.7)))*fr*0.35;
+
+    // beads: tiny / small / large layers on fogged glass, plus a gathering layer along the trail ridge
+    float sh = 0.0; vec4 acc = vec4(0.0);
+    for (int L = 0; L < 4; L++) {
+      float cs = L == 0 ? 20.0 : (L == 1 ? 44.0 : (L == 2 ? 96.0 : 26.0));
+      vec2 gp = p/cs + vec2(0.13, 0.57)*float(L);
+      vec2 id = floor(gp - 0.5);
+      for (int j = 0; j < 4; j++) {
+        // the 2x2 cells nearest p, so beads that straddle a cell boundary are not clipped
+        vec2 cid = id + vec2(j == 1 || j == 3 ? 1.0 : 0.0, j >= 2 ? 1.0 : 0.0);
+        float s = h21(cid*1.31 + float(L)*11.0);
+        vec2 c = (cid + 0.15 + 0.7*h22(cid + float(L)*5.0) - vec2(0.13, 0.57)*float(L)) * cs;
+        vec4 mc = texture2D(uMask, toUv(c));
+        float clump = smoothstep(0.30, 0.75, fbm(c*0.004 + float(L)*3.0)) * mix(0.55, 1.15, c.y/1080.0);
+        float pres, r;
+        if (L == 0) { pres = 0.30 + 0.45*clump; r = mix(1.8, 4.5, h21(cid + 3.3)); pres *= 1.0 - step(0.25, mc.r); }
+        else if (L == 1) { pres = 0.05 + 0.40*clump; r = mix(5.0, 12.0, pow(h21(cid + 4.4), 1.5)); pres *= (1.0 - mc.b) * (1.0 - step(0.1, mc.r)); }
+        else if (L == 2) { pres = 0.06 + 0.40*clump; r = mix(11.0, 26.0, pow(h21(cid + 5.5), 2.0)); pres *= (1.0 - mc.b) * (1.0 - step(0.05, mc.r)); }
+        else { pres = smoothstep(0.2, 0.7, mc.g) * 0.95; r = mix(4.0, 13.0, h21(cid + 6.6)) * (0.6 + 0.4*mc.g); }
+        if (s > pres) continue;
+        float elong = 1.0 + (L == 2 ? 0.18*h21(cid + 9.0) : 0.06);
+        vec4 b = bead(p, c, r, s, sh, elong);
+        acc = b.a > acc.a ? b : acc;
+      }
+    }
+    // running drops: teardrop lenses, heavier at the bottom
+    for (int i = 0; i < 6; i++) {
+      vec4 dr = uDrops[i];
+      if (dr.z < dr.y || dr.z > 1200.0) continue;
+      vec2 c = vec2(dropX(dr.z, dr, float(i)), dr.z);
+      float tail = smoothstep(c.y + dr.w*0.2, c.y - dr.w*2.2, p.y);
+      vec2 pp = vec2(c.x + (p.x - c.x)*(1.0 + 0.6*tail), p.y);
+      vec4 b = bead(pp, c - vec2(0.0, dr.w*0.25), dr.w, float(i)*0.13, sh, 1.35);
+      acc = b.a > acc.a ? b : acc;
+    }
+    float beadOk = 1.0 - smoothstep(0.35, 0.8, frostA);
+    col *= 1.0 - sh * (0.5 + 0.5*dens) * beadOk;
+    col = mix(col, acc.rgb, acc.a * beadOk);
+    col = mix(col, frostC, frostA);
+
+    // soft fingertip cursor
+    float ca = uCursor.z;
+    if (ca > 0.0) {
+      float dcur = length(p - uCursor.xy);
+      col = mix(col, col*0.6, (1.0 - smoothstep(12.0, 40.0, length(p - uCursor.xy - vec2(4.0, 7.0)))) * 0.6 * ca);
+      col = mix(col, vec3(1.0), (1.0 - smoothstep(13.0, 17.0, dcur)) * 0.9 * ca);
+      col = mix(col, vec3(1.0), (1.0 - smoothstep(17.0, 34.0, dcur)) * 0.18 * ca);
+    }
+    // glass: faint diagonal reflection and a gentle vignette
+    col += 0.035 * smoothstep(0.35, 0.0, abs(vUv.x*0.6 - vUv.y + 0.15));
+    col *= 1.0 - 0.18*pow(length(vUv - 0.5)*1.25, 2.5);
+    gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+  }` });
+
+function pass(mat, target) { quad.material = mat; renderer.setRenderTarget(target); renderer.render(scene, cam); }
+function blur(src, mid, dst) {
+  blurMat.uniforms.uSrc.value = src.texture; blurMat.uniforms.uDir.value.set(1.6/mid.width, 0); pass(blurMat, mid);
+  blurMat.uniforms.uSrc.value = mid.texture; blurMat.uniforms.uDir.value.set(0, 1.6/mid.height); pass(blurMat, dst);
+}
+
+async function load() {
+  const font = new FontFace('Brico', `url(${TEX}bricolage-grotesque-latin-700-normal.woff2)`, { weight: '700' });
+  await font.load(); document.fonts.add(font);
+  const tl = new THREE.TextureLoader();
+  const [photo, normal] = await Promise.all([tl.loadAsync(TEX + 'photo.jpg'), tl.loadAsync(TEX + 'normal.png')]);
+  photo.colorSpace = THREE.NoColorSpace; normal.colorSpace = THREE.NoColorSpace;
+  const typeCv = document.createElement('canvas'); typeCv.width = W; typeCv.height = H;
+  let g = typeCv.getContext('2d');
+  g.font = '700 206px Brico'; g.letterSpacing = '-7px'; g.fillStyle = '#fff';
+  g.fillText('Real fruit.', 112, 404); g.fillText('Real fizz.', 112, 604);
+  const hintCv = document.createElement('canvas'); hintCv.width = W; hintCv.height = H;
+  g = hintCv.getContext('2d');
+  g.font = '700 66px Brico'; g.letterSpacing = '3px'; g.lineJoin = 'round'; g.lineCap = 'round';
+  g.strokeStyle = g.fillStyle = '#fff'; g.lineWidth = 3; g.filter = 'blur(0.8px)';
+  g.strokeText('Wipe me', 124, 800); g.fillText('Wipe me', 124, 800);
+  // a short finger stroke after the words
+  g.lineWidth = 11; g.beginPath(); g.moveTo(440, 778); g.quadraticCurveTo(510, 766, 580, 780); g.stroke();
+  const typeTex = new THREE.CanvasTexture(typeCv), hintTex = new THREE.CanvasTexture(hintCv);
+  typeTex.colorSpace = hintTex.colorSpace = THREE.NoColorSpace;
+  sceneMat.uniforms.uPhoto.value = photo; sceneMat.uniforms.uNormal.value = normal; sceneMat.uniforms.uType.value = typeTex;
+  maskMat.uniforms.uHint.value = hintTex;
+}
+
+window.renderAt = (t) => {
+  t = Math.min(6, Math.max(0, t));
+  const drops = dropState(t);
+  maskMat.uniforms.uT.value = t; maskMat.uniforms.uDrops.value = drops;
+  compMat.uniforms.uT.value = t; compMat.uniforms.uDrops.value = drops;
+  const cp = cursorAt(Math.min(Math.max(t, T0), T1));
+  const ca = Math.min(1, Math.max(0, (t - 0.75) / 0.25)) * Math.min(1, Math.max(0, (3.8 - t) / 0.3));
+  compMat.uniforms.uCursor.value.set(cp[0], cp[1], ca);
+  pass(maskMat, maskRT);
+  pass(sceneMat, sceneRT);
+  blur(sceneRT, bA1, bA2);
+  blur(bA2, bB1, bB2);
+  pass(compMat, null);
+  renderer.getContext().finish();
+};
+window.__ready = load().then(() => window.renderAt(0));
+</script>
+</body>
+</html>
