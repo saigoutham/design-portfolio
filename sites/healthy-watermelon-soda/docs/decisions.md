@@ -12,3 +12,4 @@ Repo: design-portfolio/sites/healthy-watermelon-soda
 - 2026-11-10 · art proof round 2 · 3 fresh blind critics: FAIL, FAIL, FAIL (Craft 5-7, Motion 6, Creativity 5-6).
 - 2026-11-10 · ran · council (quick, design triad, opus seats, round 2 anonymized) · verdict flesh-submerge, unanimous · docs/council/2026-11-10-art-route-r2.md
 - 2026-11-10 · Owner on the flesh-submerge proof: "I like the direction".
+- 2026-11-10 · art proof C round 1 · 3 fresh blind critics: FAIL x3 (Craft 5-6, Motion 6, Creativity 6, up from 5). All: liquid reads as a flat milky pink tint; hairline meniscus; sticker bubbles; low-contrast type underwater. Round 2 rebuilds the liquid only.
