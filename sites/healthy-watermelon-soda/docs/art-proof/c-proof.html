@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Proof C: flesh submerge</title>
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from 'three';
+
+const W = 1920, H = 1080, ASP = W / H, TEX = 'c-tex/';
+const MAXB = 200;
+
+// ---------- shared timeline (JS and GLSL use the same formulas) ----------
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+const ease = s => s * s * (3 - 2 * s);
+function level(t) { const s = clamp((t - 0.5) / 3.5, 0, 1); return -0.03 + 0.73 * ease(s); }
+function vel(t) { const s = clamp((t - 0.5) / 3.5, 0, 1); return 0.73 * 6 * s * (1 - s) / 3.5; } // peaks 0.31/s at t=2.25
+// slosh amplitude: follows speed with a lag, then a damped settle after the line stops
+function slosh(t) {
+  const v = vel(t - 0.3) / 0.313;
+  const settle = 0.35 * Math.exp(-1.2 * Math.max(t - 4, 0)) * ease(clamp((t - 3.0) / 0.6, 0, 1));
+  return 0.003 + 0.05 * Math.max(v, settle);
+}
+function surf(x, t) {
+  const A = slosh(t);
+  return level(t) + 0.022 * Math.pow(Math.abs(x / 1.7778 - 0.5) * 2, 4) - 0.006 + A * (0.55 * Math.sin(x * 3.0 - t * 2.6 + 0.4) + 0.30 * Math.sin(x * 6.3 + t * 3.9))
+       + 0.0016 * Math.sin(x * 31.0 - t * 11.0) + 0.0009 * Math.sin(x * 57.0 + t * 15.0);
+}
+// push-in 1.00 -> 1.06
+const zoom = t => 1.0 + 0.06 * ease(clamp(t / 5, 0, 1));
+
+// seeded rng
+function mulberry(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let x = Math.imul(a ^ a >>> 15, 1 | a); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; }; }
+
+let seeds = [], bubbles = [];
+function seedToScreen(s, t) { const z = zoom(t); return [((s.u - 0.5) * z + 0.5) * ASP, (s.v - 0.5) * z + 0.5]; }
+
+function buildBubbles() {
+  const rnd = mulberry(20261110);
+  seeds.forEach((s, k) => {
+    // time the line first covers this seed
+    let tsub = null;
+    for (let t = 0; t <= 5; t += 0.01) { const [x, y] = seedToScreen(s, t); if (surf(x, t) > y + 0.012) { tsub = t; break; } }
+    if (tsub === null) return;
+    const n = 6 + Math.floor(rnd() * 4);
+    let tb = tsub + rnd() * 0.08;
+    for (let j = 0; j < n; j++) {
+      const big = rnd();
+      bubbles.push({
+        k, birth: tb,
+        cling: 0.45 + rnd() * 0.6,
+        r0: big > 0.85 ? 0.011 + rnd() * 0.005 : (big > 0.4 ? 0.006 + rnd() * 0.004 : 0.0032 + rnd() * 0.002),
+        ang: rnd() * Math.PI * 2, blur: rnd() < 0.3 ? 1.5 + rnd() * 3 : 0, ph: rnd() * 6.28, acc: 0.10 + rnd() * 0.10, wob: 0.002 + rnd() * 0.004,
+      });
+      tb += 0.12 + rnd() * 0.32;
+    }
+  });
+}
+
+function bubbleState(b, t) {
+  if (t < b.birth) return null;
+  const s = seeds[b.k];
+  const [sx, sy] = seedToScreen(s, t);
+  const rr = s.r * zoom(t) * 1.15;
+  const ox = sx + Math.cos(b.ang) * rr, oy = sy + Math.sin(b.ang) * rr * 0.6;
+  const lt = t - b.birth;
+  if (lt < b.cling) { // nucleating, clinging to the seed
+    const g = ease(clamp(lt / b.cling, 0, 1));
+    return { x: ox, y: oy + b.r0 * g * 0.6, r: b.r0 * (0.25 + 0.75 * g), pop: 0, blur: 0 };
+  }
+  const d = lt - b.cling;
+  const y = oy + b.r0 * 0.6 + 0.012 * d + 0.5 * b.acc * d * d;
+  const x = ox + b.wob * Math.sin(d * 8 + b.ph) * Math.min(d * 2, 1);
+  const r = b.r0 * (1 + 0.35 * d);
+  const sy2 = surf(x, t);
+  if (y + r * 0.5 < sy2) return { x, y, r, pop: 0, blur: b.blur };
+  // find the pop time
+  let tp = t; for (let q = t; q > b.birth + b.cling; q -= 0.01) {
+    const dd = q - b.birth - b.cling, yy = oy + b.r0 * 0.6 + 0.012 * dd + 0.5 * b.acc * dd * dd;
+    if (yy + b.r0 * (1 + 0.35 * dd) * 0.5 < surf(x, q)) { tp = q; break; }
+  }
+  const pa = t - tp; if (pa > 0.28) return null;
+  return { x, y: sy2, r: r * (1.2 + 7 * pa), pop: 1 - pa / 0.28 };
+}
+
+// ---------- renderer ----------
+const renderer = new THREE.WebGLRenderer({ antialias: false, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(W, H);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+function loadTex(name) {
+  return new Promise((res, rej) => new THREE.TextureLoader().load(TEX + name, tx => {
+    // raw sRGB-encoded bytes in, raw out: the shader works in display space on purpose
+    tx.colorSpace = THREE.NoColorSpace; tx.minFilter = THREE.LinearFilter; tx.generateMipmaps = false;
+    tx.wrapS = tx.wrapT = THREE.MirroredRepeatWrapping; res(tx);
+  }, undefined, rej));
+}
+
+async function makeType() {
+  const ff = new FontFace('Bricolage', `url(${TEX}bricolage-grotesque-latin-700-normal.woff2)`, { weight: '700' });
+  await ff.load(); document.fonts.add(ff);
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  const size = 214, lh = size * 0.9, x = 112;
+  const top = H * 0.45 - lh; // block centred on 45% height
+  g.font = `700 ${size}px Bricolage`; g.letterSpacing = '-6px'; g.textBaseline = 'alphabetic';
+  const lines = ['Real fruit.', 'Real fizz.'];
+  // R: glyphs, G: soft shadow
+  const a = document.createElement('canvas'); a.width = W; a.height = H; const ga = a.getContext('2d');
+  ga.font = g.font; ga.letterSpacing = g.letterSpacing; ga.fillStyle = '#fff';
+  lines.forEach((l, i) => ga.fillText(l, x, top + lh * (i + 0.78)));
+  const s = document.createElement('canvas'); s.width = W; s.height = H; const gs = s.getContext('2d');
+  gs.filter = 'blur(22px)'; gs.drawImage(a, 6, 14);
+  const A = ga.getImageData(0, 0, W, H).data, S = gs.getImageData(0, 0, W, H).data;
+  const out = g.createImageData(W, H);
+  for (let i = 0; i < A.length; i += 4) { out.data[i] = A[i + 3]; out.data[i + 1] = S[i + 3]; out.data[i + 2] = 0; out.data[i + 3] = 255; }
+  g.putImageData(out, 0, 0);
+  const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.NoColorSpace; tx.flipY = true; tx.generateMipmaps = false; tx.minFilter = THREE.LinearFilter;
+  return tx;
+}
+
+const frag = /* glsl */`
+precision highp float;
+varying vec2 vUv;
+uniform sampler2D tFlesh, tHeight, tSeed, tType;
+uniform float uT, uZoom, uLevel, uSlosh;
+uniform vec2 uRes;
+uniform vec4 uB[${MAXB}];
+uniform int uNB;
+const float ASP = ${ASP.toFixed(6)};
+
+float surf(float x, float t){
+  return uLevel + 0.022 * pow(abs(x / ASP - 0.5) * 2.0, 4.0) - 0.006 + uSlosh * (0.55 * sin(x * 3.0 - t * 2.6 + 0.4) + 0.30 * sin(x * 6.3 + t * 3.9))
+       + 0.0016 * sin(x * 31.0 - t * 11.0) + 0.0009 * sin(x * 57.0 + t * 15.0);
+}
+float sq(float x){ return x * x; }
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float vnoise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
+  return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
+
+// screen p (x in 0..ASP, y in 0..1) -> flesh texture uv with push-in
+vec2 fuv(vec2 p){ return (vec2(p.x / ASP, p.y) - 0.5) / uZoom + 0.5; }
+
+// relit flesh: normal from the height map, soft key, wet streak specular
+vec3 flesh(vec2 uv, float wet, out float spec){
+  vec3 c = texture2D(tFlesh, uv).rgb;
+  vec2 e = vec2(1.0/2048.0, 1.0/1152.0) * 1.5;
+  float hl = texture2D(tHeight, uv - vec2(e.x,0)).r, hr = texture2D(tHeight, uv + vec2(e.x,0)).r;
+  float hd = texture2D(tHeight, uv - vec2(0,e.y)).r, hu = texture2D(tHeight, uv + vec2(0,e.y)).r;
+  vec3 N = normalize(vec3((hl - hr) * 2.2, (hd - hu) * 2.2, 1.0));
+  vec3 L = normalize(vec3(-0.45, 0.55, 0.75));
+  float dif = dot(N, L) - dot(vec3(0,0,1), L);
+  c *= 1.0 + 0.55 * dif;
+  // broad key falloff from top-left, slight vignette
+  vec2 q = uv - vec2(0.32, 0.78);
+  c *= 1.04 - 0.30 * dot(q, q);
+  // wet streak: a softbox reflected in a curved wet surface, diagonal band
+  vec3 V = vec3(0,0,1);
+  vec3 Hh = normalize(L + V);
+  float s = pow(max(dot(N, Hh), 0.0), 120.0);
+  float band = exp(-sq((uv.x * 0.8 + uv.y * 0.55 - 0.98) / 0.16));
+  float beads = smoothstep(0.56, 0.70, texture2D(tHeight, uv).r);
+  spec = wet * (s * (0.08 + 0.9 * band) + band * beads * 0.22 + 0.07 * band);
+  return c;
+}
+
+void main(){
+  vec2 px = 1.0 / uRes;
+  vec2 p = vec2(vUv.x * ASP, vUv.y);
+  float t = uT;
+  float S = surf(p.x, t);
+  float dy = p.y - S;           // <0 under the soda
+  float pxh = px.y;
+
+  // ---------- above: dry fruit, with the meniscus film climbing ~10px ----------
+  float sp;
+  vec3 col;
+  // liquid body normal (slow wavy refraction), stronger near the surface
+  vec2 wn = vec2(vnoise(p * 6.0 + vec2(0.0, t * 0.7)) - 0.5, vnoise(p * 6.0 + vec2(5.2, -t * 0.6)) - 0.5);
+  wn += 0.35 * vec2(vnoise(p * 23.0 - t * 1.3) - 0.5, vnoise(p * 23.0 + 3.1 + t * 1.1) - 0.5);
+  float under = 1.0 - smoothstep(-pxh * 0.75, pxh * 0.75, dy);
+
+  vec2 rp = p + wn * 0.016 * under;
+  // meniscus lens: just under the surface the image is pulled toward the line
+  float men = exp(min(dy, 0.0) / (pxh * 26.0)) * under;
+  rp.y += men * 0.010;
+  vec2 u = fuv(rp);
+
+  vec3 dry = flesh(fuv(p), 1.0, sp);
+  vec3 dryCol = dry + vec3(1.0, 0.93, 0.92) * sp;
+
+  // below: refracted, softened (5 taps), tinted pink and brighter
+  float sp2; vec3 wetc = vec3(0.0);
+  float br = 2.4 / 1152.0;
+  wetc += flesh(u, 0.0, sp2) * 0.36;
+  wetc += flesh(u + vec2(br, 0), 0.0, sp2) * 0.16;
+  wetc += flesh(u - vec2(br, 0), 0.0, sp2) * 0.16;
+  wetc += flesh(u + vec2(0, br), 0.0, sp2) * 0.16;
+  wetc += flesh(u - vec2(0, br), 0.0, sp2) * 0.16;
+  float lumw = dot(wetc, vec3(0.299, 0.587, 0.114));
+  vec3 pink = vec3(1.0, 0.56, 0.66);
+  wetc = mix(wetc, vec3(lumw) * pink * 1.25, 0.26) * 1.07 + vec3(0.10, 0.035, 0.055);
+  float depth = clamp(-dy / 0.7, 0.0, 1.0);
+  wetc = mix(wetc, vec3(0.98, 0.50, 0.58), 0.10 + 0.10 * depth);
+  // underside of the surface: mirrored flesh, silvered (total internal reflection)
+  float mirZ = exp(min(dy, 0.0) / (pxh * 34.0)) * under;
+  float spm; vec3 mir = flesh(fuv(vec2(p.x, S + (S - p.y) * 1.6) + wn * 0.01), 0.0, spm);
+  mir = mix(mir, vec3(1.0, 0.84, 0.86), 0.45);
+  wetc = mix(wetc, mir, mirZ * 0.5);
+  // caustic shimmer in the liquid
+  float ca = vnoise(p * 34.0 + wn * 6.0 + vec2(t * 0.4, -t * 0.9));
+  wetc += vec3(1.0, 0.8, 0.85) * smoothstep(0.72, 0.95, ca) * 0.06 * (1.0 - depth);
+
+  // above-line film: thin wet layer dragged up the face by the meniscus
+  float film = exp(-max(dy, 0.0) / (pxh * 9.0)) * (1.0 - under);
+  dryCol = mix(dryCol, dryCol * vec3(1.03, 0.93, 0.97) + 0.05, film * 0.6);
+
+  col = mix(dryCol, wetc, under);
+
+  // ---------- type: dry above, refracted and tinted below ----------
+  vec2 tuvDry = vUv;
+  vec2 tuvWet = vec2(rp.x / ASP, rp.y);
+  vec2 ty = texture2D(tType, mix(tuvDry, tuvWet, under)).rg;
+  float tyB = 0.0;
+  tyB += texture2D(tType, tuvWet + vec2(px.x * 1.5, 0)).r + texture2D(tType, tuvWet - vec2(px.x * 1.5, 0)).r;
+  float tyA = mix(ty.r, (ty.r * 2.0 + tyB) * 0.25, under);
+  col *= 1.0 - 0.38 * ty.g * (1.0 - under * 0.5);
+  vec3 inkDry = vec3(1.0, 0.965, 0.94);
+  vec3 inkWet = vec3(1.0, 0.80, 0.84);
+  col = mix(col, mix(inkDry, inkWet, under), tyA * (1.0 - 0.12 * under));
+
+  // ---------- surface line: bright band + dark hairline under it ----------
+  float slope = (surf(p.x + 0.004, t) - surf(p.x - 0.004, t)) / 0.008;
+  float catchL = 0.65 + 0.35 * sin(p.x * 3.0 + slope * 9.0 + t) + clamp(-slope * 4.0, -0.3, 0.6);
+  float band = exp(-sq((dy + pxh * 1.2) / (pxh * 2.0)));
+  float dark = exp(-sq((dy + pxh * 5.5) / (pxh * 2.2)));
+  col *= 1.0 - 0.20 * dark;
+  // lit underside of the meniscus: a soft silver gradient 6..20px below the line
+  float dn = min(dy, 0.0);
+  float lit = exp(dn / (pxh * 12.0)) * under * (1.0 - exp(dn / (pxh * 5.0)));
+  col = mix(col, vec3(1.0, 0.90, 0.92), lit * 0.30 * catchL);
+  col = mix(col, vec3(1.0, 0.97, 0.97), clamp(band * (0.55 + 0.45 * catchL), 0.0, 1.0));
+  // soft glow above line on the film edge
+  col += vec3(1.0, 0.85, 0.88) * exp(-max(dy, 0.0) / (pxh * 3.0)) * (1.0 - under) * 0.10 * catchL;
+
+  // ---------- bubbles: refractive spheres ----------
+  for (int i = 0; i < ${MAXB}; i++) {
+    if (i >= uNB) break;
+    vec4 b = uB[i];
+    vec2 d = (p - b.xy) / b.z;
+    float rr = dot(d, d);
+    if (b.w > 0.0) { // pop ring at the surface
+      float ring = exp(-sq((sqrt(rr) - 1.0) * b.z / (pxh * 1.4)));
+      d.y *= 3.2; // seen at grazing angle: flattened ring on the surface
+      float rr2 = sqrt(dot(d, d));
+      float ring2 = exp(-sq((rr2 - 1.0) * b.z / (pxh * 1.2)));
+      col = mix(col, vec3(1.0, 0.95, 0.96), ring2 * b.w * 0.85);
+      continue;
+    }
+    if (rr > 1.3) continue;
+    float aa = pxh * (1.0 - b.w) / b.z;
+    float inside = 1.0 - smoothstep(1.0 - aa, 1.0 + aa, sqrt(rr));
+    float z = sqrt(max(1.0 - rr, 0.0));
+    // inverted, magnified image of the flesh behind
+    vec2 sp2uv = fuv(b.xy - d * b.z * 1.1 + wn * 0.004);
+    float spx; vec3 thru = flesh(sp2uv, 0.0, spx);
+    thru = mix(thru, vec3(dot(thru, vec3(0.3,0.59,0.11))) * pink * 1.4, 0.55) * 1.15 + vec3(0.30, 0.22, 0.24);
+    float fr = pow(1.0 - z, 2.2);
+    vec3 bc = mix(thru, vec3(0.62, 0.22, 0.28), smoothstep(0.74, 0.93, sqrt(rr)) * 0.55); // dark TIR band
+    bc = mix(bc, vec3(1.0, 0.95, 0.97), smoothstep(0.90, 0.985, sqrt(rr)) * (0.55 + 0.45 * clamp(-d.x * 0.5 + d.y * 0.7 + 0.5, 0.0, 1.0)));
+    // specular dot (key from top-left) + small counter-glint
+    float sdot = exp(-dot(d - vec2(-0.36, 0.40), d - vec2(-0.36, 0.40)) / 0.018);
+    float sdot2 = exp(-dot(d - vec2(0.38, -0.42), d - vec2(0.38, -0.42)) / 0.03) * 0.35;
+    bc += vec3(1.0) * (sdot * 1.2 + sdot2);
+    // only under the soda
+    float sub = 1.0 - smoothstep(-pxh, pxh, (b.y + b.z * 0.2) - surf(b.x, t));
+    col = mix(col, bc, inside * sub);
+  }
+
+  // grain
+  float gr = hash(gl_FragCoord.xy + fract(t * 24.0) * 97.0) + hash(gl_FragCoord.xy * 1.37 + 11.0 + floor(t * 24.0)) - 1.0;
+  col += gr * 0.028;
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+}`;
+
+let mat;
+window.__ready = (async () => {
+  const [flesh, height, seedm, meta, type] = await Promise.all([
+    loadTex('flesh.png'), loadTex('height.png'), loadTex('seed-mask.png'),
+    fetch(TEX + 'seeds.json').then(r => r.json()), makeType(),
+  ]);
+  seeds = meta.seeds; buildBubbles();
+  const arr = []; for (let i = 0; i < MAXB; i++) arr.push(new THREE.Vector4());
+  mat = new THREE.ShaderMaterial({
+    uniforms: {
+      tFlesh: { value: flesh }, tHeight: { value: height }, tSeed: { value: seedm }, tType: { value: type },
+      uT: { value: 0 }, uZoom: { value: 1 }, uLevel: { value: 0 }, uSlosh: { value: 0 },
+      uRes: { value: new THREE.Vector2(W, H) }, uB: { value: arr }, uNB: { value: 0 },
+    },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+    fragmentShader: frag,
+  });
+  scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat));
+  window.renderAt(0);
+})();
+
+window.renderAt = (t) => {
+  const u = mat.uniforms;
+  u.uT.value = t; u.uZoom.value = zoom(t); u.uLevel.value = level(t); u.uSlosh.value = slosh(t);
+  let n = 0;
+  for (const b of bubbles) { if (n >= MAXB) break; const s = bubbleState(b, t); if (!s) continue; u.uB.value[n++].set(s.x, s.y, s.r, s.pop > 0 ? s.pop : -s.blur); }
+  u.uNB.value = n;
+  renderer.render(scene, cam);
+  return n;
+};
+</script>
+</body>
+</html>
