@@ -46,8 +46,19 @@ def process(name, out, split=None, keep_shadow=True):
         pink = (R - G > 6) & (B >= G - 4) & (lum > 195) & (sat < 60)
         pink[: yb - 200, :] = False
         fruit = ndi.binary_opening(fruit & ~pink, iterations=4)
-        fruit[1452:, 1000:1290] = False  # floor bounce under the gap, below both rind tips (source px)
-        fruit[1405:, 1105:1290] = False
+        band2 = np.zeros_like(fruit); band2[yb - 150:, :] = True  # thin floor bounce under the tips: strong opening in this band only
+        fruit = np.where(band2, ndi.binary_opening(fruit, iterations=16), fruit)
+        blob = np.zeros_like(fruit); blob[1400:, 1100:1330] = True; blob[1446:, 1030:1100] = True  # source px, under the gap
+        fruit = fruit & ~(blob & (sat < 34) & (lum > 190))
+        for x in range(900, 1330):  # right of the left tip: keep only the longest vertical run per column, the floor bounce is a short separate run
+            col = fruit[:, x]
+            if not col.any(): continue
+            lb, nn = ndi.label(col)
+            if nn > 1:
+                sz = ndi.sum(col, lb, range(1, nn + 1)); fruit[:, x] = lb == (np.argmax(sz) + 1)
+        fruit[1444:, 1040:1330] = False  # nothing real lives below the left tip
+        fruit[1405:1444, 1040:1330] &= ~((sat[1405:1444, 1040:1330] < 34) & (lum[1405:1444, 1040:1330] > 205) & (R[1405:1444, 1040:1330] - G[1405:1444, 1040:1330] > 3))
+        fruit = ndi.binary_opening(fruit, iterations=3)
     lab3, n3 = ndi.label(fruit)
     if n3 > 1:
         sz = ndi.sum(fruit, lab3, range(1, n3 + 1)); fruit = np.isin(lab3, np.argsort(sz)[::-1][: (2 if split else 1)] + 1)
