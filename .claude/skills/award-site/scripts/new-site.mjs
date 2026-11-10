@@ -7,7 +7,7 @@
 // (cloned next to design-portfolio if it's a URL) and sites/<site>.md points to it.
 // Shared logs (system/) always stay in design-portfolio.
 
-import { execSync } from "node:child_process";
+import { execSync, execFileSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -110,11 +110,11 @@ const writeNew = (rel, text) => {
 };
 writeNew(
   "docs/decisions.md",
-  `# ${title}: decisions\n\nTrack: ${track}\nRepo: ${repoLine}\n\n## Stage log\n- ${today} · stage 0 setup · done\n\n## Decisions\n- ${today} · Created with ${want3d ? "3D dependencies" : "no 3D dependencies yet"}.\n`
+  `# ${title}: decisions\n\nTrack: ${track}\nRepo: ${repoLine}\n\n## Log\n## Decisions\n- ${today} · Created with ${want3d ? "3D dependencies" : "no 3D dependencies yet"}.\n`
 );
 writeNew(
   "CLAUDE.md",
-  `# ${title}\n\nA ${track === "client" ? "client" : "personal concept"} site built with the award-site pipeline${repo ? " (system files live in design-portfolio)" : ""}.\nStart every session with \`/award-site status ${site}\`; it reports the stage and the next step.\n\nContext, read only when the current stage needs it: PRODUCT.md, DESIGN.md, docs/brief.md, docs/research.md, docs/concept.md, docs/assets.md, docs/spec.md, docs/qa.md. Decisions and the stage log: docs/decisions.md.\n`
+  `# ${title}\n\nA ${track === "client" ? "client" : "personal concept"} site built with the award-site pipeline${repo ? " (system files live in design-portfolio)" : ""}.\nStart every session with \`/award-site status ${site}\`; it runs \`npm run phase -- ${site}\` and works the open steps in order.\n\nContext, read only when the current step needs it: PRODUCT.md, DESIGN.md, docs/brief.md, docs/concept.md, docs/art.md, docs/spec.md. Decisions and the phase log: docs/decisions.md.\n`
 );
 
 if (repo) {
@@ -139,4 +139,4 @@ if (fs.existsSync(fpPath)) {
 
 const rel = path.relative(root, target);
 console.log(`\nCreated ${site} (${track} track) at ${rel.startsWith("..") ? target : rel}`);
-console.log(`Next: stage 1, Intake. Run /award-site next ${site}`);
+execFileSync("node", [path.join(here, "phase.mjs"), site, "start", "0", `--${track}`], { stdio: "inherit" });

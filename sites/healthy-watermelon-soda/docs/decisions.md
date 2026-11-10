@@ -4,73 +4,10 @@ Track: own
 Repo: design-portfolio/sites/healthy-watermelon-soda
 
 ## Stage log
-- 2026-11-09 · stage 0 setup · done
-- 2026-11-09 · stage 1 intake · done
-- 2026-11-10 · stage 2 research · done
-- 2026-11-10 · stage 3 concept · done
-- 2026-11-09 · skill new-site · stage 0 · sites/healthy-watermelon-soda (Next.js, gsap, @gsap/react, lenis; FINGERPRINTS planned row)
-- 2026-11-09 · skill setup · stage 0 · prerequisites ok (node 22, python3, ffmpeg, git, bun); no packs on
-- 2026-11-09 · metrics · stage 0 · 3 min, ~40k tokens, 2 skills, 0 agents, 0 retries, 2 files, 0 review cycles, floor n/a
-- 2026-11-09 · skill brainstorming · stage 1 · interview started, Q1 (what the product is) asked
+- 2026-11-10 · stage 0 setup · done
 
 ## Decisions
-- 2026-11-09 · Created with no 3D dependencies yet.
-- 2026-11-09 · Q1 answer (verbatim): "It's a brand that i plan to make, there are no healthy sodas available but I want to venture into this segment without any sugar, real fruit and make it fun with the soda"
-- 2026-11-09 · Repo award-site updated to v3 SKILL.md; references/floor.md reconstructed from it; Diwali lesson added to system/lessons.md; .council.yaml added. skills.mjs still missing.
-- 2026-11-09 · Q2 answer (verbatim): "It's just for portfolio so that should be okay" → own-track concept brand; site carries a concept label (rule 9)
-- 2026-11-09 · Q3 answer (verbatim): "How beautiful, unique and crazy immersive experience that the website has given. Its a totally new and fun take to present the product." → too vague to seed a signature move; pushed for a concrete moment
-- 2026-11-09 · Q3 resolved: user picked A — scroll slices a real 3D watermelon; flesh fizzes, seeds rise as bubbles ("I cut a watermelon by scrolling and it turned into soda"). Implies 3D world: r3f + Blender at stage 4/5.
-- 2026-11-09 · Q4 answer: "Awwwards" → target Awwwards SOTD; phone usability is a hard constraint on the 3D slice
-- 2026-11-09 · Q5 answer (verbatim): "2 hrs per day and the delivery in a week" → live by 2026-11-16; scope cut to one continuous scene
-- 2026-11-09 · skill brainstorming · stage 1 · docs/brief.md, PRODUCT.md (5 questions, grilling style; Q3 pushed back and resolved to option A)
-- 2026-11-09 · skill product-marketing · stage 1 · skipped: not installed in this repo; positioning, audience and primary action written into PRODUCT.md by hand
-- 2026-11-09 · skill find-skills · stage 1 · skipped: no capability gap (no shop, CMS or booking)
-- 2026-11-09 · Needs --3d: the r3f pack gets installed at stage 4
-- 2026-11-09 · metrics · stage 1 · 25 min, ~90k tokens, 2 skills, 0 agents, 0 retries, 3 files, 0 review cycles, floor n/a
-- 2026-11-10 · skill setup · stage 2 · research and library packs on (last30days, MotionSites)
-- 2026-11-10 · skill content-strategy · stage 2 · skipped: not installed in this repo; the audience lane was done by web search
-- 2026-11-10 · skill last30days · stage 2 · skipped: no API keys in this workspace; web search instead
-- 2026-11-10 · skill scrapling-official · stage 2 · skipped: own track; sameness map built from Awwwards and press
-- 2026-11-10 · skill rea · stage 2 · skipped: optional, time budget
-- 2026-11-10 · library motionsites + scroll-craft approved-collection · stage 2 · read; values in docs/research.md §3
-- 2026-11-10 · research · stage 2 · docs/research.md; opportunity 1 (fruit as hero, visitor as cause) picked for the concept
-- 2026-11-10 · metrics · stage 2 · 15 min, ~70k tokens, 1 skill, 0 agents, 0 retries, 1 file, 0 review cycles, floor n/a
-- 2026-11-10 · Goutham chose concept first; the slice speed test moves to stage 4
-- 2026-11-10 · library scroll-craft feel.md + uniqueness.md · stage 3 · read; grammar picked from its 8
-- 2026-11-10 · skill brainstorming · stage 3 · 3 concepts (The Cut / One Slice / Chop) in docs/concept.md; The Cut proposed
-- 2026-11-10 · skill copywriting · stage 3 · skipped: not installed in this repo; messaging angle ("Real fruit. Real fizz.") written in the concept, final copy at stage 5
-- 2026-11-10 · skill council · stage 3 · skipped: concepts not close (runner-up fails the template-trap test)
-- 2026-11-10 · fingerprint gate · stage 3 · passes 6/6 against robot-mammoth
-- 2026-11-10 · Goutham approved concept: The Cut (split stage; the divider is the knife)
-- 2026-11-10 · metrics · stage 3 · 20 min, ~60k tokens, 1 skill, 0 agents, 0 retries, 1 file, 1 review cycle, floor n/a
-- 2026-11-10 · skill setup · stage 4 · 3d, video, taste packs on; bpy 5.2.3 installed (CPU only, 2 cores)
-- 2026-11-10 · skill ui-ux-pro-max · stage 4 · design-system/healthy-watermelon-soda/MASTER.md (style Vibrant & Block-based); first two runs returned a luxury black-and-gold system and were discarded; palette and type re-tuned to the fruit, contrast checked (all text pairs ≥5.3:1)
-- 2026-11-10 · skill design-system · stage 4 · design-system/tokens.json → tokens.css (primitive, semantic, component)
-- 2026-11-10 · skill design-taste-frontend · stage 4 · checked from its SKILL.md checklist (installed mid-session, not loadable as a skill yet); pass, one waiver: the scroll-scrubbed scene
-- 2026-11-10 · library scroll-craft taste.md + elaya Part B · stage 4 · checked; pass
-- 2026-11-10 · DESIGN.md · stage 4 · direction, token roles, hero layer plan, signature look
-- 2026-11-10 · Decision: fruit delivered as scroll-scrubbed rendered video, not live WebGL (speed on phones); r3f is optional desktop garnish only
-- 2026-11-10 · subagent watermelon model · stage 4 · started: assets-src/watermelon.py, stills to docs/watermelon/
-- 2026-11-10 · subagent watermelon model · stage 4 · assets-src/watermelon.py; docs/watermelon/{whole,cut}-v1..v3.png; ~3–5 min per still on CPU; subagent verdict borderline
-- 2026-11-10 · floor (asset still) · stage 4 · fail · director verdict on v3: reads as CG. Whole: stripes like torn paper, milky soft sheen, smudged ground spot. Cut: flat matte card-like flesh, no wet glints, seeds in a neat printed ring, halves read as thin plates. Two fix passes done; the day-2 rule says switch, not polish
-- 2026-11-10 · Proposed: real photography and footage of a real watermelon as the hero art (concept fallback); Blender kept for the can/glass if needed. Waiting on Goutham
-- 2026-11-10 · Goutham: use online photos and animate with hyperframes instead of a shoot. Accepted: licensed stock photos/footage count as real art (floor rule 2); hyperframes/GSAP animate the real cut-outs, never draw fruit or bubbles. Workspace can't reach Unsplash/Pexels/Wikimedia (curl 000), so Goutham downloads; one shoot series needed so whole and halves match
-- 2026-11-10 · assets · stage 5 · 4 generated stills (Nano Banana) filed in assets-src/photos, provenance in docs/assets.md; director verdict: whole, halves, cut face pass; macro borderline
-- 2026-11-10 · Goutham: generates the art himself in Nano Banana from prompts the studio writes; one series, one chat
-- 2026-11-10 · hero proof · stage 4 · built: src/components/Hero.tsx + hero.css, mattes via assets-src/prep_stills.py, frames in docs/hero-proof/ (desktop 1440x900, phone 390x844). Scroll-scrubbed knife reveal, reduced-motion shows the parted state
-- 2026-11-10 · floor · stage 4 · not run (no hyperframes film, rubric or blind critic yet). Below the floor: mid-cut frame reads as a feathered mask reveal, not a blade; phone has dead space between headline and fruit (needs vertical stills); left half has a small matte nub at its bottom tip
-- 2026-11-10 · Decision: docs/hero-approved/ stays empty until the floor passes
-- 2026-11-10 · hero proof v2 · stage 4 · mid-cut seam fixed: the cut is now a V that opens from the knife tip upward (clip-path wedge over the parted halves, whole fruit clipped to the two outer pieces), then the halves part. Frames in docs/hero-proof/ (desktop 0/20/35/50/70/90, phone 0/50/90)
-- 2026-11-10 · floor · stage 4 · still not run. Below the floor, remaining gaps: no hyperframes film or blind critic yet; phone dead space between headline and fruit (needs vertical stills); small matte nub at the left half's bottom tip; no fizz or pour beat built yet
-- 2026-11-10 · film · stage 4 · docs/film/hero-desktop.mp4 (20 s) and hero-phone.mp4 (17 s), recorded from the live page with Playwright (hyperframes renders HTML compositions, it cannot capture a live scroll)
-- 2026-11-10 · perf fix · stage 4 · throttled mobile LCP was 4.6 s (auto-fail); responsive srcset, smaller webp, low priority halves: LCP 1.5 s, page 914 KB to 591 KB. Added og and twitter metadata
-- 2026-11-10 · floor · stage 4 · FAIL · side-by-side not run (no reference sites reachable from this workspace, none logged at stage 2/3), rubric 7.1 avg / min 6 (phone, polish), impeccable 4 highs open (cut reads as mask reveal at the time of the critique; phone dead space; fizz side never pays off; pre-hydration flash), blind critic 6.5 (Design 7, Usability 6, Creativity 7, Content 5). docs/impeccable-critique.md, .jury/127.0.0.1-4400/critic.md
-- 2026-11-10 · Note: the impeccable agent critiqued frames from before the V-cut fix in part; recheck high 1 after the next change
-- 2026-11-10 · floor fixes queued (ranked): CTA hover and a real target for "See how it was made"; a second beat after the parting (fizz and pour, closing line); phone vertical stills; pre-hydration flash (initial clip-path); left-half matte nub; skip link, wordmark, canonical, og:image, robots, 404 restyle
-- 2026-11-10 Second beat shipped: seeds rise along divider, collapse to blush, "You made the cut." close (now fades in after the divider clears), CTA targets #how with hover sweep, How section added, pre-hydration flash and skip link fixed. Build OK, desktop+phone: no console errors, no overflowX. Floor NOT re-scored yet (last: blind critic 6.5, rubric 7.1, FAIL). Open: phone dead space (needs vertical stills), no pour/glass beat, 404, og:image, canonical, robots/sitemap, side-by-side needs 3 reference screenshots from user.
-- 2026-11-10 Pour beat shipped: glass still (user-generated) fills bottom-up via soft mask, 22 coded CSS bubbles rise in the liquid, "Cut it. Pour it." line, hero 700vh desktop / 650vh phone. claude-drawing-skill (cloveric) reviewed and NOT vendored: Python raster painter (numpy+Pillow), 740 KB SKILL.md, not React/TS. Art stays photographic; fizz/bubbles are coded. Floor not re-scored.
-- 2026-11-10 Launch basics: metadataBase + canonical (NEXT_PUBLIC_SITE_URL, placeholder domain until deploy), robots.txt, sitemap.xml, og/twitter image (1200x630, composed from glass still + headline), styled 404. Open: set the real domain at deploy.
-- 2026-11-10 Phone portrait stills wired (upright whole + parted halves, shared canvas scale). Phone stage 108vw, 1000:1300. Hero films re-recorded (docs/film). Floor not re-scored since.
-- 2026-11-10 User verdict: the photo-mask animations are not good enough; rule from user: "first is always achieving with code" (GSAP, three.js, React, TS, HyperFrames). Built animatic/ (HyperFrames): 27 s coded animatic of the whole site, three.js procedural melon that really splits (hinge V, halves turn to camera), 3D seeds and juice, coded glass/pour/bubbles/wedge, DOM type. Output docs/film/animatic-v1.mp4. Pending user/client verdict before porting the 3D scene to the site (R3F + GSAP ScrollTrigger). 3d skill pack fetched; three, @react-three/fiber, @react-three/drei installed.
-- 2026-11-10 User: "Achieve as much as you can with code ... First is always achieving with code"; "make the normal: before you build the website, get the video out first". Gate added (`npm run gate -- <site> animatic`); council pack pinned (0xNyk/council-of-high-intelligence@79a36a8).
-- 2026-11-10 · ran · council (quick, design triad: Rams, Torvalds, Watts) · verdict B-hybrid 75% · docs/council/2026-11-10-art-route.md
+- 2026-11-10 · Created with 3D dependencies.
+- 2026-11-10 · phase 0 start · done
+- 2026-11-10 · phase 1 brief · done
+- 2026-11-10 · Phase 2 art agents run on opus, not the skill's default sonnet: art quality failed twice, and the making is where it failed.
