@@ -27,12 +27,8 @@
   filter: blur(6px);
 }
 .wm-whole, .wm-halves, .wm-half { position: absolute; display: block; }
-.wm-whole { inset: 0; width: 100%; height: 100%; --f: 2.2%;
-  -webkit-mask-image: linear-gradient(to bottom, transparent calc(var(--y, 9%) - var(--f)), #000 calc(var(--y, 9%) + var(--f)));
-  mask-image: linear-gradient(to bottom, transparent calc(var(--y, 9%) - var(--f)), #000 calc(var(--y, 9%) + var(--f))); }
-.wm-halves { inset: 0; --f: 2.2%;
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(var(--y, 9%) - var(--f)), transparent calc(var(--y, 9%) + var(--f)));
-  mask-image: linear-gradient(to bottom, #000 calc(var(--y, 9%) - var(--f)), transparent calc(var(--y, 9%) + var(--f))); }
+.wm-whole { inset: 0; width: 100%; height: 100%; }
+.wm-halves { inset: 0; }
 .wm-half { top: 0; height: 100%; width: 50%; }
 .wm-halfL { left: 0; transform-origin: 14% 92%; }
 .wm-halfR { left: 50%; transform-origin: 86% 92%; }

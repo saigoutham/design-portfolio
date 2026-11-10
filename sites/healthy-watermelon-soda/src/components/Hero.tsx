@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /* Canvas % where the knife starts and ends: just above and just below the fruit in the stills. */
 const TOP = 9;
-const BOTTOM = 106;
+const BOTTOM = 140;
 
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
@@ -21,10 +21,29 @@ export default function Hero() {
       const mm = gsap.matchMedia();
 
       const state = { t: 0, part: 0 };
+      const ss = (x: number) => { const c = Math.min(Math.max(x, 0), 1); return c * c * (3 - 2 * c); };
+      const pct = (n: number) => `${n.toFixed(2)}%`;
       const paint = () => {
-        const y = TOP + (BOTTOM - TOP) * state.t;
-        gsap.set(q("[data-stage]"), { "--y": `${y}%` });
-        gsap.set(q("[data-tick]"), { top: `${Math.min(y, 96)}%` });
+        const tip = TOP + (BOTTOM - TOP) * state.t; // knife tip, canvas %
+        const open = ss(state.part / 0.45);
+        const slope = 0.14 + 0.12 * state.t + 1.6 * open; // how fast the V widens per % above the tip
+        const hwT = Math.min(slope * tip, 60); // half width of the V at the canvas top
+        const hwB = tip > 100 ? Math.min(slope * (tip - 100), 60) : 0; // and at the canvas bottom
+        const apexY = Math.min(tip, 100);
+        const apex = tip < 100 ? `${pct(50)} ${pct(apexY)}` : `${pct(50 + hwB)} 100%, ${pct(50 - hwB)} 100%`;
+        const full = open >= 1;
+        gsap.set(q("[data-halves]"), {
+          clipPath: full ? "none" : `polygon(${pct(50 - hwT)} 0%, ${pct(50 + hwT)} 0%, ${apex})`,
+        });
+        const left = tip < 100
+          ? `polygon(0% 0%, ${pct(50 - hwT)} 0%, 50% ${pct(apexY)}, 50% 100%, 0% 100%)`
+          : `polygon(0% 0%, ${pct(50 - hwT)} 0%, ${pct(50 - hwB)} 100%, 0% 100%)`;
+        const right = tip < 100
+          ? `polygon(${pct(50 + hwT)} 0%, 100% 0%, 100% 100%, 50% 100%, 50% ${pct(apexY)})`
+          : `polygon(${pct(50 + hwT)} 0%, 100% 0%, 100% 100%, ${pct(50 + hwB)} 100%)`;
+        gsap.set(q("[data-whole-l]"), { clipPath: left, opacity: 1 - open });
+        gsap.set(q("[data-whole-r]"), { clipPath: right, opacity: 1 - open });
+        gsap.set(q("[data-tick]"), { top: `${Math.min(tip, 96)}%` });
         gsap.set(q("[data-half-l]"), { xPercent: -state.part * 5, rotate: -state.part * 2.2 });
         gsap.set(q("[data-half-r]"), { xPercent: state.part * 5, rotate: state.part * 2.2 });
       };
@@ -78,10 +97,11 @@ export default function Hero() {
           fizz.
         </p>
 
-        <div className="wm-stage" data-stage>
+        <div className="wm-stage">
           <div className="wm-shadow" />
           {/* eslint-disable @next/next/no-img-element */}
-          <img data-whole className="wm-whole" src="/img/whole.webp" alt="A whole striped watermelon" width={2000} height={1210} fetchPriority="high" />
+          <img data-whole-l className="wm-whole" src="/img/whole.webp" alt="A whole striped watermelon" width={2000} height={1210} fetchPriority="high" />
+          <img data-whole-r className="wm-whole" src="/img/whole.webp" alt="" width={2000} height={1210} />
           <div data-halves className="wm-halves">
             <img data-half-l className="wm-half wm-halfL" src="/img/halves-L.webp" alt="" width={1200} height={1453} />
             <img data-half-r className="wm-half wm-halfR" src="/img/halves-R.webp" alt="" width={1200} height={1453} />
